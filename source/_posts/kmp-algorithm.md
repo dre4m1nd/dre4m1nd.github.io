@@ -136,8 +136,142 @@ public int strStr(String s, String p) {
 - **边界**：模式串为空（返回 0）、模式串比主串长（返回 -1）、只有单个字符。
 - 匹配成功后如果还要找**所有**出现位置，把 `j = next[j - 1]` 继续往后走，而不是直接 `j = 0`。
 
-## 相关题目
+## 题目实战
 
-- [LeetCode 28. 找出字符串中第一个匹配项的下标](https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/) —— 裸 KMP
-- [LeetCode 459. 重复的子字符串](https://leetcode.cn/problems/repeated-substring-pattern/) —— 用上面的循环节结论
-- [LeetCode 214. 最短回文串](https://leetcode.cn/problems/shortest-palindrome/) —— KMP 思想的变形
+下面三道题都只用到同一份 `getNext`，把上面两个函数当成模板即可。
+
+### 1. 找出字符串中第一个匹配项的下标（LeetCode 28）
+
+题意：在 `haystack` 里找到 `needle` 第一次出现的下标，没有返回 `-1`。
+
+就是上面 `strStr` 的完整版：
+
+```java
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int n = haystack.length(), m = needle.length();
+        if (m == 0) return 0;
+        int[] next = getNext(needle);
+        int j = 0;
+        for (int i = 0; i < n; i++) {
+            while (j > 0 && haystack.charAt(i) != needle.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (haystack.charAt(i) == needle.charAt(j)) {
+                j++;
+            }
+            if (j == m) {
+                return i - m + 1;
+            }
+        }
+        return -1;
+    }
+
+    private int[] getNext(String p) {
+        int m = p.length();
+        int[] next = new int[m];
+        int j = 0;
+        for (int i = 1; i < m; i++) {
+            while (j > 0 && p.charAt(i) != p.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (p.charAt(i) == p.charAt(j)) {
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
+    }
+}
+```
+
+- **时间**：`O(n + m)`
+- **空间**：`O(m)`
+
+### 2. 重复的子字符串（LeetCode 459）
+
+题意：判断字符串 `s` 是否由它的某个子串重复多次构成。
+
+用上面那条循环节结论：
+
+```java
+class Solution {
+    public boolean repeatedSubstringPattern(String s) {
+        int n = s.length();
+        int[] next = getNext(s);
+        int len = n - next[n - 1];          // 最小循环节长度
+        return next[n - 1] > 0 && n % len == 0;
+    }
+
+    private int[] getNext(String p) {
+        int m = p.length();
+        int[] next = new int[m];
+        int j = 0;
+        for (int i = 1; i < m; i++) {
+            while (j > 0 && p.charAt(i) != p.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (p.charAt(i) == p.charAt(j)) {
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
+    }
+}
+```
+
+`next[n - 1] > 0` 这个条件不能省：`"abcd"` 的 `next[n-1] = 0`，`len = n`，不加判断就会因为 `n % n == 0` 误返回 `true`。
+
+- **时间**：`O(n)`
+- **空间**：`O(n)`
+
+### 3. 最短回文串（LeetCode 214）
+
+题意：只能在 `s` 前面添加字符，把它变成回文串，返回最短的那个。
+
+关键是找出 `s` 的**最长回文前缀**，长度记为 `len`，那剩下的后缀 `s[len..]` 逆序拼到前面就是答案。而"最长回文前缀"可以用 KMP 前缀表求：把 `s` 和它的逆序拼起来，中间用一个 `s` 里不可能出现的分隔符（比如 `#`）隔开，前缀表的最后一个值就是答案。
+
+```java
+class Solution {
+    public String shortestPalindrome(String s) {
+        if (s == null || s.length() <= 1) return s;
+        String rev = new StringBuilder(s).reverse().toString();
+        String t = s + "#" + rev;                 // 分隔符防止跨越边界匹配
+        int[] next = getNext(t);
+        int len = next[t.length() - 1];            // s 的最长回文前缀长度
+        String prefix = new StringBuilder(s.substring(len)).reverse().toString();
+        return prefix + s;
+    }
+
+    private int[] getNext(String p) {
+        int m = p.length();
+        int[] next = new int[m];
+        int j = 0;
+        for (int i = 1; i < m; i++) {
+            while (j > 0 && p.charAt(i) != p.charAt(j)) {
+                j = next[j - 1];
+            }
+            if (p.charAt(i) == p.charAt(j)) {
+                j++;
+            }
+            next[i] = j;
+        }
+        return next;
+    }
+}
+```
+
+例：`s = "aacecaaa"` → 最长回文前缀是 `"aacecaa"`（长度 7），剩一个 `"a"`，逆序拼到前面得到 `"aaacecaaa"`。
+
+- **时间**：`O(n)`
+- **空间**：`O(n)`
+
+{% note yellow 'anzhiyufont anzhiyu-icon-lightbulb' %}
+214 也可以用 Manacher 求回文半径，或者用双指针不断收缩递归做；但用 KMP 前缀表写起来最短，也正好把 `getNext` 再复用一次。
+{% endnote %}
+
+## 参考
+
+- [KMP 算法 - 维基百科](https://zh.wikipedia.org/wiki/KMP%E7%AE%97%E6%B3%95)
+- 《算法导论》第 32 章：字符串匹配

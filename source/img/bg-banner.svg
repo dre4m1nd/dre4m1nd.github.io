@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f1733"/>
+      <stop offset="0.45" stop-color="#22306b"/>
+      <stop offset="0.75" stop-color="#3a2f7d"/>
+      <stop offset="1" stop-color="#5a2f78"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.78" cy="0.18" r="0.62">
+      <stop offset="0" stop-color="#7d9bff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#7d9bff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.12" cy="0.92" r="0.55">
+      <stop offset="0" stop-color="#b06bff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#b06bff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#base)"/>
+  <rect width="1200" height="630" fill="url(#glowA)"/>
+  <rect width="1200" height="630" fill="url(#glowB)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="980" cy="120" r="190" fill="#8aa6ff" fill-opacity="0.10"/>
+  <circle cx="1010" cy="150" r="120" fill="none" stroke="#ffffff" stroke-opacity="0.10" stroke-width="1.5"/>
+  <circle cx="180" cy="560" r="240" fill="#b57bff" fill-opacity="0.10"/>
+  <path d="M0 500 C220 430 420 560 640 505 C860 450 1030 545 1200 480 L1200 630 L0 630 Z" fill="#ffffff" fill-opacity="0.04"/>
+</svg>

@@ -113,6 +113,9 @@ highlight_shrink: true       # 代码块默认折叠
 - **打赏**：`reward.enable: false` 只去掉文章页的按钮；中控台（`console.pug`）里的二维码是 `each item in theme.reward.QR_code` **无条件渲染**，而且数组按下标合并清不掉。已在 `custom.css` 用 `.console-card-group-reward { display: none }` 隐藏。
 - **音乐**：两处开关 —— `aplayerInject.enable`（全局播放器资源）和 `nav_music.enable`（左下角播放器），都要关；只关一个会残留。
 - 社交图标是 `social` 里的 `名称: 链接 || 图标类`，`mailto:` 链接能正常工作（`url_for` 对外部 scheme 原样返回），作者卡头像下方的图标也走同一份配置。
+- 文章里有两个写死的"原创"标识，都在主题 pug 里，只能用同等选择器覆盖（`custom.css` 已改）：头部 `#post-firstinfo .meta-firstline a.post-meta-original`、底部版权卡 `#post .post-copyright__original`，做法是 `font-size: 0` + `::after { content: "AI 辅助生成" }`。
+- 背景图全在 `source/img/*.svg`（手写渐变，不依赖外链图床）：`bg-banner.svg` 用于首页关于我卡片和 404 页，`cover-1/2/3.svg` 是 `cover.default_cover` 的随机封面。换图只需改这两处配置。
+- `models.getAvailableOfType('image')` 目前是空的（需要 openrouter 凭证），所以想用 AI 生图得先配 `OPENROUTER_API_KEY` / `/login openrouter`。
 - 首页/作者卡的 demo 内容（`home_top`、`banner`、`social`、`author_status`、`runtimeshow.publish_date`、`card_weixin` 二维码）已经换成自己的，别再抄回模板值。
 - 本地 `hexo server` 不会重读配置，改完 `_config.anzhiyu.yml` 要重启 server 才看得到效果（按端口杀进程：`netstat -ano | grep :4000`）。
 

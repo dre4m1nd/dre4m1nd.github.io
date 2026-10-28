@@ -125,6 +125,25 @@
   opacity: 0;
 }
 
+/* ---------- 文章头部"原创"标识改为 AI 提示（主题里是写死的文案）---------- */
+/* 主题规则是 #post-firstinfo .meta-firstline a.post-meta-original，得用同等选择器才能覆盖 */
+#post-firstinfo .meta-firstline a.post-meta-original {
+  font-size: 0;
+}
+#post-firstinfo .meta-firstline a.post-meta-original::after {
+  content: "AI 辅助生成";
+  font-size: 12px;
+}
+
+/* 文章底部的版权卡也有一个"原创"标识 */
+#post .post-copyright__original {
+  font-size: 0;
+}
+#post .post-copyright__original::after {
+  content: "AI 辅助生成";
+  font-size: 12px;
+}
+
 /* ---------- 打赏：中控台里的二维码是主题无条件渲染的，这里隐藏 ---------- */
 .console-card-group-reward {
   display: none;

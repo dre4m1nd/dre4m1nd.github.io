@@ -158,7 +158,9 @@ cover:
   position: left
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover:
-    - /img/default_cover.jpg
+    - /img/cover-1.svg
+    - /img/cover-2.svg
+    - /img/cover-3.svg
 
 # Replace Broken Images (替换无法显示的图片)
 error_img:
@@ -169,7 +171,7 @@ error_img:
 error_404:
   enable: true
   subtitle: "请尝试站内搜索寻找文章"
-  background: https://bu.dusays.com/2023/05/08/645907596997d.gif
+  background: /img/bg-banner.svg
 
 post_meta:
   page: # Home Page
@@ -1075,7 +1077,7 @@ home_top:
   banner:
     tips: 关于我
     title: dre4m1nd
-    image: /img/default_cover.jpg
+    image: /img/bg-banner.svg
     link: https://github.com/dre4m1nd
 
 # 朋友圈配置
