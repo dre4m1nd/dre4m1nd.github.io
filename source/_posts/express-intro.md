@@ -1,6 +1,6 @@
 ---
 title: Express 入门与进阶：从 10 行服务到可上线的结构
-date: 2026-10-29 01:20:00
+date: 2026-10-29 12:00:00
 description: 入门部分讲清路由、中间件、req/res；进阶部分补上分层结构、统一错误处理、参数校验、安全加固、优雅关闭、supertest 测试，以及 Express 4 升 5 的坑。
 categories:
   - 技术

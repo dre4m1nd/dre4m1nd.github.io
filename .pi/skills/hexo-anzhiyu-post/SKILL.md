@@ -86,6 +86,7 @@ highlight_shrink: true       # 代码块默认折叠
 ## 常见坑
 
 - **本地 `hexo` 报 `Cannot find module './lib/parse'`**：node_modules 装坏了，跑 `npm install cross-spawn@7.0.6 --no-save` 即可（这是 `cross-spawn` 缺 `lib/parse.js`，不是 Hexo 问题）
+- **时区坑（线上 URL 会和本地对不上）**：本地机器是 UTC+8，GitHub Actions 是 UTC。frontmatter 的 `date` 如果落在**凌晨 00:00–07:59（北京时间）**，CI 算出的日期会变成前一天 —— 本地是 `/2026/10/29/x/`，线上变成 `/2026/10/28/x/`。写日期时统一用 **12:00 这类中午时间**，两边就一致了。
 - 仓库同时有 `package-lock.json` 和 `yarn.lock`，CI 走 `npm install`。加依赖用 npm，别用 yarn
 - 构建产物残留导致页面不更新：先 `npx hexo clean`
 - 改了 `_config.anzhiyu.yml` 里的颜色值必须带双引号（`"#425AEF"`），否则 YAML 解析出错
