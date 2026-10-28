@@ -4,10 +4,11 @@ menu:
     分类: /categories/ || anzhiyu-icon-shapes
     标签: /tags/ || anzhiyu-icon-tags
 
-  友链:
-    友人帐: /link/ || anzhiyu-icon-link
-    朋友圈: /fcircle/ || anzhiyu-icon-artstation
-    留言板: /comments/ || anzhiyu-icon-envelope
+  # 友链（需要先建 /link/ /fcircle/ /comments/ 页面，否则菜单是死链，先注释）
+  # 友链:
+  #   友人帐: /link/ || anzhiyu-icon-link
+  #   朋友圈: /fcircle/ || anzhiyu-icon-artstation
+  #   留言板: /comments/ || anzhiyu-icon-envelope
 
   # 我的:
   #   音乐馆: /music/ || anzhiyu-icon-music
@@ -658,8 +659,8 @@ index_top_img_height:
 # The user interface setting of category and tag page (category和tag页的UI设置)
 # index - same as Homepage UI (index 值代表 UI将与首页的UI一样)
 # default - same as archives UI 默认跟archives页面UI一样
-category_ui: # 留空或 index
-tag_ui: # 留空或 index
+category_ui: index # 留空或 index（index = 和首页一样的卡片 UI）
+tag_ui: index # 留空或 index
 
 # Footer Background
 footer_bg: false
