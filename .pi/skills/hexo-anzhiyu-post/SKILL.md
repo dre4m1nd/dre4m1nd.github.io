@@ -109,7 +109,10 @@ highlight_shrink: true       # 代码块默认折叠
 - `peoplecanvas.enable: true` 会顶掉首页标题/副标题（渲染成粒子画布），而且它依赖一张外链图。想要标题就设 `false`。
 - `wordcount.enable: true` 需要 `hexo-wordcount` 插件（已加入 `package.json`），否则构建报 `wordcount is not a function`。
 - `avatar.effect: true` = 头像一直旋转。
-- 作者卡 hover 时头像"下沉"其实是主题的 `#aside-content .card-info:hover .author-info-avatar { transform: scale(0) }` + `transform-origin: bottom`，已在 `custom.css` 改成纯淡出（`opacity: 0; transform: none`）。
+- 作者卡 hover 时头像"下沉"其实是主题的 `#aside-content .card-info:hover .author-info-avatar { transform: scale(0) }` + `transform-origin: bottom`，已在 `custom.css` 改成头像始终可见（`opacity: 1; transform: none`）；副作用是那张绝对定位的简介（`.author-info__description`）会盖在头像上，所以同时让它 hover 保持 `opacity: 0`。
+- **打赏**：`reward.enable: false` 只去掉文章页的按钮；中控台（`console.pug`）里的二维码是 `each item in theme.reward.QR_code` **无条件渲染**，而且数组按下标合并清不掉。已在 `custom.css` 用 `.console-card-group-reward { display: none }` 隐藏。
+- **音乐**：两处开关 —— `aplayerInject.enable`（全局播放器资源）和 `nav_music.enable`（左下角播放器），都要关；只关一个会残留。
+- 社交图标是 `social` 里的 `名称: 链接 || 图标类`，`mailto:` 链接能正常工作（`url_for` 对外部 scheme 原样返回），作者卡头像下方的图标也走同一份配置。
 - 首页/作者卡的 demo 内容（`home_top`、`banner`、`social`、`author_status`、`runtimeshow.publish_date`、`card_weixin` 二维码）已经换成自己的，别再抄回模板值。
 - 本地 `hexo server` 不会重读配置，改完 `_config.anzhiyu.yml` 要重启 server 才看得到效果（按端口杀进程：`netstat -ano | grep :4000`）。
 

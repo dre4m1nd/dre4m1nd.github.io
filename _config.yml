@@ -4,9 +4,9 @@
 
 # Site
 title: dre4m1nd's blog
-subtitle: ""
-description: "dre4m1nd个人技术分享博客"
-keywords:
+subtitle: "后端 · 算法 · 折腾记录"
+description: "dre4m1nd 的博客：记录后端开发、算法刷题与折腾过程中的笔记和思考。"
+keywords: dre4m1nd,后端开发,算法,刷题笔记,Hexo,Anzhiyu,技术博客
 author: dre4m1nd
 language: zh-cn
 timezone: "Asia/Shanghai"
