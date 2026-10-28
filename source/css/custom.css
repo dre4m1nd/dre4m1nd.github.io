@@ -1,0 +1,135 @@
+/* ==========================================================================
+   自定义样式 —— 由 _config.anzhiyu.yml 的 inject.head 引入
+   原则：只用主题已定义的 CSS 变量，保证深色模式不炸
+   ========================================================================== */
+
+/* ---------- 正文排版 ---------- */
+#article-container.post-content {
+  line-height: 1.9;
+  letter-spacing: 0.01em;
+}
+#article-container.post-content p {
+  margin: 0 0 1.05em;
+}
+#article-container.post-content h2,
+#article-container.post-content h3,
+#article-container.post-content h4 {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+#article-container.post-content h2 {
+  margin-top: 2.2rem;
+}
+
+/* ---------- 行内代码 ---------- */
+#article-container code:not([class]) {
+  padding: 0.15em 0.4em;
+  border-radius: 5px;
+  background: var(--anzhiyu-secondbg);
+  color: var(--anzhiyu-lighttext);
+  font-size: 0.9em;
+}
+
+/* ---------- 代码块 ---------- */
+#article-container figure.highlight,
+#article-container pre {
+  border-radius: 12px;
+  box-shadow: var(--anzhiyu-shadow-border);
+}
+#article-container figure.highlight ::-webkit-scrollbar {
+  height: 6px;
+}
+#article-container figure.highlight ::-webkit-scrollbar-thumb {
+  background: var(--anzhiyu-scrollbar);
+  border-radius: 6px;
+}
+
+/* ---------- 引用块 ---------- */
+#article-container blockquote {
+  border-left: 3px solid var(--anzhiyu-main);
+  border-radius: 0 10px 10px 0;
+  background: var(--anzhiyu-secondbg);
+}
+
+/* ---------- 图片 ---------- */
+#article-container img {
+  border-radius: 10px;
+  box-shadow: var(--anzhiyu-shadow-border);
+}
+
+/* ---------- 正文链接：hover 下划线动画 ---------- */
+#article-container.post-content a:not(.headerlink) {
+  background-image: linear-gradient(var(--anzhiyu-main), var(--anzhiyu-main));
+  background-repeat: no-repeat;
+  background-size: 0 1px;
+  background-position: 0 100%;
+  transition: background-size 0.3s ease, color 0.2s ease;
+}
+#article-container.post-content a:not(.headerlink):hover {
+  background-size: 100% 1px;
+}
+
+/* ---------- 首页文章卡片 ---------- */
+#recent-posts > .recent-post-item {
+  border-radius: 16px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#recent-posts > .recent-post-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--anzhiyu-shadow-blackdeep);
+}
+
+/* ---------- 侧栏卡片 ---------- */
+#aside-content .card-widget {
+  border-radius: 16px;
+  transition: box-shadow 0.3s ease;
+}
+#aside-content .card-widget:hover {
+  box-shadow: var(--anzhiyu-shadow-black);
+}
+
+/* ---------- 目录 ---------- */
+#card-toc .toc-link {
+  transition: color 0.2s ease, padding-left 0.2s ease;
+}
+#card-toc .toc-link:hover {
+  padding-left: 4px;
+}
+
+/* ---------- 表格 ---------- */
+#article-container table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ---------- 首页横幅文字 ---------- */
+.banners-title-big {
+  letter-spacing: 0.02em;
+}
+
+/* ---------- 头像：不旋转、hover 不下沉 ---------- */
+/* 主题的 avatar.effect 已关闭，这里再兜底一次，防止主题更新后又被打开 */
+.avatar-img {
+  animation: none !important;
+}
+/* 作者卡 hover 原本是 scale(0) + transform-origin: bottom（看着像下沉），改成纯淡出 */
+#aside-content .card-info .author-info-avatar {
+  transform-origin: center;
+}
+#aside-content .card-info:hover .author-info-avatar {
+  opacity: 0;
+  transform: none;
+}
+
+/* ---------- 尊重系统"减少动效"设置 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  #recent-posts > .recent-post-item,
+  #aside-content .card-widget,
+  #card-toc .toc-link,
+  #article-container.post-content a {
+    transition: none;
+  }
+  #recent-posts > .recent-post-item:hover {
+    transform: none;
+  }
+}
