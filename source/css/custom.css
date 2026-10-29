@@ -125,23 +125,26 @@
   opacity: 0;
 }
 
-/* ---------- 文章头部"原创"标识改为 AI 提示（主题里是写死的文案）---------- */
-/* 主题规则是 #post-firstinfo .meta-firstline a.post-meta-original，得用同等选择器才能覆盖 */
-#post-firstinfo .meta-firstline a.post-meta-original {
+/* ---------- 文章「原创 / AI 辅助生成」标识（由 scripts/post-badge.js 注入 body 标记）---------- */
+/* 默认（未标记 handwritten）：展示「AI 辅助生成」，隐藏主题原生的「原创」 */
+.is-ai-assisted #post-firstinfo .meta-firstline a.post-meta-original,
+.is-ai-assisted #post .post-copyright__original {
   font-size: 0;
 }
-#post-firstinfo .meta-firstline a.post-meta-original::after {
+.is-ai-assisted #post-firstinfo .meta-firstline a.post-meta-original::after,
+.is-ai-assisted #post .post-copyright__original::after {
   content: "AI 辅助生成";
   font-size: 12px;
 }
 
-/* 文章底部的版权卡也有一个"原创"标识 */
-#post .post-copyright__original {
-  font-size: 0;
-}
-#post .post-copyright__original::after {
-  content: "AI 辅助生成";
+/* handwritten: true：恢复主题原生的「原创」标识 */
+.is-original #post-firstinfo .meta-firstline a.post-meta-original,
+.is-original #post .post-copyright__original {
   font-size: 12px;
+}
+.is-original #post-firstinfo .meta-firstline a.post-meta-original::after,
+.is-original #post .post-copyright__original::after {
+  content: none;
 }
 
 /* ---------- 打赏：中控台里的二维码是主题无条件渲染的，这里隐藏 ---------- */

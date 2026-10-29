@@ -114,7 +114,11 @@ highlight_shrink: true       # 代码块默认折叠
 - **打赏**：`reward.enable: false` 只去掉文章页的按钮；中控台（`console.pug`）里的二维码是 `each item in theme.reward.QR_code` **无条件渲染**，而且数组按下标合并清不掉。已在 `custom.css` 用 `.console-card-group-reward { display: none }` 隐藏。
 - **音乐**：两处开关 —— `aplayerInject.enable`（全局播放器资源）和 `nav_music.enable`（左下角播放器），都要关；只关一个会残留。
 - 社交图标是 `social` 里的 `名称: 链接 || 图标类`，`mailto:` 链接能正常工作（`url_for` 对外部 scheme 原样返回），作者卡头像下方的图标也走同一份配置。
-- 文章里有两个写死的"原创"标识，都在主题 pug 里，只能用同等选择器覆盖（`custom.css` 已改）：头部 `#post-firstinfo .meta-firstline a.post-meta-original`、底部版权卡 `#post .post-copyright__original`，做法是 `font-size: 0` + `::after { content: "AI 辅助生成" }`。
+- **「原创 / AI 辅助生成」标识由 frontmatter 字段 `handwritten` 控制**（不要再去 hardcode CSS 全局覆盖）：
+  - 文章 `frontmatter.handwritten: true` → 显示主题原生的「原创」；不写 / `false` → 显示「AI 辅助生成」。
+  - 实现：`scripts/post-badge.js`（项目级 Hexo 脚本，构建时给文章页 `<body>` 打 `is-original` / `is-ai-assisted` 类，不碰 `themes/`）+ `source/css/custom.css` 里对应的 `.is-ai-assisted` / `.is-original` 选择器（头部 `#post-firstinfo .meta-firstline a.post-meta-original`、底部版权卡 `#post .post-copyright__original`）。
+  - 改这个机制时只动 `scripts/post-badge.js` 和 `custom.css`，**绝不要改主题 pug**。
+  - 主题里有两个写死的「原创」标识（头部 + 底部版权卡），都是靠同等选择器覆盖，别用全局无前缀的 `font-size:0`，否则会误伤非文章页。
 - 背景图全在 `source/img/*.svg`（手写渐变，不依赖外链图床）：`bg-banner.svg` 用于首页关于我卡片和 404 页，`cover-1/2/3.svg` 是 `cover.default_cover` 的随机封面。换图只需改这两处配置。
 - `models.getAvailableOfType('image')` 目前是空的（需要 openrouter 凭证），所以想用 AI 生图得先配 `OPENROUTER_API_KEY` / `/login openrouter`。
 - 首页/作者卡的 demo 内容（`home_top`、`banner`、`social`、`author_status`、`runtimeshow.publish_date`、`card_weixin` 二维码）已经换成自己的，别再抄回模板值。
