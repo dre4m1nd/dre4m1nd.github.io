@@ -16,10 +16,6 @@ cover: /img/cover-code-review.jpg
 
 **代码审查的目的不是"找 bug"，而是"按风险匹配检查"——这个改动可能出什么问题，哪个自动/人工检查最该抓住它。** 当 90% 代码由 AI 写、每天几万次改动时，人工逐行审不动了，必须上 AI。但真正兜底的不是"AI 不漏"，而是**一套能快速下架和修复的机制**。个人开发者能搬走的是：让 AI 先自证、按风险决定看多细、保证出问题能秒级回滚。
 
-![代码审查全景思维导图](/img/code-review-mindmap.png)
-
-> 图 0：全文结构速览（markmap 生成）
-
 ## 一、代码审查到底在审什么
 
 很多人把 code review 等同于"找 bug"。但《How the Claude Code team does code review》给了一个更准确的定义——审查有两个职责：
