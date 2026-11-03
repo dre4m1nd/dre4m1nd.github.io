@@ -12,7 +12,7 @@ tags:
 cover: /img/cover-code-review.jpg
 ---
 
-## TL;DR
+## 摘要
 
 **代码审查的目的不是"找 bug"，而是"按风险匹配检查"——这个改动可能出什么问题，哪个自动/人工检查最该抓住它。** 当 90% 代码由 AI 写、每天几万次改动时，人工逐行审不动了，必须上 AI。但真正兜底的不是"AI 不漏"，而是**一套能快速下架和修复的机制**。个人开发者能搬走的是：让 AI 先自证、按风险决定看多细、保证出问题能秒级回滚。
 
@@ -201,3 +201,11 @@ graph LR
 - [How the Claude Code team does code review（Addy Osmani / Morgan Westlee Lunt / Qing Wang）](https://claude.dev/blog/solving-code-review-at-anthropic/)
 - [Addy Osmani 的推文](https://x.com/addyosmani/status/2114604912520921136)
 - [The Code Nobody Reads（Addy Osmani 的延伸文章）](https://addyo.substack.com/p/the-code-nobody-reads)
+
+## 相关：pi 代码审查工作流
+
+我把这套流程整理成了一套 pi 工作流，放在 GitHub，可以直接装到 pi 里：
+
+- [dre4m1nd/pi-code-review-workflow](https://github.com/dre4m1nd/pi-code-review-workflow)
+
+包含 `SKILL.md`（按 FIG A 四阶段：提交前自证+自审、审查+风险分级、合并、发布后回滚）和 `README.md`。
