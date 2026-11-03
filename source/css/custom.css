@@ -53,6 +53,8 @@
 
 /* ---------- 图片 ---------- */
 #article-container img {
+  max-width: 100%;
+  height: auto;
   border-radius: 10px;
   box-shadow: var(--anzhiyu-shadow-border);
 }
@@ -145,6 +147,76 @@
 .is-original #post-firstinfo .meta-firstline a.post-meta-original::after,
 .is-original #post .post-copyright__original::after {
   content: none;
+}
+
+/* ===== Mermaid 思维导图统一主题（紫青，覆盖 mermaid 内置 hsl 彩虹分支色）===== */
+/* 根节点：实心紫 + 白字 */
+.mermaid-wrap svg .section-root rect,
+.mermaid-wrap svg .section-root path,
+.mermaid-wrap svg .section-root circle,
+.mermaid-wrap svg .section-root polygon,
+.mermaid-wrap svg .section--1 rect,
+.mermaid-wrap svg .section--1 path,
+.mermaid-wrap svg .section--1 circle,
+.mermaid-wrap svg .section--1 polygon {
+  fill: #7c3aed !important;
+  stroke: #4c1d95 !important;
+}
+.mermaid-wrap svg .section-root text,
+.mermaid-wrap svg .section--1 text {
+  fill: #ffffff !important;
+}
+
+/* 分支节点：浅紫底 + 紫描边 + 深靛字（统一，不再彩虹） */
+.mermaid-wrap svg .section-1 rect,
+.mermaid-wrap svg .section-2 rect,
+.mermaid-wrap svg .section-3 rect,
+.mermaid-wrap svg .section-4 rect,
+.mermaid-wrap svg .section-5 rect,
+.mermaid-wrap svg .section-6 rect,
+.mermaid-wrap svg .section-7 rect,
+.mermaid-wrap svg .section-8 rect,
+.mermaid-wrap svg .section-1 path,
+.mermaid-wrap svg .section-2 path,
+.mermaid-wrap svg .section-3 path,
+.mermaid-wrap svg .section-4 path,
+.mermaid-wrap svg .section-5 path,
+.mermaid-wrap svg .section-6 path,
+.mermaid-wrap svg .section-7 path,
+.mermaid-wrap svg .section-8 path,
+.mermaid-wrap svg .section-1 circle,
+.mermaid-wrap svg .section-2 circle,
+.mermaid-wrap svg .section-3 circle,
+.mermaid-wrap svg .section-4 circle,
+.mermaid-wrap svg .section-5 circle,
+.mermaid-wrap svg .section-6 circle,
+.mermaid-wrap svg .section-7 circle,
+.mermaid-wrap svg .section-8 circle,
+.mermaid-wrap svg .section-1 polygon,
+.mermaid-wrap svg .section-2 polygon,
+.mermaid-wrap svg .section-3 polygon,
+.mermaid-wrap svg .section-4 polygon,
+.mermaid-wrap svg .section-5 polygon,
+.mermaid-wrap svg .section-6 polygon,
+.mermaid-wrap svg .section-7 polygon,
+.mermaid-wrap svg .section-8 polygon {
+  fill: #f5f3ff !important;
+  stroke: #8b5cf6 !important;
+}
+.mermaid-wrap svg .section-1 text,
+.mermaid-wrap svg .section-2 text,
+.mermaid-wrap svg .section-3 text,
+.mermaid-wrap svg .section-4 text,
+.mermaid-wrap svg .section-5 text,
+.mermaid-wrap svg .section-6 text,
+.mermaid-wrap svg .section-7 text,
+.mermaid-wrap svg .section-8 text {
+  fill: #4c1d95 !important;
+}
+
+/* 连线：紫 */
+.mermaid-wrap svg [class*="section-edge"] {
+  stroke: #8b5cf6 !important;
 }
 
 /* ---------- 打赏：中控台里的二维码是主题无条件渲染的，这里隐藏 ---------- */
