@@ -195,7 +195,7 @@ const validate = (schema) => async (ctx, next) => {
 // NestJS 11：StandardSchemaValidationPipe 直接吃 Zod
 ```
 
-> 前面写的 [Koa](/2026/10/29/koa-intro/)、[Express](/2026/10/29/express-intro/)、[Hono](/2026/10/29/hono-intro/)、[Fastify](/2026/10/29/fastify-intro/)、[NestJS](/2026/10/29/nestjs-intro/) 笔记里都有 Zod 的具体用法，可以对照看。
+> 前面写的 [Koa](/2026/10/29/backend/koa-intro/)、[Express](/2026/10/29/backend/express-intro/)、[Hono](/2026/10/29/backend/hono-intro/)、[Fastify](/2026/10/29/backend/fastify-intro/)、[NestJS](/2026/10/29/backend/nestjs-intro/) 笔记里都有 Zod 的具体用法，可以对照看。
 
 ### 10. 实战：环境变量校验
 
