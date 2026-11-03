@@ -24,11 +24,11 @@ cover: /img/cover-compare.jpg
 
 前面已经给每个框架写了入门笔记，这篇把它们放在一起横向比：
 
-- [Express 入门到进阶](/2026/10/29/backend/express-intro/)
-- [Koa 入门到进阶](/2026/10/29/backend/koa-intro/)
-- [Fastify 入门到进阶](/2026/10/29/backend/fastify-intro/)
-- [Hono 入门到进阶](/2026/10/29/backend/hono-intro/)
-- [NestJS 入门到进阶](/2026/10/29/backend/nestjs-intro/)
+- [Express 入门到进阶](/2026/10/express-intro/)
+- [Koa 入门到进阶](/2026/10/koa-intro/)
+- [Fastify 入门到进阶](/2026/10/fastify-intro/)
+- [Hono 入门到进阶](/2026/10/hono-intro/)
+- [NestJS 入门到进阶](/2026/10/nestjs-intro/)
 
 ## 定位速览
 

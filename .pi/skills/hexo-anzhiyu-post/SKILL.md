@@ -7,14 +7,10 @@ description: 在这个 Hexo 8 + anzhiyu 主题的博客仓库里写/改/发布�
 
 ## 仓库事实（先记住这些，别乱找）
 
-- 文章放 `source/_posts/`，**按主题分文件夹**，文件名就是 URL slug（permalink `:year/:month/:day/:title/`，文件夹名会出现在 URL 里）
-  - `algorithms/`  算法（二分、KMP、快排等）
-  - `backend/`    后端框架、框架横评、Zod 等校验工具
-  - `database/`   ORM/数据库（Drizzle、Prisma、MyBatis）
-  - `system/`     系统命令、运维工具
-  - `teardown/`   项目拆解
-  - `ai/`         AI 相关（代码评审、Agent 实践）
-  - 新文章先放对应文件夹；不知道归哪类就放 `backend/` 或新建一个主题文件夹
+- 文章放 `source/_posts/<年>/<月>/`，**按写作年月分文件夹**（不是按主题分类），文件名就是 URL slug
+  - 例：`source/_posts/2026/10/koa-intro.md` → URL `/2026/10/koa-intro/`
+  - permalink 已改成 `:title/`（即文件相对路径），所以文件夹年月会直接成为 URL 的一部分；**不要再改回 `:year/:month/:day/:title/`**，否则会变成 `/2026/10/29/2026/10/xxx/` 重复日期
+  - 跨文件夹/跨文章链接写绝对路径 `/2026/10/<slug>/`，移动文章后要同步改链接
 - 主题在 `themes/anzhiyu/`：**不要改主题里的文件**，升级会覆盖。自定义只有三条合法路径：
   1. `_config.anzhiyu.yml`（主题配置的用户级覆盖，优先于 `themes/anzhiyu/_config.yml`）
   2. `source/css/custom.css`（已通过 `inject.head` 引入，写样式只加这里）
@@ -27,7 +23,7 @@ description: 在这个 Hexo 8 + anzhiyu 主题的博客仓库里写/改/发布�
 
 ```bash
 npx hexo new "文章标题"          # 默认生成 source/_posts/文章标题.md
-# 按主题挪到对应子文件夹，如 backend/文章标题.md（URL 会变成 /2026/10/29/backend/文章标题/）
+# 挪到写作年月文件夹，如 source/_posts/2026/10/文章标题.md → URL /2026/10/文章标题/
 # 写内容，frontmatter 参考 scaffolds/post.md
 npx hexo clean && npx hexo generate   # 本地验证，无报错再 push
 git add -A && git commit -m "post: 文章标题" && git push
