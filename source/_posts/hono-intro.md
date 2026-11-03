@@ -1,5 +1,5 @@
 ---
-title: Hono 教程：从入门到可上线
+title: Hono 入门到进阶：从路由到类型安全 RPC
 date: 2026-10-29 12:30:00
 description: Hono 是跑在边缘运行时、基于 Web 标准的小框架。这篇覆盖路由、Context、中间件洋葱模型、zod 校验、错误处理、安全头、测试、类型安全 RPC 和多运行时部署。
 categories:

@@ -1,5 +1,5 @@
 ---
-title: Koa 入门到进阶：从基础到可上线工程
+title: Koa 入门到进阶：从洋葱模型到可上线工程
 date: 2026-10-29 13:00:00
 description: 一篇讲透 Koa。从洋葱模型、@koa/router、ctx 读写、错误处理、zod 校验、安全中间件，到工程化实战——项目结构、统一响应、JWT 登录/刷新、koa-body 上传、流式返回、pino 日志、优雅关闭、supertest 测试与 pm2/Docker 部署，并与 Express/Fastify/Hono 横向对比。
 categories:

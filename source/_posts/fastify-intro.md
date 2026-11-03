@@ -1,5 +1,5 @@
 ---
-title: Fastify 入门与进阶：从入门到可上线
+title: Fastify 入门到进阶
 date: 2026-10-29 12:45:00
 description: Fastify 以 schema 驱动校验与序列化，async-first、钩子代替中间件、插件带作用域。这篇覆盖路由、JSON Schema 校验、生命周期钩子、错误处理、安全插件、inject 测试和优雅关闭，以及 v5 的破坏性变更。
 categories:
