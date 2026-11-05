@@ -1,6 +1,6 @@
 ---
 title: KMP 算法笔记：从暴力匹配到 next 数组
-date: 2026-10-28 20:00:00
+date: 2026-10-28
 description: 只抓"主串指针不回溯"这一个点讲清 KMP：next 数组的定义、手算过程、两种写法的区别，以及 LeetCode 28 的完整实现。
 cover: /img/cover-kmp.jpg
 categories:
@@ -129,8 +129,7 @@ public int strStr(String s, String p) {
 
 这条结论比 KMP 本身更常考，值得单独记一笔。
 
-## 易错点
-
+## 重点总结
 - **两种 `next` 约定混用**：`next[0] = 0` 还是 `next[0] = -1`，`j = next[j]` 还是 `next[j - 1]`，必须整篇统一。
 - **回退用 `while` 不用 `if`**：可能连续回退。
 - **求 `next` 时 `i` 从 1 开始**：`i = 0` 没有真前缀，`next[0]` 恒为 0。

@@ -1,6 +1,6 @@
 ---
 title: NestJS 入门到进阶
-date: 2026-10-29 13:30:00
+date: 2026-10-29
 description: NestJS 是 TS 优先、装饰器驱动、内置 DI 的全家桶框架，跑在 Express/Fastify 之上。这篇覆盖脚手架、模块/控制器/服务、DTO 全局校验、守卫、管道、拦截器、异常过滤器、中间件、测试与切 Fastify，并横向对比 Express/Koa/Fastify/Hono。
 categories:
   - 技术
@@ -296,8 +296,7 @@ app.useGlobalPipes(new StandardSchemaValidationPipe())
 - **选它**：中大型项目、TS 团队、需要清晰分层和 DI、要一套现成的校验/鉴权/异常体系、长期维护
 - **别选它**：小脚本、想完全掌控中间件级联（Koa 更合适）、要跑 Cloudflare Workers / Deno 等边缘运行时（Hono）
 
-## 常见坑清单
-
+## 重点总结
 - 全局管道/守卫/过滤器最好用 **`APP_PIPE` / `APP_GUARD` / `APP_FILTER`** provider，跨平台行为一致
 - `class-validator` 要自己装 `class-validator` + `class-transformer`（Nest 不自带）
 - **DTO 必须是 `class`，不能是 `interface`**，否则运行时无类型元信息，校验失效

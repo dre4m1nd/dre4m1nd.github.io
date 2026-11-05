@@ -1,6 +1,6 @@
 ---
 title: CipherLens 项目拆解：从架构到代码细节
-date: 2026-10-29 15:30:00
+date: 2026-10-29
 description: 拆解密鉴 CipherLens（密码管理与安全评估平台）：Spring Boot 3.5 + MyBatis-Plus + MySQL + Redis 后端，Vue3 + Element Plus + Vite 前端，Docker Compose 一键部署。覆盖认证、密码信封加密、安全评分、AOP 日志、前端鉴权与构建，并给出工程上可再打磨的点。
 categories:
   - 技术
@@ -52,7 +52,7 @@ location /    { try_files $uri $uri/ /index.html; }     # SPA 兜底
 
 标准的"瘦 Controller + Service + Mapper"：
 
-```
+```text
 controller/      SysUserController / PasswordItemController / EvaluateController / OperationLogController
 service/impl/    *ServiceImpl（继承 MyBatis-Plus 的 ServiceImpl）
 mapper/          *Mapper（extends BaseMapper<T>）+ resources/mapper/*.xml
@@ -117,7 +117,7 @@ redisTokenUtil.saveToken(token, userDTO);   // 存到 Redis Hash，带 TTL
 
 Vue3 + Element Plus 的后台模板风格（带 layout / tabs / 菜单 / 主题切换）。目录：
 
-```
+```text
 layout/    Header（面包屑/全屏/主题）、Menu、Tabs、Logo
 router/    modules/*（按业务拆路由）、permission（路由守卫 + 动态路由）、createNode
 store/     app / keepAlive / user（Vuex），plugins/persistent 本地持久化
@@ -181,6 +181,22 @@ cp .env.example .env          # 填 MySQL/Redis/Token 密钥/华为云 AK-SK
 docker compose up -d --build  # MySQL8 + Redis7 + 后端 + 前端(Nginx)
 # 访问 http://localhost （前端），后端接口 http://localhost:8080
 ```
+
+## 重点总结
+
+**项目定位**：密鉴 CipherLens 是一个密码管理与安全评估平台，前后端分离 + Docker Compose 一键部署，典型的"全栈小项目"结构。
+
+**技术栈**：Spring Boot 3.5.7 / Java 21 + MyBatis-Plus 3.5.14 后端；Vue 3.2 + Vite 2 + Element Plus 前端；MySQL 8 + Redis 7；Nginx 托管 dist 并反代。
+
+**最值得看的三处设计**：
+
+- **认证**：自定义 Redis Token（`Base64(userId, HMAC-SHA256(salt+userId, secretKey))`）+ 拦截器 + ThreadLocal 传用户。和 JWT 的取舍是：有状态能主动踢人，但强依赖 Redis。
+- **密码安全三层**：PBKDF2 哈希登录密码 → AES-256-GCM 加密密码条目 → RSA-4096 信封加密 AES 密钥。数据库泄露也解不出明文，但服务端握有 RSA 私钥就能全解，不是零知识架构。
+- **操作日志 AOP**：`@OperationLogRecord` + `@Around` 织入，自动记录操作类型、结果、耗时。
+
+**六个可再打磨的点**：`@Value` 注入 static 字段失效、AOP 失败分支重复落库、RSA 公钥硬编码、生产默认弱密钥、前端依赖偏旧、Token 强依赖 Redis。
+
+**一句话**：安全设计的骨架是对的（PBKDF2 + GCM + 信封加密），真正的命门在 RSA 私钥的保管。
 
 ## 参考
 

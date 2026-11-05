@@ -1,6 +1,6 @@
 ---
 title: Fastify 入门到进阶
-date: 2026-10-29 12:45:00
+date: 2026-10-29
 description: Fastify 以 schema 驱动校验与序列化，async-first、钩子代替中间件、插件带作用域。这篇覆盖路由、JSON Schema 校验、生命周期钩子、错误处理、安全插件、inject 测试和优雅关闭，以及 v5 的破坏性变更。
 categories:
   - 技术
@@ -140,7 +140,7 @@ app.post('/users', { schema: createUserSchema }, async (request, reply) => {
 
 Fastify 没有中间件栈，而是**生命周期钩子**：
 
-```
+```text
 onRequest → preValidation → preHandler → handler → preSerialization → onSend → onResponse
 ```
 
@@ -286,8 +286,7 @@ await app.listen({ port: 3000, host: '0.0.0.0' })
 
 三者都能接同一个 Node 后端逻辑，只是壳不同。
 
-## 常见坑清单
-
+## 重点总结
 - **v5 的 schema 必须写完整 JSON Schema**（带 `type`），速记语法已删除
 - **`app.use` 在 v5 不存在**，要用 `@fastify/middie` 或改钩子
 - 字段只有写进 `required` 才会校验"是否存在"，只写 `properties` 不报错

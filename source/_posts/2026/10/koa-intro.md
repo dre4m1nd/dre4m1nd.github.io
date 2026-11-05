@@ -1,6 +1,6 @@
 ---
 title: Koa 入门到进阶：从洋葱模型到可上线工程
-date: 2026-10-29 13:00:00
+date: 2026-10-29
 description: 一篇讲透 Koa。从洋葱模型、@koa/router、ctx 读写、错误处理、zod 校验、安全中间件，到工程化实战——项目结构、统一响应、JWT 登录/刷新、koa-body 上传、流式返回、pino 日志、优雅关闭、supertest 测试与 pm2/Docker 部署，并与 Express/Fastify/Hono 横向对比。
 categories:
   - 技术
@@ -592,8 +592,7 @@ CMD ["node", "src/server.js"]
 
 值得一提：`koa-compose`（Koa 的中间件组合器）后来启发了 Redux 等库，洋葱模型思想影响很广。
 
-## 常见坑清单
-
+## 重点总结
 - 中间件**漏 `await next()`** → 下游不执行、请求卡住
 - 路由必须先 `.routes()` 再 `.allowedMethods()`，否则 OPTIONS/405 处理缺失
 - **错误中间件要放第一个 `app.use`**，才能 try-catch 住后面所有逻辑

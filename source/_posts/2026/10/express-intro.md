@@ -1,6 +1,6 @@
 ---
 title: Express 入门到进阶：从 10 行服务到可上线的结构
-date: 2026-10-29 12:00:00
+date: 2026-10-29
 description: 入门部分讲清路由、中间件、req/res；进阶部分补上分层结构、统一错误处理、参数校验、安全加固、优雅关闭、supertest 测试，以及 Express 4 升 5 的坑。
 categories:
   - 技术
@@ -101,7 +101,7 @@ app.use(express.static('public'));                // 静态文件，不用自己
 
 能跑之后第一件事是把 `app.js` 拆开。一个够用的骨架：
 
-```
+```text
 src/
   app.js              # 创建 app、挂中间件、挂路由（不 listen）
   server.js           # listen + 优雅关闭
@@ -355,8 +355,7 @@ test('GET /health', async () => {
 | `app.del` | 有 | 移除，用 `app.delete` |
 | Node 版本 | 0.10+ | 18+ |
 
-## 常见坑清单
-
+## 重点总结
 - **中间件顺序**：`express.json()` 必须在读 `req.body` 的路由之前；`notFound` 在所有路由之后；`errorHandler` 最后
 - **错误中间件必须 4 个参数**，少一个就静默失效
 - **`next()` 之后又 `res.send()`** → `ERR_HTTP_HEADERS_SENT`，`return` 一下能挡住大部分

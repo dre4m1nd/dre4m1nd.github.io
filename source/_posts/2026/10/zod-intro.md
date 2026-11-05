@@ -1,6 +1,6 @@
 ---
 title: Zod 入门到进阶
-date: 2026-10-29 14:30:00
+date: 2026-10-29
 description: Zod 是 TypeScript 优先的运行时 schema 校验库。这篇覆盖 parse/safeParse、基础类型与约束、对象/数组/联合、类型推断、refine/superRefine/transform、错误定制、异步校验，以及和 Express/Koa/Hono/Fastify/NestJS 的集成与常见坑。
 categories:
   - 技术
@@ -225,8 +225,7 @@ export const env = envSchema.parse(process.env)   // 启动即校验，错了直
 
 两者互补：TS 管你自己的代码，Zod 管进来的数据。理想状态是 **schema 写一次，类型自动来**（`z.infer`），不用重复声明。
 
-## 常见坑清单
-
+## 重点总结
 - **空字符串能过 `z.string()`**：要"非空"必须 `.min(1)`（或 `.length()`）
 - `z.number()` **不自动转换** `"12"` → 用 `z.coerce.number()` 或 `z.string().transform(Number)`
 - 应用代码用 **`safeParse`**，别裸用 `parse`（除非你在外层 catch）

@@ -1,6 +1,6 @@
 ---
 title: MyBatis 入门到进阶：从 XML 到 MyBatis-Plus
-date: 2026-10-29 14:45:00
+date: 2026-10-29
 description: MyBatis 是 Java 半自动持久层框架，SQL 握在自己手里、映射交给框架。这篇覆盖 Spring Boot 接入、Mapper 接口与 XML、#{} 与 ${}、动态 SQL、resultMap 关联映射、缓存、插件，以及 MyBatis-Plus 的 BaseMapper/条件构造器/分页插件与常见坑。
 categories:
   - 技术
@@ -347,8 +347,7 @@ page.getTotal();     // 总数
 
 实际项目里 MP 用得最多：既保留写 SQL 的自由，又省掉重复 CRUD。
 
-## 常见坑清单
-
+## 重点总结
 - Mapper XML 的 `namespace` 必须和接口**全限定名**一致，`id` 必须和方法名一致，否则启动报 `Invalid bound statement`
 - 列名 `user_name` 映射到字段 `userName` 要开 `map-underscore-to-camel-case`，或手写 `resultMap`
 - **值一律用 `#{}`**，只有排序/表名这类标识符才用 `${}`，且必须白名单

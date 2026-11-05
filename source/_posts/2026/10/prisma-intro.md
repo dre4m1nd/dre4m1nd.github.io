@@ -1,6 +1,6 @@
 ---
 title: Prisma 入门到进阶
-date: 2026-10-29 14:00:00
+date: 2026-10-29
 description: Prisma 是 schema-first、类型安全的 Node ORM，自带迁移工具和生成客户端。这篇覆盖初始化、schema.prisma 建模、迁移、CRUD 与关联、过滤分页、错误处理、事务、客户端扩展，以及与 Drizzle 的选型对比。
 categories:
   - 技术
@@ -240,8 +240,7 @@ Express/Fastify/Koa 里都是 `import { prisma } from './db'` 直接用，注意
 - **选它**：追求开发效率、要强类型、团队不想手写 SQL、需要可视化 studio、迁移工具开箱即用
 - **不选它**：对运行时体积/延迟极敏感、要跑边缘（Workers）又不想加 Accelerate、查询走的是极复杂的原生 SQL
 
-## 常见坑清单
-
+## 重点总结
 - 改了 `schema.prisma` 后**必须重新 `prisma generate`**（否则类型/字段不更新）
 - 热重载/Serverless 下要 **PrismaClient 单例**，否则连接数爆炸
 - `migrate dev` 会丢数据（重置开发库）；**生产用 `migrate deploy`**

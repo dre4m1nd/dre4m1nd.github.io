@@ -1,6 +1,6 @@
 ---
 title: Hono 入门到进阶：从路由到类型安全 RPC
-date: 2026-10-29 12:30:00
+date: 2026-10-29
 description: Hono 是跑在边缘运行时、基于 Web 标准的小框架。这篇覆盖路由、Context、中间件洋葱模型、zod 校验、错误处理、安全头、测试、类型安全 RPC 和多运行时部署。
 categories:
   - 技术
@@ -368,8 +368,7 @@ app.use('*', async (c, next) => {
 
 两者可以共存：用 Hono 做边缘入口，Node 服务继续用 Express 接内部逻辑。
 
-## 常见坑清单
-
+## 重点总结
 - 中间件**漏 `await next()`** → 请求永远不返回
 - 要改响应只能 `await next()` 之后操作 `c.res`，之前 `c.res` 还不存在
 - `c.req.json()` 是**异步**的，别按 Express 的 `req.body` 习惯写

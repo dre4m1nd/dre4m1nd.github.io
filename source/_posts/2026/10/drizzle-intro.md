@@ -1,6 +1,6 @@
 ---
 title: Drizzle 入门到进阶
-date: 2026-10-29 14:15:00
+date: 2026-10-29
 description: Drizzle 是类型安全的 SQL 查询构建器，零运行时、贴近原生 SQL，还能跑边缘。这篇覆盖 schema 定义、drizzle-kit 迁移/推、select/insert/update/delete、关系查询、join、事务、upsert、libsql 边缘用法，以及与 Prisma 的选型对比。
 categories:
   - 技术
@@ -225,8 +225,7 @@ app.get('/users/:id', async (c) => {
 - **选它**：熟悉 SQL、要类型安全又不想被 ORM 抽象、在意运行时开销、**要跑边缘**、需要精细控制生成的 SQL
 - **不选它**：完全不想碰 SQL、要 Prisma Studio 那种可视化、希望迁移/客户端尽量"无脑"开箱
 
-## 常见坑清单
-
+## 重点总结
 - `drizzle(pool, { schema })` 的 **第二个参数 schema 别忘了传**，否则 `db.query.*` 关系查询取不到
 - `drizzle-kit` 的 `dialect` 必须和驱动匹配（`postgresql` / `mysql` / `sqlite`）
 - `generate` 只生成 SQL 文件，**还要 `migrate` 才真正改库**；`push` 才直接改库但无历史

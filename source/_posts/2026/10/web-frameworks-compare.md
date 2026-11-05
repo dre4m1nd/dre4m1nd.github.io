@@ -1,6 +1,6 @@
 ---
 title: 四个 Web 框架横评：Express / Koa / Fastify / Hono 怎么选
-date: 2026-10-29 13:45:00
+date: 2026-10-29
 description: Express、Koa、Fastify、Hono 四个 Node Web 框架的定位、优劣势与选型建议横向对比，并补充 NestJS 这个建立在它们之上的元框架。每节都链接到对应入门笔记。
 categories:
   - 技术
@@ -120,7 +120,7 @@ cover: /img/cover-compare.jpg
 
 ## 横向对比：性能与场景
 
-```
+```text
 性能（大致）：Fastify ≈ Hono  >  Koa  >  Express
            （均指 Node 运行时内的相对水平，Hono 还能跑边缘）
 ```
@@ -154,6 +154,25 @@ cover: /img/cover-compare.jpg
 - **"Hono 只能跑边缘"**：不是，Node 也能跑，只是它在边缘场景最有优势
 - **"NestJS 比 Fastify 快"**：Nest 默认底层是 Express/Fastify，性能取决于适配器，它赢在结构不在速度
 - **"新项目无脑上 Nest"**：小项目套 Nest 反而被结构拖累，先用轻框架更快
+
+## 重点总结
+
+**一句话选型**：求稳求生态选 **Express**，求性能求规范选 **Fastify**，要跑边缘选 **Hono**，想自己拼积木选 **Koa**，中大型 TS 团队套 **NestJS**。
+
+**四个框架的本质差异**：
+
+- **Express**：事实标准，生态最成熟，但性能最弱、无内置校验
+- **Koa**：极简内核（~600 行），洋葱中间件最优雅，但路由/解析/校验全要自己装
+- **Fastify**：schema 驱动校验 + 序列化，吞吐顶尖，但 v5 砍了 `app.use`、schema 有学习成本
+- **Hono**：基于 Web 标准，能跑 Workers/Deno/Bun，类型安全 RPC 是招牌，但生态最年轻
+
+**决策四步**：要不要上边缘？→ 是不是大工程？→ 吞吐是硬指标？→ 想不想自己掌控中间件？
+
+**NestJS 不在同一层**：它是建立在 Express/Fastify 之上的元框架，赢在工程结构不在速度。
+
+**三个常见误区**：Koa 不是 Express 升级版（不兼容）、Fastify 不只是更快的 Express（是另一套范式）、NestJS 不比 Fastify 快（取决于适配器）。
+
+**一句话**：绝大多数普通 Node 服务，Express 和 Fastify 二选一就够了。
 
 ## 参考
 

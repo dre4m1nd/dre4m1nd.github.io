@@ -1,6 +1,6 @@
 ---
 title: 快排笔记：二路快排与三路快排
-date: 2026-10-28 23:40:00
+date: 2026-10-28
 description: 二路快排的 Lomuto 与 Hoare 两种 partition、三路快排为什么能治大量重复元素、随机化 pivot 与尾递归优化，附 Java 完整实现和 4 道例题。
 categories:
   - 技术
@@ -15,7 +15,7 @@ cover: /img/cover-quicksort.jpg
 
 快排只做一件事：**选一个基准值 pivot，把数组划分成"小于它 / 等于它 / 大于它"几段，然后递归处理各段。**
 
-```
+```text
 [  < pivot  |  = pivot  |  > pivot  ]
 ```
 
@@ -306,8 +306,7 @@ class Solution {
 
 注意返回的 k 个数**不保证有序**，题目只要求"最小的 k 个"，如果要升序再排一次。
 
-## 易错点清单
-
+## 重点总结
 - **三路划分里 `a[i] > pivot` 时 `i` 不能加一**（换过来的元素还没检查）
 - **Hoare 版返回 `j`**，递归区间是 `[lo, p]` / `[p+1, hi]`，别套 Lomuto 的 `p-1`
 - **没随机化 pivot**：遇到有序数组直接退化成 `O(n²)`，LeetCode 会 TLE
