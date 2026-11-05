@@ -3,7 +3,7 @@ title: Prisma 入门到进阶
 date: 2026-10-29
 description: Prisma 是 schema-first、类型安全的 Node ORM，自带迁移工具和生成客户端。这篇覆盖初始化、schema.prisma 建模、迁移、CRUD 与关联、过滤分页、错误处理、事务、客户端扩展，以及与 Drizzle 的选型对比。
 categories:
-  - 折腾
+  - 技术
 tags:
   - Node.js
   - Prisma

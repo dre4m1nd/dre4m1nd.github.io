@@ -3,7 +3,7 @@ title: 四个 Web 框架横评：Express / Koa / Fastify / Hono 怎么选
 date: 2026-10-29
 description: Express、Koa、Fastify、Hono 四个 Node Web 框架的定位、优劣势与选型建议横向对比，并补充 NestJS 这个建立在它们之上的元框架。每节都链接到对应入门笔记。
 categories:
-  - 笔记
+  - 技术
 tags:
   - Node.js
   - 后端

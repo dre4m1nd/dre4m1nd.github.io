@@ -3,7 +3,7 @@ title: Agent 状态机：给 agent 加确定性脚手架
 date: 2026-11-04
 description: agent 的运营规则不该写在 prompt 里让模型自觉遵守。这篇拆 Josh Rosen 的四层状态机——推理循环内、工作流、监督多个 agent、建模工作本身——讲清两种 checkpoint 的区别、为什么大家最后还是自己写，以及最小实现怎么和 harness 接线。
 categories:
-  - 折腾
+  - 技术
 tags:
   - AI
   - Agent
