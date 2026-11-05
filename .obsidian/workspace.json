@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "ba2ed5da4165d011",
+        "id": "9caace731b871478",
         "type": "tabs",
         "children": [
           {
-            "id": "5380211d9a0d9547",
+            "id": "bfd9854a1c09f2e0",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "source/_posts/2026/10/drizzle-intro.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "drizzle-intro"
             }
           }
         ]
@@ -90,37 +94,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "622a0cc49bd4b6c5",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "反向链接"
-            }
-          },
-          {
-            "id": "4602079c5aa6e3c1",
-            "type": "leaf",
-            "state": {
-              "type": "outgoing-link",
-              "state": {
-                "linksCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-going-out",
-              "title": "出链"
-            }
-          },
-          {
             "id": "e5da970ce412ab39",
             "type": "leaf",
             "state": {
@@ -155,6 +128,7 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "source/_posts/2026/10/drizzle-intro.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -162,19 +136,9 @@
               "icon": "lucide-list",
               "title": "大纲"
             }
-          },
-          {
-            "id": "3b005e5e761e6733",
-            "type": "leaf",
-            "state": {
-              "type": "git-view",
-              "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
-            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -188,55 +152,56 @@
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:新建数据库": false,
-      "obsidian-git:Open Git source control": false
+      "bases:新建数据库": false
     }
   },
-  "active": "3b005e5e761e6733",
+  "active": "bfd9854a1c09f2e0",
   "lastOpenFiles": [
-    "node_modules/with/src/reference.ts",
-    "node_modules/with/src/index.ts",
-    "node_modules/with/src/globals.ts",
-    "node_modules/with/src",
-    "node_modules/token-stream/test/index.js",
-    "node_modules/token-stream/test",
-    "node_modules/pug-parser/lib/inline-tags.js",
-    "node_modules/pug-parser/lib",
-    "node_modules/pug-filters/lib/run-filter.js",
-    "node_modules/pug-filters/lib/handle-filters.js",
-    "node_modules/pug-filters/lib",
-    "assets/img/avatar.jpg",
-    "assets/img/头像.jpg",
-    "node_modules/pug-strip-comments/LICENSE.md",
-    "node_modules/js-stringify/README.md",
-    "node_modules/doctypes/README.md",
-    "node_modules/babel-walk/README.md",
-    "node_modules/babel-walk/LICENSE.md",
-    "node_modules/is-expression/CHANGELOG.md",
-    "node_modules/is-promise/readme.md",
-    "node_modules/jstransformer/README.md",
-    "node_modules/pug-walk/README.md",
-    "node_modules/pug-walk/HISTORY.md",
-    "node_modules/call-bound/README.md",
-    "node_modules/token-stream/README.md",
-    "node_modules/call-bound/CHANGELOG.md",
-    "node_modules/@babel/types/README.md",
-    "node_modules/@babel/helper-string-parser/README.md",
-    "node_modules/@babel/helper-validator-identifier/README.md",
-    "node_modules/@babel/parser/CHANGELOG.md",
-    "themes/anzhiyu/source/img/siteicon/manifest-icon-512.maskable.png",
-    "themes/anzhiyu/source/img/siteicon/manifest-icon-192.maskable.png",
-    "themes/anzhiyu/source/img/siteicon/apple-icon-180.png",
-    "themes/anzhiyu/source/img/siteicon/32.png",
-    "themes/anzhiyu/source/img/siteicon/16.png",
-    "themes/anzhiyu/source/img/loading.gif",
-    "themes/anzhiyu/source/img/friend_404.gif",
-    "themes/anzhiyu/source/img/default_cover.jpg",
-    "themes/anzhiyu/README_EN.md",
-    "themes/anzhiyu/README.md",
-    "themes/hexo-theme-anzhiyu-1.7.1/README_EN.md",
-    "themes/hexo-theme-anzhiyu-1.7.1/README.md",
-    "source/_posts/hello-world.md",
-    "scaffolds/draft.md"
+    "public/2026/11/claude-code-review/index.html",
+    "public/2026/11/claude-code-review",
+    "public/2026/11",
+    "public/archives/2026/11/index.html",
+    "public/archives/2026/11",
+    "source/_posts/2026/10/claude-code-review.md",
+    "source/_posts/2026/11/claude-code-review.md",
+    "source/_posts/2026/11",
+    "source/_posts/2026/10/drizzle-intro.md",
+    "public/tags/数据库/index.html",
+    "public/tags/数据库",
+    "public/tags/Spring-Boot/index.html",
+    "public/tags/Spring-Boot",
+    "mm-in-article.png",
+    "db.json",
+    "public/img/siteicon/manifest-icon-512.maskable.png",
+    "public/img/siteicon/manifest-icon-192.maskable.png",
+    "public/img/siteicon/apple-icon-180.png",
+    "public/img/siteicon/32.png",
+    "public/img/siteicon/16.png",
+    "public/img/loading.gif",
+    "public/img/friend_404.gif",
+    "public/img/default_cover.jpg",
+    "public/img/cover-zod.jpg",
+    "source/_posts/2026/10/mermaid-test.md",
+    "source/_posts/2026/10/_mermaid-test.md",
+    "source/_posts/2026/10/zod-intro.md",
+    "source/_posts/2026/10/web-frameworks-compare.md",
+    "source/_posts/2026/10/quick-sort.md",
+    "source/_posts/2026/10/linux-commands.md",
+    "source/_posts/2026/10/fastify-intro.md",
+    "source/categories/index.md",
+    "source/_posts/2026/10/cipherlens-teardown.md",
+    "source/_posts/2026/10/prisma-intro.md",
+    "source/_posts/2026/10/mybatis-intro.md",
+    "source/_posts/2026/10/nestjs-intro.md",
+    "source/_posts/2026/10/koa-intro.md",
+    "source/_posts/2026/10/hono-intro.md",
+    "source/_posts/2026/10/express-intro.md",
+    "source/_posts/2026/10/kmp-algorithm.md",
+    "source/_posts/2026/10/binary-search.md",
+    "source/tags/index.md",
+    "source/_posts/claude-code-review.md",
+    "source/_posts/ai/claude-code-review.md",
+    "source/_posts/teardown/cipherlens-teardown.md",
+    "source/_posts/system/linux-commands.md"
   ]
 }

@@ -76,6 +76,28 @@ def generate(prompt, size=SIZE):
         return json.loads(r.read().decode('utf-8'))
 
 
+def extract_image_url(resp):
+    """从响应里提取图片 URL（兼容多种结构）"""
+    # 1. assembled_history（v3.5-preview 思考型模型）
+    for turn in resp.get('assembled_history', []):
+        content = turn.get('content')
+        if isinstance(content, list):
+            for c in content:
+                if c.get('type') == 'image_url':
+                    u = c['image_url'].get('url')
+                    if u:
+                        return u
+    # 2. OpenAI 风格
+    for d in resp.get('data') or []:
+        if d.get('url') or d.get('b64_json'):
+            return d
+    # 3. images 数组
+    for d in resp.get('images') or []:
+        if d.get('url') or d.get('b64_json'):
+            return d
+    return None
+
+
 def download(url, dest):
     with urllib.request.urlopen(url, timeout=180) as r:
         data = r.read()
@@ -100,22 +122,15 @@ def main():
         dest = 'source/img/%s.jpg' % slug
         try:
             resp = generate(PROMPTS[slug])
-            # 返回格式可能有多种，兼容几种
-            data = None
-            if 'data' in resp and isinstance(resp['data'], list) and resp['data']:
-                data = resp['data'][0]
-            elif 'images' in resp:
-                data = resp['images'][0]
-            elif 'output' in resp:
-                data = resp['output']
+            data = extract_image_url(resp)
             if not data:
-                raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:200])
-            url = data.get('url') or data.get('b64_json')
-            if data.get('b64_json'):
+                raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:300])
+            if isinstance(data, dict) and data.get('b64_json'):
                 import base64
                 with open(dest, 'wb') as f:
                     f.write(base64.b64decode(data['b64_json']))
             else:
+                url = data if isinstance(data, str) else data.get('url')
                 n = download(url, dest)
             ok += 1
             print('OK  ', slug)
