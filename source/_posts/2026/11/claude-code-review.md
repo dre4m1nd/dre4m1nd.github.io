@@ -3,7 +3,7 @@ title: 代码审查到底在审什么？从 Claude Code 团队的 AI 审查实�
 date: 2026-11-03
 description: 先讲清 code review 的目的，再看人工审查为什么越来越审不动、为什么必须上 AI，以及 Claude Code 团队如何把 AI 审查做成七层规范流程。核心结论：不怕 AI 漏掉漏洞，怕的是没有一套能快速下架和修复的机制。最后给出个人开发者能直接搬走的做法。
 categories:
-  - 技术
+  - 笔记
 tags:
   - AI
   - 代码审查

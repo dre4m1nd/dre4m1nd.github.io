@@ -3,7 +3,7 @@ title: 快排笔记：二路快排与三路快排
 date: 2026-10-28
 description: 二路快排的 Lomuto 与 Hoare 两种 partition、三路快排为什么能治大量重复元素、随机化 pivot 与尾递归优化，附 Java 完整实现和 4 道例题。
 categories:
-  - 技术
+  - 笔记
 tags:
   - 算法
   - 排序

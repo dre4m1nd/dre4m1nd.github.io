@@ -67,6 +67,9 @@ index_generator:
 # Category & Tag
 default_category: uncategorized
 category_map:
+  技术: tech
+  笔记: notes
+  折腾: tinkering
 tag_map:
 
 # Metadata elements
