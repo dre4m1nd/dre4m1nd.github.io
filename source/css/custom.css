@@ -163,6 +163,14 @@
   }
 }
 
+/* ---------- 文章目录：取消非当前条目的「雾化」 ----------
+   主题 sidebar.styl 里给 .toc-link:not(.active) span 加了 blur(1px) + opacity:.6，
+   鼠标悬停整张目录卡才恢复清晰。这里直接取消，只靠字号/颜色区分当前章节。 */
+#aside-content #card-toc .toc-content .toc-link:not(.active) span {
+  filter: none;
+  opacity: 1;
+}
+
 /* ---------- 尊重系统"减少动效"设置 ---------- */
 @media (prefers-reduced-motion: reduce) {
   #recent-posts > .recent-post-item,

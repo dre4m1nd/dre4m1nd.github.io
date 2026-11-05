@@ -137,4 +137,5 @@ highlight_shrink: true       # 代码块默认折叠
 - **打赏**：`reward.enable: false` 只去掉文章页的按钮；中控台（`console.pug`）里的二维码是 `each item in theme.reward.QR_code` **无条件渲染**，而且数组按下标合并清不掉。已在 `custom.css` 用 `.console-card-group-reward { display: none }` 隐藏。
 - **音乐**：两处开关 —— `aplayerInject.enable`（全局播放器资源）和 `nav_music.enable`（左下角播放器），都要关；只关一个会残留。
 - **首页分类横栏 `#categoryBar`**：主题 `layout/index.pug` 里写死，没有配置开关。桌面端它和 hero 三张分类卡 + 顶部菜单「分类」完全重复，已在 `custom.css` 用 `@media (min-width: 769px) { #categoryBar { display: none } }` 隐藏；移动端保留（窄屏时它是 sticky 的分类入口）。想恢复就删这段 CSS。
+- **文章目录（右侧 TOC）雾化**：主题 `sidebar.styl` 给非当前条目加了 `filter: blur(1px)` + `opacity: .6`，鼠标悬停整张卡才恢复。已在 `custom.css` 覆盖为 `filter: none; opacity: 1`（桌面侧栏与窄屏浮层同一套选择器，都生效）；现在只靠字号/颜色区分当前章节。
 - 社交图标是 `social` 里的 `名称: 链接 || 图标类`，`mailto:` 链接能正常工作（`url_for` 对外部 scheme 原样返回），作者卡头像下方的图标也走同一份配置。
