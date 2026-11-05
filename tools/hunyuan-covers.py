@@ -1,14 +1,20 @@
-# scripts/hunyuan-covers.py
+# tools/hunyuan-covers.py
 # 用腾讯 TokenHub 混元 hy-image-v3.5-preview 生成博客封面
+#
+# 只负责「没有官方 logo 可用」的文章（算法、AI 笔记、项目拆解、默认封面）；
+# 框架/工具类文章的封面走 tools/make-covers.py（白底 + 官方 logo），两边共用同一套主题配色。
+#
+# 配色硬约束（和主题一致）：白底 #FFFFFF、主色蓝 #425AEF、辅色青 #00c4b6，
+# 生成后自动压到 900x675（4:3）quality 85。
 #
 # 前提：去 https://console.cloud.tencent.com/tokenhub/inference 开通后付费
 # （首次会有免费额度，或直接按量计费）
 #
 # 用法：
-#   $env:HUNYUAN_API_KEY = "sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810HjeYa2DNvljuAa"
-#   python scripts/hunyuan-covers.py                      # 全部
-#   python scripts/hunyuan-covers.py --only cover-hono    # 指定几张
-#   python scripts/hunyuan-covers.py --dry-run            # 先试一张
+#   $env:HUNYUAN_API_KEY = "sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810HjeYa2DNvljuAa"   # 也可不设，脚本里已带 key
+#   python tools/hunyuan-covers.py                  # 全部
+#   python tools/hunyuan-covers.py --only cover-kmp # 指定几张
+#   python tools/hunyuan-covers.py --dry-run        # 只试第一张
 
 import json
 import os
@@ -17,39 +23,40 @@ import time
 import urllib.request
 import urllib.error
 
+from PIL import Image
+
 # API 配置
 API_URL = 'https://tokenhub.tencentmaas.com/v1/wand/hunyuan-image/v35-generation'
 MODEL = 'hy-image-v3.5-preview'
 KEY = os.environ.get('HUNYUAN_API_KEY', 'sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810HjeYa2DNvljuAa')
 
-# 封面尺寸 1280x960（4:3）
+# 生成尺寸 1280x960（4:3），落盘统一压到 900x675
 SIZE = '1280x960'
+OUT_W, OUT_H = 900, 675
+QUALITY = 85
 
-# 23 篇封面的 prompt（英文，混元对英文理解好）
+# 风格模板：白底 + 主题蓝/青，扁平极简，无文字（保证和 logo 封面同一观感）
+STYLE = ('pure white background, bright blue #425AEF and cyan #00c4b6 only, no beige, no warm tones, '
+         'minimal flat vector illustration, zoomed out wide shot, entire composition fully visible '
+         'inside the frame, centered with wide margins on all sides, nothing cropped, '
+         'no 3d render, no photorealistic, no text, no letters, no watermark, no signature')
+
 PROMPTS = {
-    'banner': 'wide panoramic abstract illustration of a glowing terminal window with layered code streams flowing into a connected node network, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, subtle grid texture, cinematic depth, clean modern tech aesthetic, no text',
-    'cover-binary': 'abstract illustration of a glowing magnifying glass hovering above a sorted number line with a highlighted midpoint, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, precision search concept, no text',
-    'cover-kmp': 'abstract illustration of a glowing needle passing through a haystack of floating letters with a pattern array behind it, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, string matching concept, no text',
-    'cover-quicksort': 'abstract illustration of a glowing pivot element splitting an array into left and right partitions with sweeping motion arrows, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, sorting concept, no text',
-    'cover-compare': 'abstract illustration of four glowing pillars of different heights standing side by side for comparison, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, no text',
-    'cover-express': 'abstract illustration of a minimal glowing web server with a single route path and request response arrows, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, no text',
-    'cover-hono': 'abstract illustration of a glowing feather made of light with tiny floating server nodes around it, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, edge computing concept, no text',
-    'cover-fastify': 'abstract illustration of a glowing lightning bolt striking through a database schema diagram, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, speed and validation concept, no text',
-    'cover-koa': 'abstract illustration of glowing concentric onion layers with request and response arrows spiraling inward and outward, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, middleware layers concept, no text',
-    'cover-nestjs': 'abstract illustration of glowing nested hexagonal modules forming a structured architecture, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, modular design concept, no text',
-    'cover-prisma': 'abstract illustration of a glowing database cylinder with a floating schema definition card above it, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, data modeling concept, no text',
-    'cover-drizzle': 'abstract illustration of a glowing SQL query being assembled from glowing table blocks, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, query builder concept, no text',
-    'cover-mybatis': 'abstract illustration of a glowing elephant silhouette formed by light lines above an XML document, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, java persistence concept, no text',
-    'cover-zod': 'abstract illustration of a glowing shield with a checkmark surrounded by floating schema field labels, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, validation concept, no text',
-    'cover-linux': 'abstract illustration of a glowing terminal window with command lines and a small penguin silhouette, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, shell concept, no text',
-    'cover-cipherlens': 'abstract illustration of a magnifying glass examining a padlock surrounded by cipher symbols, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, security analysis concept, no text',
-    'cover-code-review': 'abstract illustration of a glowing funnel filtering code fragments down to a small group of human reviewers, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, automated filtering concept, no text',
-    'agent-state-machines': 'abstract illustration of glowing state machine nodes connected by transition arrows in a layered flow diagram, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, deterministic scaffolding concept, no text',
-    'ai-critical-thinking': 'abstract illustration of a human eye next to a glowing neural network brain, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, critical thinking concept, no text',
-    'super-agent-designs': 'abstract illustration of a central glowing hub dispatching tasks to many small worker nodes in a two-layer architecture, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, orchestration concept, no text',
-    'cover-code': 'abstract illustration of glowing code brackets, a terminal window and geometric shapes, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, general tech aesthetic, no text',
-    'cover-notes': 'abstract illustration of glowing notebook pages with abstract code and diagram marks, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, notes concept, no text',
-    'cover-tools': 'abstract illustration of glowing tool icons arranged in a neat grid, clean white background, bright blue #425AEF and cyan #00c4b6 color palette, tooling concept, no text',
+    # ── 算法笔记 ──
+    'cover-binary':    'abstract illustration of a magnifying glass hovering above a sorted row of dots with a highlighted midpoint, precision binary search concept, ' + STYLE,
+    'cover-kmp':       'abstract illustration of a chain of beads being compared by a sliding pointer that never moves backward, string matching concept, ' + STYLE,
+    'cover-quicksort': 'abstract illustration of columns of blocks splitting around a highlighted pivot with sweeping arrows on both sides, quicksort partition concept, ' + STYLE,
+    # ── 项目拆解 ──
+    'cover-cipherlens':'flat vector illustration of a magnifying glass examining a padlock surrounded by cipher symbols and code brackets, security analysis concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    # ── AI 笔记 ──
+    'ai-critical-thinking':   'flat vector icon of a human head profile drawn as a simple line-art outline containing a glowing network of nodes, three gears beside it with one gear highlighted, critical thinking concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no gray statue, no beige or warm tones, no text, no letters, no watermark',
+    'agent-state-machines':   'flat vector diagram of four small circular states connected in a closed loop by curved arrows, one circle filled solid blue as the current state, others outlined, deterministic state machine concept, zoomed out wide shot, entire diagram fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no tree, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    'cover-code-review':      'flat vector illustration of curly code brackets flowing down into a funnel and out into a rounded checklist card with a checkmark, automated code review concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    'super-agent-designs':    'flat vector illustration of a central glowing hub dispatching tasks along thin arrows to many small worker nodes arranged in two layers, orchestration concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    # ── 默认封面（frontmatter 没写 cover 时随机用）──
+    'cover-code':   'flat vector illustration of a pair of curly code brackets in solid blue with a small cyan terminal window below, general tech aesthetic, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    'cover-notes':  'abstract illustration of floating notebook pages with abstract diagram marks and code brackets, notes concept, ' + STYLE,
+    'cover-tools':  'abstract illustration of a wrench, gears and tool icons arranged in a neat grid, tooling concept, ' + STYLE,
 }
 
 
@@ -60,13 +67,8 @@ def generate(prompt, size=SIZE):
             'role': 'user',
             'content': [{'type': 'text', 'text': prompt}],
         }],
+        'size': size,
     }
-    # 尺寸参数（如果 API 支持）
-    try:
-        body['size'] = size
-    except Exception:
-        pass
-
     data = json.dumps(body, ensure_ascii=False).encode('utf-8')
     req = urllib.request.Request(API_URL, data=data, method='POST', headers={
         'Authorization': 'Bearer ' + KEY,
@@ -98,12 +100,24 @@ def extract_image_url(resp):
     return None
 
 
-def download(url, dest):
-    with urllib.request.urlopen(url, timeout=180) as r:
-        data = r.read()
-    with open(dest, 'wb') as f:
-        f.write(data)
-    return len(data)
+def save(out_path, data):
+    """下载（或 base64 解码）→ 压到 900x675 落盘，返回 (尺寸, KB, 平均亮度)"""
+    import base64
+    import io
+    if isinstance(data, dict) and data.get('b64_json'):
+        raw = base64.b64decode(data['b64_json'])
+    else:
+        with urllib.request.urlopen(data if isinstance(data, str) else data.get('url'), timeout=180) as r:
+            raw = r.read()
+
+    im = Image.open(io.BytesIO(raw)).convert('RGB')
+    if im.width != OUT_W:
+        im = im.resize((OUT_W, round(im.height * OUT_W / im.width)), Image.LANCZOS)
+    im.save(out_path, 'JPEG', quality=QUALITY, optimize=True, progressive=True)
+
+    grey = im.convert('L')
+    mean = sum(grey.getdata()) / (grey.width * grey.height)
+    return im.size, os.path.getsize(out_path) // 1024, mean
 
 
 def main():
@@ -125,15 +139,10 @@ def main():
             data = extract_image_url(resp)
             if not data:
                 raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:300])
-            if isinstance(data, dict) and data.get('b64_json'):
-                import base64
-                with open(dest, 'wb') as f:
-                    f.write(base64.b64decode(data['b64_json']))
-            else:
-                url = data if isinstance(data, str) else data.get('url')
-                n = download(url, dest)
+            size, kb, mean = save(dest, data)
             ok += 1
-            print('OK  ', slug)
+            warn = '' if mean >= 200 else '  ⚠️ 平均亮度 %.0f，偏暗，检查是否白底' % mean
+            print('OK   %-22s %s %3dKB 亮度%.0f%s' % (slug, size, kb, mean, warn))
             time.sleep(0.4)
         except urllib.error.HTTPError as e:
             fail += 1
@@ -143,9 +152,7 @@ def main():
             print('FAIL', slug, str(e)[:200])
 
     print('\n完成：%d 成功 / %d 失败' % (ok, fail))
-    if ok:
-        print('下一步：python scripts/resize-covers.py')
-
+    print('下一步：目测检查后 npx hexo clean && npx hexo generate，再 git 提交发布')
 
 if __name__ == '__main__':
     main()

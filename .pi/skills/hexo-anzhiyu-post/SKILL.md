@@ -107,17 +107,23 @@ highlight_shrink: true       # 代码块默认折叠
 
 关掉自定义 CSS：把 `inject.head` 里那行 `<link ... custom.css>` 注释掉即可，不需要删文件。
 
-## 封面：框架 logo + 标题（统一版式）
 
-技术笔记封面不再用 AI 生图，统一用本地脚本合成：白底 + 官方 logo + 英文名 + 中文副标题 + 品牌色短线，900x675。
+封面按文章主题分两条路，**配色硬约束一致**：白底 `#FFFFFF`、主题蓝 `#425AEF`、辅色青 `#00c4b6`，输出 900x675。
 
-- 生成器：`tools/make-covers.py`（PIL），素材在 `tools/logos/`（simple-icons 的 SVG + 同色 PNG 剪影）
+**A. 框架/工具/库（有官方 logo）→ `tools/make-covers.py`（PIL 本地合成，不用生图 API）**
+- 白底 + 官方 logo + 英文名 + 中文副标题 + 品牌色短线
 - 清单在脚本里的 `COVERS` 字典，key 就是 `source/img/<key>.jpg` 的文件名
 - 单张：`python tools/make-covers.py --only cover-hono`；全部：`python tools/make-covers.py`
 - 预览不覆盖：`python tools/make-covers.py --preview`（写到 `.tmp-img/`，已被 gitignore）
 - 新增框架：从 `https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/<name>.svg` 取图标，栅格化成 1024 宽透明 PNG 放 `tools/logos/`，再加一条 `COVERS` 配置
 - 配色：白底、墨色 `#1F2D3D`、强调主题蓝 `#425AEF`；Hono/NestJS/Zod 用品牌色
-- 版式参数在 `render()`：`W,H=1280,960`（输出压到 900 宽），logo 上限 560x300，多 logo 横排时每个 190x170、间距 56
+- 版式参数在 `render()`：渲染 1280x960（输出压到 900 宽），logo 上限 560x300，多 logo 横排时每个 190x170、间距 56
+
+**B. 没有 logo 的（算法笔记、AI 概念、项目拆解、默认封面）→ `tools/hunyuan-covers.py`（混元生图）**
+- prompt 模板 `STYLE` 已锁死主题配色（白底 + #425AEF + #00c4b6、无文字无水印），只需在 `PROMPTS` 加每篇的主题描述
+- 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载并压到 900x675
+- 生成后必须目测：是否白底、有没有文字/乱码/水印（模型偶尔会画字）；不合格就改 prompt 重跑该张
+- 脚本打印「平均亮度」，<200 说明底色偏暗，大概率不合主题配色，要重跑
 
 ## 改主题配置的坑（都是实际踩过的）
 
@@ -130,13 +136,3 @@ highlight_shrink: true       # 代码块默认折叠
 - **打赏**：`reward.enable: false` 只去掉文章页的按钮；中控台（`console.pug`）里的二维码是 `each item in theme.reward.QR_code` **无条件渲染**，而且数组按下标合并清不掉。已在 `custom.css` 用 `.console-card-group-reward { display: none }` 隐藏。
 - **音乐**：两处开关 —— `aplayerInject.enable`（全局播放器资源）和 `nav_music.enable`（左下角播放器），都要关；只关一个会残留。
 - 社交图标是 `social` 里的 `名称: 链接 || 图标类`，`mailto:` 链接能正常工作（`url_for` 对外部 scheme 原样返回），作者卡头像下方的图标也走同一份配置。
-- **「原创 / AI 辅助生成」标识由 frontmatter 字段 `handwritten` 控制**（不要再去 hardcode CSS 全局覆盖）：
-  - 文章 `frontmatter.handwritten: true` → 显示主题原生的「原创」；不写 / `false` → 显示「AI 辅助生成」。
-  - 实现：`scripts/post-badge.js`（项目级 Hexo 脚本，构建时给文章页 `<body>` 打 `is-original` / `is-ai-assisted` 类，不碰 `themes/`）+ `source/css/custom.css` 里对应的 `.is-ai-assisted` / `.is-original` 选择器（头部 `#post-firstinfo .meta-firstline a.post-meta-original`、底部版权卡 `#post .post-copyright__original`）。
-  - 改这个机制时只动 `scripts/post-badge.js` 和 `custom.css`，**绝不要改主题 pug**。
-  - 主题里有两个写死的「原创」标识（头部 + 底部版权卡），都是靠同等选择器覆盖，别用全局无前缀的 `font-size:0`，否则会误伤非文章页。
-- 背景图全在 `source/img/*.svg`（手写渐变，不依赖外链图床）：`bg-banner.svg` 用于首页关于我卡片和 404 页，`cover-1/2/3.svg` 是 `cover.default_cover` 的随机封面。换图只需改这两处配置。
-- `models.getAvailableOfType('image')` 目前是空的（需要 openrouter 凭证），所以想用 AI 生图得先配 `OPENROUTER_API_KEY` / `/login openrouter`。
-- 首页/作者卡的 demo 内容（`home_top`、`banner`、`social`、`author_status`、`runtimeshow.publish_date`、`card_weixin` 二维码）已经换成自己的，别再抄回模板值。
-- 本地 `hexo server` 不会重读配置，改完 `_config.anzhiyu.yml` 要重启 server 才看得到效果（按端口杀进程：`netstat -ano | grep :4000`）。
-

@@ -75,17 +75,15 @@ const draft = await runs.run("draft", {
   toolBudget: { soft: 24, hard: 40 }
 });
 
-// ── 阶段 3：配图 —— 用框架官方 logo 合成封面（tools/make-covers.py）──
+// ── 阶段 3：配图 —— 框架/工具用 logo 合成封面，其余用混元生图（同主题配色）──
 const cover = await runs.run("cover", {
-  label: "阶段3 配图：logo 封面",
+  label: "阶段3 配图：封面图",
   agent: "worker",
   task: [
-    "给文章 " + slug + "（" + repo + "）配封面图。",
+    "给文章 " + slug + "（" + repo + "）配封面图。先判断走哪条路：",
     "",
-    "封面统一用「白底 + 官方 logo + 英文名 + 中文副标题」，由本地脚本合成，不要用生图 API：",
+    "A. 文章讲的是某个框架/工具/库（有官方 logo）→ tools/make-covers.py 本地合成，不要用生图 API：",
     "  脚本: " + repo + "/tools/make-covers.py（PIL，logo 素材在 tools/logos/）",
-    "",
-    "步骤：",
     "  1. 先看 tools/make-covers.py 里的 COVERS 字典，判断这篇讲的是哪个框架/工具，能否复用已有 logo。",
     "  2. 在 COVERS 里加一条 <slug> 的配置：",
     "     dict(logo='<logo名>', name='<英文名>', color=<品牌色或 INK>, tag='<分类> · <技术栈>',",
@@ -94,12 +92,16 @@ const cover = await runs.run("cover", {
     "     https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/<name>.svg",
     "     栅格化成 tools/logos/<name>.png（同色剪影，1024 宽，透明底）。",
     "  4. 跑 `python tools/make-covers.py --only <slug>` 生成 " + repo + "/source/img/<slug>.jpg（900x675）。",
-    "  5. 确保 frontmatter 的 cover 字段是 /img/<slug>.jpg。",
     "",
-    "配色：白底 #FFFFFF，正文墨色 #1F2D3D，强调色主题蓝 #425AEF；只有品牌识别度高的（Hono/NestJS/Zod/Drizzle）用品牌色。",
-    "返回：图片路径、尺寸、大小。"
+    "B. 没有对应 logo（算法、AI 概念、项目拆解等）→ tools/hunyuan-covers.py 用混元生图：",
+    "  1. 在 PROMPTS 里加一条 <slug> 的 prompt（英文，主题描述具体有画面感）。",
+    "  2. 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动压到 900x675。",
+    "  3. 生成后目测：白底、主题配色、无文字/水印/乱码；不合格就改 prompt 重跑该张。",
+    "",
+    "配色硬约束（两条路必须一致）：白底 #FFFFFF，主题蓝 #425AEF，辅色青 #00c4b6。",
+    "最后确保 frontmatter 的 cover 字段是 /img/<slug>.jpg，返回图片路径、尺寸、大小。"
   ].join("\n"),
-  toolBudget: { soft: 20, hard: 36 }
+  toolBudget: { soft: 24, hard: 40 }
 });
 
 // ── 阶段 4：审查 —— 准确性/结构/代码 ──
