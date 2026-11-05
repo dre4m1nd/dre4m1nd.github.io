@@ -27,7 +27,7 @@ import sys
 import time
 import urllib.request
 import urllib.error
-
+from PIL import Image, ImageDraw, ImageFont
 from imgpaths import cover_dir
 
 from PIL import Image
@@ -41,12 +41,27 @@ KEY = os.environ.get('HUNYUAN_API_KEY', 'sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810Hj
 SIZE = '1280x960'
 OUT_W, OUT_H = 900, 675
 QUALITY = 85
-
-# 风格模板：白底 + 主题蓝/青，扁平极简，无文字（保证和 logo 封面同一观感）
+# 风格模板：白底 + 主题蓝/青，扁平矢量，整幅完整入画。
+# 文字由脚本在本地合成（不交给模型画）——混元画中文容易错字，本地叠字字形一定正确。
 STYLE = ('pure white background, bright blue #425AEF and cyan #00c4b6 only, no beige, no warm tones, '
          'minimal flat vector illustration, zoomed out wide shot, entire composition fully visible '
          'inside the frame, centered with wide margins on all sides, nothing cropped, '
          'no 3d render, no photorealistic, no text, no letters, no watermark, no signature')
+
+# ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
+TEXTS = {
+    'cover-binary':      '二分查找',
+    'cover-kmp':         'KMP 算法',
+    'cover-quicksort':   '快速排序',
+    'cover-cipherlens':  'CipherLens 拆解',
+    'agent-state-machines':   'Agent 状态机',
+    'ai-critical-thinking':   '批判性思考',
+    'cover-code-review':      '代码审查',
+    'super-agent-designs':    'Super Agent',
+    'cover-code':       '代码',
+    'cover-notes':      '笔记',
+    'cover-tools':      '工具',
+}
 
 PROMPTS = {
     # ── 算法笔记 ──
@@ -107,8 +122,27 @@ def extract_image_url(resp):
     return None
 
 
-def save(out_path, data):
-    """下载（或 base64 解码）→ 压到 900x675 落盘，返回 (尺寸, KB, 平均亮度, 内容留白比例)"""
+CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
+CAPTION_INK = (31, 45, 61)      # #1F2D3D
+CAPTION_ACCENT = (66, 90, 239)  # #425AEF
+
+
+def draw_caption(im, text):
+    """底部居中叠一行小标题 + 上方一条短蓝线，和 logo 封面的版式呼应"""
+    font = ImageFont.truetype(CAPTION_FONT, max(26, im.width // 20))
+    draw = ImageDraw.Draw(im)
+    box = draw.textbbox((0, 0), text, font=font)
+    tw, th = box[2] - box[0], box[3] - box[1]
+    x = (im.width - tw) / 2 - box[0]
+    y = im.height - 12 - th - box[1]
+    draw.rectangle([(im.width - 44) / 2, y - 16, (im.width + 44) / 2, y - 13], fill=CAPTION_ACCENT)
+    draw.text((x, y), text, font=font, fill=CAPTION_INK)
+    return im
+
+
+def save(out_path, data, text=''):
+    """下载（或 base64 解码）→ 压到 900x675 → 叠小标题 → 落盘，
+    返回 (尺寸, KB, 平均亮度, 内容留白比例)"""
     import base64
     import io
     if isinstance(data, dict) and data.get('b64_json'):
@@ -120,14 +154,16 @@ def save(out_path, data):
     im = Image.open(io.BytesIO(raw)).convert('RGB')
     if im.width != OUT_W:
         im = im.resize((OUT_W, round(im.height * OUT_W / im.width)), Image.LANCZOS)
-    im.save(out_path, 'JPEG', quality=QUALITY, optimize=True, progressive=True)
 
+    # 指标先在插画本体上量（小标题是本地叠的，不算内容留白）
     grey = im.convert('L')
     mean = sum(grey.getdata()) / (grey.width * grey.height)
-
-    # 内容贴边检测：非白像素的 bbox 距四边的最小留白（占短边比例）
     box = grey.point(lambda v: 255 if v < 235 else 0).getbbox()
     margin = min(box[0], box[1], im.width - box[2], im.height - box[3]) / min(im.width, im.height) if box else 1.0
+
+    if text:
+        im = draw_caption(im, text)
+    im.save(out_path, 'JPEG', quality=QUALITY, optimize=True, progressive=True)
     return im.size, os.path.getsize(out_path) // 1024, mean, margin
 
 
@@ -153,16 +189,18 @@ def main():
             data = extract_image_url(resp)
             if not data:
                 raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:300])
-            size, kb, mean, margin = save(dest, data)
+            text = TEXTS.get(slug, '')
+            size, kb, mean, margin = save(dest, data, text)
             ok += 1
             warn = []
             if mean < 200:
                 warn.append('底色偏暗(亮度%.0f)' % mean)
             if margin < 0.03:
                 warn.append('构图贴边(留白%.1f%%)' % (margin * 100))
-            print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s' % (
+            print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s%s' % (
                 dest.replace('\\', '/'), size, kb, mean, margin * 100,
-                ('  ⚠️ ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else ''))
+                ('  ⚠️ ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else '',
+                ('  小标题: ' + text) if text else ''))
             time.sleep(0.4)
         except urllib.error.HTTPError as e:
             fail += 1

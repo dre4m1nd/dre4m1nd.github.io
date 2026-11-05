@@ -129,7 +129,8 @@ highlight_shrink: true       # 代码块默认折叠
 
 **B. 没有 logo 的（算法笔记、AI 概念、项目拆解、默认封面）→ `tools/hunyuan-covers.py`（混元生图）**
 - prompt 模板 `STYLE` 已锁死主题配色（白底 + `#425AEF` + `#00c4b6`、扁平矢量、整幅不裁切、无文字无水印），只需在 `PROMPTS` 加每篇的主题描述
-- 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载、压到 900x675 并落盘到文章对应年/月目录（默认封面落 `source/img/common/`）
+- 底部小标题**由脚本本地合成**（`TEXTS` 字典，key 与 `PROMPTS` 一致，例如 `'cover-kmp': 'KMP 算法'`），不交给模型画 —— 混元画中文容易错字，本地叠字字形一定正确，字号/位置/蓝线也和 logo 封面一致。改标题只改 `TEXTS`
+- 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载、压到 900x675、落盘到文章的年/月目录并打印亮度/留白（指标在叠小标题**之前**量，不会被标题带偏）
 - 脚本自带硬指标，不合格必须改 prompt 只重跑该张（别整批重跑）：
   - 平均亮度 ≥ 200（白底，否则报「底色偏暗」）
   - 内容距四边留白 ≥ 3%（否则报「构图贴边」）
