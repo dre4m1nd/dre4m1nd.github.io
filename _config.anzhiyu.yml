@@ -1054,19 +1054,21 @@ home_top:
   subTitle: 代码、笔记与折腾。
   siteText: dre4m1nd.github.io
   # 注意：数组是“按下标合并”的（hexo deepMerge），条目数要 ≥ 主题默认的 3 个，否则会残留主题 demo 项
+  # path 必须用 _config.yml 里 category_map 映射后的英文路径（技术→tech、笔记→notes、折腾→tinkering），
+  # 写中文会 404：Hexo 生成的是 /categories/tech/，不是 /categories/技术/
   category:
     - name: 技术
-      path: /categories/技术/
+      path: /categories/tech/
       shadow: var(--anzhiyu-shadow-red)
       class: red
       icon: anzhiyu-icon-fire
     - name: 笔记
-      path: /categories/笔记/
+      path: /categories/notes/
       shadow: var(--anzhiyu-shadow-blue)
       class: blue
       icon: anzhiyu-icon-book
     - name: 折腾
-      path: /categories/折腾/
+      path: /categories/tinkering/
       shadow: var(--anzhiyu-shadow-green)
       class: green
       icon: anzhiyu-icon-dove
