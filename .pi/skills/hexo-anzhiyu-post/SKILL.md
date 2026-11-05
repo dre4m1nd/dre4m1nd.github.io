@@ -107,6 +107,18 @@ highlight_shrink: true       # 代码块默认折叠
 
 关掉自定义 CSS：把 `inject.head` 里那行 `<link ... custom.css>` 注释掉即可，不需要删文件。
 
+## 封面：框架 logo + 标题（统一版式）
+
+技术笔记封面不再用 AI 生图，统一用本地脚本合成：白底 + 官方 logo + 英文名 + 中文副标题 + 品牌色短线，900x675。
+
+- 生成器：`tools/make-covers.py`（PIL），素材在 `tools/logos/`（simple-icons 的 SVG + 同色 PNG 剪影）
+- 清单在脚本里的 `COVERS` 字典，key 就是 `source/img/<key>.jpg` 的文件名
+- 单张：`python tools/make-covers.py --only cover-hono`；全部：`python tools/make-covers.py`
+- 预览不覆盖：`python tools/make-covers.py --preview`（写到 `.tmp-img/`，已被 gitignore）
+- 新增框架：从 `https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/<name>.svg` 取图标，栅格化成 1024 宽透明 PNG 放 `tools/logos/`，再加一条 `COVERS` 配置
+- 配色：白底、墨色 `#1F2D3D`、强调主题蓝 `#425AEF`；Hono/NestJS/Zod 用品牌色
+- 版式参数在 `render()`：`W,H=1280,960`（输出压到 900 宽），logo 上限 560x300，多 logo 横排时每个 190x170、间距 56
+
 ## 改主题配置的坑（都是实际踩过的）
 
 - **数组是按下标合并的**（Hexo 用 `hexo-util` 的 deepMerge，arrayMerge 保留 target 下标）：
