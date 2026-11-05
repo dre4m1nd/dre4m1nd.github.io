@@ -133,11 +133,12 @@ const check = await runs.run("check", {
     "2) 所有笔记结尾都是「重点总结」+「参考」",
     "3) 代码块都有语言标记",
     "4) 没有内容被误删（对比 git diff）",
+    "5) 站内链接都是绝对路径 /<年>/<月>/<slug>/，且指向真实存在的文章",
+    "6) categories 都在 _config.yml 的 category_map 里（技术/笔记/折腾）",
     "",
     "用 git diff --stat 看改动范围，如果某篇改动过大（超过原文 50%），标出来人工复核。",
-    "输出：通过/未通过的项目清单。"
+    "输出：通过/未通过的项目清单。",
   ].join("\n"),
-  toolBudget: { soft: 24, hard: 40 }
 });
 
 // ── 阶段 5：构建 + 发布 ──
@@ -145,12 +146,14 @@ const publish = await runs.run("publish", {
   label: "阶段5 构建+发布",
   agent: "worker",
   task: [
-    "在 " + repo + " 构建并发布：",
-    "1) npx hexo clean && npx hexo generate，确认无报错、文章数正确",
-    "2) 抽查 3 篇确认渲染正常（章节、代码块、封面）",
-    "3) git add -A && git commit && git push origin main",
-    "4) 等 CI 后确认线上可访问，返回最终状态",
-    "",
+    "在 " + repo + " 构建并发布（每步看结果，不许跳过）：",
+    "1) npx hexo clean && npx hexo generate —— 无报错、文章数正确",
+    "2) python tools/check-links.py —— 有死链必须修掉再继续（非 0 返回码就是有）",
+    "3) 若这批改了分类：确认 _config.yml 的 category_map 和 _config.anzhiyu.yml 的 home_top.category[].path 两处同步",
+    "4) 本地起 server 目测：首页卡片封面、文章页章节/代码块、右侧目录应清晰无雾化",
+    "5) git add -A && git commit && git push origin main",
+    "6) 等 CI（GitHub API 未认证会 403 限流，看 badge：pages.yml badge.svg 出现 passing），线上抽查 2-3 篇 200",
+    "返回：最终状态 + 每条验证的实际结果。",
     "校验结果：",
     check.output
   ].join("\n"),

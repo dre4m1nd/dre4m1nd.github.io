@@ -9,3 +9,5 @@ _multiconfig.yml
 obsidian
 .tmp-check/
 .tmp-img/
+__pycache__/
+*.pyc

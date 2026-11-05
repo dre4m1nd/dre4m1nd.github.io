@@ -108,8 +108,9 @@ highlight_shrink: true       # 代码块默认折叠
 
 关掉自定义 CSS：把 `inject.head` 里那行 `<link ... custom.css>` 注释掉即可，不需要删文件。
 
+## 封面：logo 合成为主，混元生图为辅（同一套主题配色）
 
-封面按文章主题分两条路，**配色硬约束一致**：白底 `#FFFFFF`、主题蓝 `#425AEF`、辅色青 `#00c4b6`，输出 900x675。
+封面按文章主题分两条路，**配色硬约束一致**：白底 `#FFFFFF`、主题蓝 `#425AEF`、辅色青 `#00c4b6`，输出 900x675。流程与坑也写在 `.pi/workflows/blog-write.js` 的阶段 3。
 
 **A. 框架/工具/库（有官方 logo）→ `tools/make-covers.py`（PIL 本地合成，不用生图 API）**
 - 白底 + 官方 logo + 英文名 + 中文副标题 + 品牌色短线
@@ -117,14 +118,22 @@ highlight_shrink: true       # 代码块默认折叠
 - 单张：`python tools/make-covers.py --only cover-hono`；全部：`python tools/make-covers.py`
 - 预览不覆盖：`python tools/make-covers.py --preview`（写到 `.tmp-img/`，已被 gitignore）
 - 新增框架：从 `https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/<name>.svg` 取图标，栅格化成 1024 宽透明 PNG 放 `tools/logos/`，再加一条 `COVERS` 配置
-- 配色：白底、墨色 `#1F2D3D`、强调主题蓝 `#425AEF`；Hono/NestJS/Zod 用品牌色
+- 配色：Express/Fastify/Prisma/Drizzle/Koa/Linux 用 INK（`#1F2D3D`）；Hono `#E36002`、NestJS `#E0234E`、Zod `#408AFF` 用品牌色；对比/横评类文章用 `logos=[...]` 多 logo 横排
 - 版式参数在 `render()`：渲染 1280x960（输出压到 900 宽），logo 上限 560x300，多 logo 横排时每个 190x170、间距 56
 
 **B. 没有 logo 的（算法笔记、AI 概念、项目拆解、默认封面）→ `tools/hunyuan-covers.py`（混元生图）**
-- prompt 模板 `STYLE` 已锁死主题配色（白底 + #425AEF + #00c4b6、无文字无水印），只需在 `PROMPTS` 加每篇的主题描述
+- prompt 模板 `STYLE` 已锁死主题配色（白底 + `#425AEF` + `#00c4b6`、扁平矢量、整幅不裁切、无文字无水印），只需在 `PROMPTS` 加每篇的主题描述
 - 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载并压到 900x675
-- 生成后必须目测：是否白底、有没有文字/乱码/水印（模型偶尔会画字）；不合格就改 prompt 重跑该张
-- 脚本打印「平均亮度」，<200 说明底色偏暗，大概率不合主题配色，要重跑
+- 脚本自带硬指标，不合格必须改 prompt 只重跑该张（别整批重跑）：
+  - 平均亮度 ≥ 200（白底，否则报「底色偏暗」）
+  - 内容距四边留白 ≥ 3%（否则报「构图贴边」）
+  - 无文字/字母/水印，无米黄或冷灰底，无 3D 写实
+  - 对症改词：`pure white background, no beige or warm tones` / `zoomed out wide shot, entire composition fully visible, nothing cropped` / `flat vector illustration, no 3d, no photorealistic` / `no text, no letters, no numbers, no watermark`
+
+## 常用工具
+
+- `python tools/check-links.py`：构建后自查站内死链（扫 `public/**/*.html` 的 `href="/..."` 逐个对落盘文件），有死链返回 1，`-v` 列出引用页。**发布前必跑**，它抓出过首页分类卡 404 那类问题。
+- `python tools/make-covers.py --preview`：预览封面不覆盖 `source/img`
 
 ## 改主题配置的坑（都是实际踩过的）
 

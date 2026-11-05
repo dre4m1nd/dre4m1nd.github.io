@@ -101,7 +101,7 @@ def extract_image_url(resp):
 
 
 def save(out_path, data):
-    """下载（或 base64 解码）→ 压到 900x675 落盘，返回 (尺寸, KB, 平均亮度)"""
+    """下载（或 base64 解码）→ 压到 900x675 落盘，返回 (尺寸, KB, 平均亮度, 内容留白比例)"""
     import base64
     import io
     if isinstance(data, dict) and data.get('b64_json'):
@@ -117,7 +117,11 @@ def save(out_path, data):
 
     grey = im.convert('L')
     mean = sum(grey.getdata()) / (grey.width * grey.height)
-    return im.size, os.path.getsize(out_path) // 1024, mean
+
+    # 内容贴边检测：非白像素的 bbox 距四边的最小留白（占短边比例）
+    box = grey.point(lambda v: 255 if v < 235 else 0).getbbox()
+    margin = min(box[0], box[1], im.width - box[2], im.height - box[3]) / min(im.width, im.height) if box else 1.0
+    return im.size, os.path.getsize(out_path) // 1024, mean, margin
 
 
 def main():
@@ -139,10 +143,16 @@ def main():
             data = extract_image_url(resp)
             if not data:
                 raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:300])
-            size, kb, mean = save(dest, data)
+            size, kb, mean, margin = save(dest, data)
             ok += 1
-            warn = '' if mean >= 200 else '  ⚠️ 平均亮度 %.0f，偏暗，检查是否白底' % mean
-            print('OK   %-22s %s %3dKB 亮度%.0f%s' % (slug, size, kb, mean, warn))
+            warn = []
+            if mean < 200:
+                warn.append('底色偏暗(亮度%.0f)' % mean)
+            if margin < 0.03:
+                warn.append('构图贴边(留白%.1f%%)' % (margin * 100))
+            print('OK   %-22s %s %3dKB 亮度%.0f 留白%.0f%%%s' % (
+                slug, size, kb, mean, margin * 100,
+                ('  ⚠️ ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else ''))
             time.sleep(0.4)
         except urllib.error.HTTPError as e:
             fail += 1
