@@ -3,7 +3,7 @@ title: Zod 入门到进阶
 date: 2026-10-29
 description: Zod 是 TypeScript 优先的运行时 schema 校验库。这篇覆盖 parse/safeParse、基础类型与约束、对象/数组/联合、类型推断、refine/superRefine/transform、错误定制、异步校验，以及和 Express/Koa/Hono/Fastify/NestJS 的集成与常见坑。
 categories:
-  - 技术
+  - 折腾
 tags:
   - Node.js
   - TypeScript

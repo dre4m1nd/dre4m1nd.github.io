@@ -3,7 +3,7 @@ title: Super Agent 是什么：从单会话 agent 到自驱动的系统
 date: 2026-11-04
 description: 两篇文章（Agno 的 Building a Super Agent、DeepSeek Harness 的 Exploring Super-agent Design）都在讲同一个东西。这篇把它讲清楚：super agent 是什么、为什么需要、四个特征、怎么工作、核心架构和关键机制，以及怎么落到自己的项目里。
 categories:
-  - 技术
+  - 折腾
 tags:
   - AI
   - Agent

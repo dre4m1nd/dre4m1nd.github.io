@@ -3,7 +3,7 @@ title: 当 AI 把活干了，你的思考去哪了——读 Addy Osmani《Critic
 date: 2026-11-04
 description: AI agent 让我们从"做事"变成"看结果"，而这一步一旦滑下去，就是认知投降。这篇拆解 Addy Osmani 的观点：从外包到让渡到投降的滑坡、认知债、六个自检问题、把验证变成习惯、编排税，以及个人怎么在日常里保住思考。
 categories:
-  - 技术
+  - 笔记
 tags:
   - AI
   - 批判性思考
