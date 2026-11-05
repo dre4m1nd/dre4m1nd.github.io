@@ -3,7 +3,7 @@
 //
 // 用法：
 //   subagent({ workflow: "./.pi/workflows/blog-normalize.js", args: {
-//     repo: "/d/notes/blog-hexo",
+//     repo: "D:/notes/blog-hexo",
 //     batchSize: 5
 //   } })
 //
@@ -14,7 +14,7 @@
 //   4. 统一 markdown 风格：代码块语言标记、表格、h2/h3 层级
 //   5. 修死链、检查 frontmatter 完整性
 
-const repo = args.repo || "/d/notes/blog-hexo";
+const repo = args.repo || "D:/notes/blog-hexo";
 const batchSize = args.batchSize || 5;
 
 // ── 阶段 1：扫描 —— 出问题清单 ──

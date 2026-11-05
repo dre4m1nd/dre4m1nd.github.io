@@ -17,14 +17,14 @@
 //   category 可选，分类，默认 "技术"
 //   tags     可选，标签数组
 //   source   可选，原文全文（给了就跳过调研，直接起草）
-//   repo     可选，博客仓库路径，默认 /d/notes/blog-hexo
+//   repo     可选，博客仓库路径，默认 D:/notes/blog-hexo（Windows 原生路径，别写 /d/...）
 
 const topic = args.topic || "未命名主题";
 const slug = args.slug || "new-post";
 const category = args.category || "技术";
 const tags = (args.tags || []).join("、");
 const source = args.source || "";
-const repo = args.repo || "/d/notes/blog-hexo";
+const repo = args.repo || "D:/notes/blog-hexo";
 
 // ── 阶段 1：调研（有原文就跳过，直接当资料）──
 let researchOutput;
