@@ -8,7 +8,7 @@ tags:
   - Node.js
   - Hono
   - TypeScript
-cover: /img/cover-hono.jpg
+cover: /img/2026/10/cover-hono.jpg
 ---
 
 ## Hono 是什么

@@ -7,7 +7,7 @@ categories:
 tags:
   - 算法
   - 二分
-cover: /img/cover-binary.jpg
+cover: /img/2026/10/cover-binary.jpg
 ---
 
 ## 二分到底在做什么

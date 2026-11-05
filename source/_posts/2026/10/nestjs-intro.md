@@ -9,7 +9,7 @@ tags:
   - NestJS
   - TypeScript
   - 后端
-cover: /img/cover-nestjs.jpg
+cover: /img/2026/10/cover-nestjs.jpg
 ---
 
 ## NestJS 是什么

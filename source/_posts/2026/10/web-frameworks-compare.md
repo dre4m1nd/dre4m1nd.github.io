@@ -9,7 +9,7 @@ tags:
   - 后端
   - 框架对比
   - 选型
-cover: /img/cover-compare.jpg
+cover: /img/2026/10/cover-compare.jpg
 ---
 
 ## 先给结论（太长不看）

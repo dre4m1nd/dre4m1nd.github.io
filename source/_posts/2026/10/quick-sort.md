@@ -8,7 +8,7 @@ tags:
   - 算法
   - 排序
   - 快速排序
-cover: /img/cover-quicksort.jpg
+cover: /img/2026/10/cover-quicksort.jpg
 ---
 
 ## 快排的本质

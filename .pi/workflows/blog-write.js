@@ -36,7 +36,8 @@ const RULES = [
   "frontmatter 的 date 写中午 12 点（如 2026-11-04 12:00:00）：GitHub Actions 跑在 UTC，",
   "  只写日期会被算成前一天。",
   "不碰 themes/：样式只进 source/css/custom.css，主题配置只进 _config.anzhiyu.yml。",
-  "文章内链写绝对路径 /<年>/<月>/<slug>/，不要用相对路径。",
+  "图片跟文章走：封面放 source/img/<年>/<月>/（frontmatter cover 写 /img/<年>/<月>/<slug>.jpg），",
+  "  站点级图片（默认封面、banner）在 source/img/common/。",
   "代码块一律带语言标记；结尾章节统一「重点总结」+「参考」。"
 ].join("\n");
 
@@ -78,7 +79,7 @@ const draft = await runs.run("draft", {
     "- description: 一句话摘要",
     "- categories: 单个 " + category + "（只能 技术 / 笔记 / 折腾）",
     "- tags: " + (tags || "按主题补"),
-    "- cover: /img/" + slug + ".jpg（阶段 3 会真的生成这张图）",
+    "- cover: /img/<年>/<月>/" + slug + ".jpg（和文章同目录；阶段 3 会真的生成这张图）",
     "",
     "⚠️ 本仓库规则（违反要重做）：",
     RULES,
@@ -110,11 +111,11 @@ const cover = await runs.run("cover", {
     "  3. logo 缺失时从 simple-icons 取：",
     "     https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/<name>.svg",
     "     栅格化成 tools/logos/<name>.png（同色剪影，1024 宽，透明底）。",
-    "  4. 跑 `python tools/make-covers.py --only <slug>` 生成 " + repo + "/source/img/<slug>.jpg（900x675）。",
+    "  4. 跑 `python tools/make-covers.py --only <slug>` 生成 900x675。脚本按「引用它的文章」自动落到 source/img/<年>/<月>/，文章还没写 frontmatter 时加 --dir 指定。",
     "",
     "B. 没有对应 logo（算法、AI 概念、项目拆解等）→ tools/hunyuan-covers.py 用混元生图：",
     "  1. 在 PROMPTS 里加一条 <slug> 的 prompt（英文，主题描述具体有画面感）。",
-    "  2. 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动压到 900x675 并打印亮度/留白。",
+    "  2. 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动压到 900x675、落盘到文章的年/月目录并打印亮度/留白。",
     "  3. 按脚本输出的硬指标自检，不合格就改 prompt 只重跑该张：",
     "     - 平均亮度 ≥ 200（白底；脚本会警告「底色偏暗」）",
     "     - 内容距四边留白 ≥ 3%（脚本打印「留白 xx%」，低于 3% 会警告「构图贴边」）",
@@ -125,7 +126,7 @@ const cover = await runs.run("cover", {
     "     冒出文字 → 明确 `no text, no letters, no numbers, no watermark`。",
     "",
     "配色硬约束（两条路必须一致）：白底 #FFFFFF，主题蓝 #425AEF，辅色青 #00c4b6，尺寸 900x675。",
-    "最后确保 frontmatter 的 cover 字段是 /img/<slug>.jpg，返回图片路径、尺寸、大小、自检结论。"
+    "最后把 frontmatter 的 cover 改成图片的实际路径（/img/<年>/<月>/<slug>.jpg），返回图片路径、尺寸、大小、自检结论。"
   ].join("\n"),
   toolBudget: { soft: 24, hard: 40 }
 });

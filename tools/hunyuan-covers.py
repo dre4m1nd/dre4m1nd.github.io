@@ -6,6 +6,9 @@
 #
 # 配色硬约束（和主题一致）：白底 #FFFFFF、主色蓝 #425AEF、辅色青 #00c4b6，
 # 生成后自动压到 900x675（4:3）quality 85。
+# 落盘目录：文章封面 source/img/<年>/<月>/，站点级图片 source/img/common/
+# （按「哪篇文章引用了这张封面」自动定位，见 tools/imgpaths.py；文章还没写
+#   frontmatter 时加 --dir <目录>）
 #
 # 前提：去 https://console.cloud.tencent.com/tokenhub/inference 开通后付费
 # （首次会有免费额度，或直接按量计费）
@@ -14,7 +17,9 @@
 #   $env:HUNYUAN_API_KEY = "sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810HjeYa2DNvljuAa"   # 也可不设，脚本里已带 key
 #   python tools/hunyuan-covers.py                  # 全部
 #   python tools/hunyuan-covers.py --only cover-kmp # 指定几张
+#   python tools/hunyuan-covers.py --only <key> --dir source/img/2026/12
 #   python tools/hunyuan-covers.py --dry-run        # 只试第一张
+
 
 import json
 import os
@@ -22,6 +27,8 @@ import sys
 import time
 import urllib.request
 import urllib.error
+
+from imgpaths import cover_dir
 
 from PIL import Image
 
@@ -133,11 +140,14 @@ def main():
     if dry:
         targets = targets[:1]
 
-    os.makedirs('source/img', exist_ok=True)
+    dir_arg = args[args.index('--dir') + 1] if '--dir' in args else ''
+
     ok = fail = 0
 
     for slug in targets:
-        dest = 'source/img/%s.jpg' % slug
+        out_dir = dir_arg or cover_dir(slug)
+        os.makedirs(out_dir, exist_ok=True)
+        dest = os.path.join(out_dir, slug + '.jpg')
         try:
             resp = generate(PROMPTS[slug])
             data = extract_image_url(resp)
@@ -150,8 +160,8 @@ def main():
                 warn.append('底色偏暗(亮度%.0f)' % mean)
             if margin < 0.03:
                 warn.append('构图贴边(留白%.1f%%)' % (margin * 100))
-            print('OK   %-22s %s %3dKB 亮度%.0f 留白%.0f%%%s' % (
-                slug, size, kb, mean, margin * 100,
+            print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s' % (
+                dest.replace('\\', '/'), size, kb, mean, margin * 100,
                 ('  ⚠️ ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else ''))
             time.sleep(0.4)
         except urllib.error.HTTPError as e:

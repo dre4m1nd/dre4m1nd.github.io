@@ -8,7 +8,7 @@ tags:
   - Node.js
   - Koa
   - 后端
-cover: /img/cover-koa.jpg
+cover: /img/2026/10/cover-koa.jpg
 ---
 
 ## Koa 是什么

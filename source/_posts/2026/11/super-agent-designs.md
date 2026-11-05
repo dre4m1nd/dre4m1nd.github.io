@@ -9,7 +9,7 @@ tags:
   - Agent
   - 架构
   - Super Agent
-cover: /img/super-agent-designs.jpg
+cover: /img/2026/11/super-agent-designs.jpg
 ---
 
 ## 摘要

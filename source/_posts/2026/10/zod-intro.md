@@ -9,7 +9,7 @@ tags:
   - TypeScript
   - Zod
   - 校验
-cover: /img/cover-zod.jpg
+cover: /img/2026/10/cover-zod.jpg
 ---
 
 ## Zod 是什么

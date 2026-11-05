@@ -112,9 +112,15 @@ highlight_shrink: true       # 代码块默认折叠
 
 封面按文章主题分两条路，**配色硬约束一致**：白底 `#FFFFFF`、主题蓝 `#425AEF`、辅色青 `#00c4b6`，输出 900x675。流程与坑也写在 `.pi/workflows/blog-write.js` 的阶段 3。
 
+**图片目录规则（2026-11 起）**
+- 文章封面跟着文章走：`source/img/<年>/<月>/<key>.jpg`，frontmatter 的 `cover` 也写这个路径
+- 站点级图片（默认封面、banner）在 `source/img/common/<key>.jpg`
+- 两个封面脚本自动定位目录（按「哪篇文章引用了这张图」，见 `tools/imgpaths.py`），文章挪年月会自动跟上；文章还没写 frontmatter 时加 `--dir <目录>`
+- 脚本**不会**改 frontmatter，生成后自己同步 `cover` 字段，别只改文件
+
 **A. 框架/工具/库（有官方 logo）→ `tools/make-covers.py`（PIL 本地合成，不用生图 API）**
 - 白底 + 官方 logo + 英文名 + 中文副标题 + 品牌色短线
-- 清单在脚本里的 `COVERS` 字典，key 就是 `source/img/<key>.jpg` 的文件名
+- 清单在脚本里的 `COVERS` 字典，key 是封面文件名（不含路径）
 - 单张：`python tools/make-covers.py --only cover-hono`；全部：`python tools/make-covers.py`
 - 预览不覆盖：`python tools/make-covers.py --preview`（写到 `.tmp-img/`，已被 gitignore）
 - 新增框架：从 `https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/<name>.svg` 取图标，栅格化成 1024 宽透明 PNG 放 `tools/logos/`，再加一条 `COVERS` 配置
@@ -123,7 +129,7 @@ highlight_shrink: true       # 代码块默认折叠
 
 **B. 没有 logo 的（算法笔记、AI 概念、项目拆解、默认封面）→ `tools/hunyuan-covers.py`（混元生图）**
 - prompt 模板 `STYLE` 已锁死主题配色（白底 + `#425AEF` + `#00c4b6`、扁平矢量、整幅不裁切、无文字无水印），只需在 `PROMPTS` 加每篇的主题描述
-- 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载并压到 900x675
+- 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载、压到 900x675 并落盘到文章对应年/月目录（默认封面落 `source/img/common/`）
 - 脚本自带硬指标，不合格必须改 prompt 只重跑该张（别整批重跑）：
   - 平均亮度 ≥ 200（白底，否则报「底色偏暗」）
   - 内容距四边留白 ≥ 3%（否则报「构图贴边」）
@@ -134,6 +140,7 @@ highlight_shrink: true       # 代码块默认折叠
 
 - `python tools/check-links.py`：构建后自查站内死链（扫 `public/**/*.html` 的 `href="/..."` 逐个对落盘文件），有死链返回 1，`-v` 列出引用页。**发布前必跑**，它抓出过首页分类卡 404 那类问题。
 - `python tools/make-covers.py --preview`：预览封面不覆盖 `source/img`
+- `tools/imgpaths.py`：封面目录推导（哪个脚本都不用改），它看的是「哪篇文章引用了这张图」
 
 ## 改主题配置的坑（都是实际踩过的）
 

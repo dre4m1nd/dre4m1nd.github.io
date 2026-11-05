@@ -8,7 +8,7 @@ tags:
   - Node.js
   - Express
   - 后端
-cover: /img/cover-express.jpg
+cover: /img/2026/10/cover-express.jpg
 ---
 
 ## 入门：先跑起来

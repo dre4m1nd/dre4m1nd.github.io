@@ -8,7 +8,7 @@ tags:
   - AI
   - Agent
   - 架构
-cover: /img/agent-state-machines.jpg
+cover: /img/2026/11/agent-state-machines.jpg
 ---
 
 ## 摘要

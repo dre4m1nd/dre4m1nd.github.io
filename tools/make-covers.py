@@ -2,13 +2,18 @@
 # 用 PIL 合成博客封面：白底 + 官方 logo + 英文名 + 中文副标题
 # 纯本地生成，不依赖浏览器/生图 API。全站技术笔记统一这一套版式。
 #
+# 落盘目录（见 tools/imgpaths.py）：文章封面写 source/img/<年>/<月>/，站点级图片写 source/img/common/。
+# 脚本按「哪篇文章引用了这张封面」自动定位；文章还没写 frontmatter 时用 --dir 指定。
+#
 # 用法：
 #   python tools/make-covers.py                  # 全部
 #   python tools/make-covers.py --only cover-hono,cover-zod
+#   python tools/make-covers.py --only <key> --dir source/img/2026/12
 #   python tools/make-covers.py --preview        # 只出 PNG 预览到 .tmp-img/，不覆盖 source/img
 #
 # logo 素材在 tools/logos/（simple-icons 的 SVG 已栅格化成同色 PNG；
-# MyBatis 用官方 GitHub 头像，Koa 用官方 wordmark）
+# MyBatis 用官方 bird SVG，Koa 用官方 wordmark）
+
 
 import argparse
 import io
@@ -16,6 +21,9 @@ import os
 import sys
 
 from PIL import Image, ImageDraw, ImageFont
+
+from imgpaths import cover_dir
+
 
 W, H = 1280, 960          # 渲染尺寸（4:3），最后压到 OUT_W
 OUT_W = 900
@@ -196,6 +204,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--only', default='')
     ap.add_argument('--preview', action='store_true')
+    ap.add_argument('--dir', default='', help='指定落盘目录（文章还没写 frontmatter 时用）')
     args = ap.parse_args()
 
     only = {s.strip() for s in args.only.split(',') if s.strip()}
@@ -204,13 +213,13 @@ def main():
         print('没有匹配的封面 key:', args.only)
         return 1
 
-    out_dir = '.tmp-img' if args.preview else 'source/img'
-    os.makedirs(out_dir, exist_ok=True)
     for k in keys:
+        out_dir = '.tmp-img' if args.preview else (args.dir or cover_dir(k))
+        os.makedirs(out_dir, exist_ok=True)
         ext = 'png' if args.preview else 'jpg'
         path = os.path.join(out_dir, k + '.' + ext)
         canvas = render(COVERS[k], path)
-        print('saved %-22s %s %dKB' % (os.path.basename(path), canvas.size,
+        print('saved %-34s %s %dKB' % (path.replace('\\', '/'), canvas.size,
                                       os.path.getsize(path) // 1024))
     return 0
 

@@ -9,7 +9,7 @@ tags:
   - MyBatis
   - MyBatis-Plus
   - 后端
-cover: /img/cover-mybatis.jpg
+cover: /img/2026/10/cover-mybatis.jpg
 ---
 
 ## MyBatis 是什么

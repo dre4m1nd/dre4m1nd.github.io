@@ -10,7 +10,7 @@ tags:
   - Vue
   - Spring Boot
   - 安全
-cover: /img/cover-cipherlens.jpg
+cover: /img/2026/10/cover-cipherlens.jpg
 ---
 
 ## 项目概览

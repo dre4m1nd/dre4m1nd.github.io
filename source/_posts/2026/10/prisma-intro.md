@@ -9,7 +9,7 @@ tags:
   - Prisma
   - ORM
   - 数据库
-cover: /img/cover-prisma.jpg
+cover: /img/2026/10/cover-prisma.jpg
 ---
 
 ## Prisma 是什么

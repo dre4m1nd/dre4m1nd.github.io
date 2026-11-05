@@ -9,7 +9,7 @@ tags:
   - Drizzle
   - ORM
   - 数据库
-cover: /img/cover-drizzle.jpg
+cover: /img/2026/10/cover-drizzle.jpg
 ---
 
 ## Drizzle 是什么

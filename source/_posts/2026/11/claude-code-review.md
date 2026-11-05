@@ -9,7 +9,7 @@ tags:
   - 代码审查
   - 工程实践
   - Claude Code
-cover: /img/cover-code-review.jpg
+cover: /img/2026/11/cover-code-review.jpg
 ---
 
 ## 摘要
@@ -80,7 +80,7 @@ cover: /img/cover-code-review.jpg
 
 Claude Code 团队的做法是一条**七层流水线**。这张图来自原文，把一次改动从作者机器到用户的过程完整画了出来：
 
-![FIG A：一次改动的生命周期](/img/code-review-fig-a.jpg)
+![FIG A：一次改动的生命周期](/img/2026/11/code-review-fig-a.jpg)
 
 > 图 1：一次改动的完整生命周期（源自原文）。绿色 = 自动化，橙色菱形 = 按风险由人决定，循环箭头 = 出错后的恢复。
 

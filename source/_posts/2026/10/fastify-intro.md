@@ -8,7 +8,7 @@ tags:
   - Node.js
   - Fastify
   - 后端
-cover: /img/cover-fastify.jpg
+cover: /img/2026/10/cover-fastify.jpg
 ---
 
 ## Fastify 是什么
