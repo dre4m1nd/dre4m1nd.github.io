@@ -75,18 +75,31 @@ const draft = await runs.run("draft", {
   toolBudget: { soft: 24, hard: 40 }
 });
 
-// ── 阶段 3：配图 —— 生成封面 ──
+// ── 阶段 3：配图 —— 用腾讯混元 TokenHub 生成封面 ──
 const cover = await runs.run("cover", {
   label: "阶段3 配图：封面图",
   agent: "worker",
   task: [
     "给文章 " + slug + "（" + repo + "）配封面图。",
-    "用 SiliconFlow 的 Tongyi-MAI/Z-Image-Turbo 生成一张抽象、贴合主题的图，",
-    "存到 " + repo + "/source/img/" + slug + ".jpg，用 PIL 压到 900 宽左右（quality 82）。",
-    "确保 frontmatter 的 cover 字段是 /img/" + slug + ".jpg。",
-    "返回图片路径和大小。"
+    "",
+    "用腾讯混元 TokenHub API 生成（环境变量 HUNYUAN_API_KEY 里有 key）：",
+    "  端点: https://tokenhub.tencentmaas.com/v1/wand/hunyuan-image/v35-generation",
+    "  模型: hy-image-v3.5-preview",
+    "  鉴权: Authorization: Bearer $HUNYUAN_API_KEY",
+    "  参数: {\"model\":\"hy-image-v3.5-preview\",\"messages\":[{\"role\":\"user\",\"content\":[{\"type\":\"text\",\"text\":<prompt>}]}],\"size\":\"1280x960\"}",
+    "",
+    "prompt 风格（务必遵守，保证全站统一）：",
+    "  格式: 'abstract illustration of <主题描述>, dark navy background, violet and teal gradient, <风格关键词>, no text'",
+    "  主题描述要具体有画面感（例：'glowing concentric onion layers with arrows spiraling' 而不是 'a picture of koa'）",
+    "  风格关键词可选：clean modern tech aesthetic / cinematic depth / minimalist / no text",
+    "",
+    "生成后：",
+    "  1. 保存到 " + repo + "/source/img/" + slug + ".jpg",
+    "  2. 用 PIL 压到 900 宽（quality 85）",
+    "  3. 确保 frontmatter 的 cover 字段是 /img/" + slug + ".jpg",
+    "  4. 返回图片路径和大小。"
   ].join("\n"),
-  toolBudget: { soft: 16, hard: 30 }
+  toolBudget: { soft: 20, hard: 36 }
 });
 
 // ── 阶段 4：审查 —— 准确性/结构/代码 ──

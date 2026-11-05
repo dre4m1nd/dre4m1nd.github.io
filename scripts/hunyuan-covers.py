@@ -1,18 +1,15 @@
 # scripts/hunyuan-covers.py
-# 用腾讯混元生图（极速版 TextToImageLite）重做博客封面
-# 免费额度：每个接口 50 次，23 张完全够
+# 用腾讯 TokenHub 混元 hy-image-v3.5-preview 生成博客封面
 #
-# 用法（PowerShell）：
-#   $env:TENCENT_SECRET_ID  = "AKIDxxxx"
-#   $env:TENCENT_SECRET_KEY = "xxxx"
-#   python scripts/hunyuan-covers.py                    # 全部
-#   python scripts/hunyuan-covers.py --only cover-hono  # 指定几张
-#   python scripts/hunyuan-covers.py --dry-run          # 只测第一张
+# 前提：去 https://console.cloud.tencent.com/tokenhub/inference 开通后付费
+# （首次会有免费额度，或直接按量计费）
+#
+# 用法：
+#   $env:HUNYUAN_API_KEY = "sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810HjeYa2DNvljuAa"
+#   python scripts/hunyuan-covers.py                      # 全部
+#   python scripts/hunyuan-covers.py --only cover-hono    # 指定几张
+#   python scripts/hunyuan-covers.py --dry-run            # 先试一张
 
-import base64
-import hashlib
-import hmac
-import io
 import json
 import os
 import sys
@@ -20,106 +17,76 @@ import time
 import urllib.request
 import urllib.error
 
-HOST = 'aiart.tencentcloudapi.com'
-SERVICE = 'aiart'
-VERSION = '2022-12-29'
-ACTION = 'TextToImageLite'
-REGION = 'ap-guangzhou'
+# API 配置
+API_URL = 'https://tokenhub.tencentmaas.com/v1/wand/hunyuan-image/v35-generation'
+MODEL = 'hy-image-v3.5-preview'
+KEY = os.environ.get('HUNYUAN_API_KEY', 'sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810HjeYa2DNvljuAa')
 
-SECRET_ID = os.environ.get('TENCENT_SECRET_ID', '')
-SECRET_KEY = os.environ.get('TENCENT_SECRET_KEY', '')
+# 封面尺寸 1280x960（4:3）
+SIZE = '1280x960'
 
-# 每篇一个专属 prompt（中文，混元推荐中文）
+# 23 篇封面的 prompt（英文，混元对英文理解好）
 PROMPTS = {
-    'banner': '深邃海军蓝背景上的终端窗口与层叠代码流，汇入相互连接的节点网络，紫青渐变，微妙网格纹理，电影级景深，干净现代科技感',
-    'cover-binary': '发光的放大镜悬在有序数字线上方，中点被高亮，深蓝背景，紫青渐变，精准检索的概念，无文字',
-    'cover-kmp': '一根发光的针穿过由字母组成的干草堆，背后是模式数组，深蓝背景，紫青渐变，字符串匹配的概念，无文字',
-    'cover-quicksort': '发光的枢轴元素把数组分成左右两区，扫掠箭头，深蓝背景，紫青渐变，排序的概念，无文字',
-    'cover-compare': '四根不同高度与颜色的发光柱子并排而立，深蓝背景，紫青渐变，对比的概念，无文字',
-    'cover-express': '一个极简的发光的网页服务器，只有一条路由路径和请求响应箭头，深蓝背景，紫青渐变，极简的概念，无文字',
-    'cover-hono': '一根由光构成的发光羽毛，周围漂浮着微小的服务器节点，深蓝背景，紫青渐变，边缘计算的概念，无文字',
-    'cover-fastify': '一道发光的闪电击穿数据库结构图，深蓝背景，紫青渐变，速度与校验的概念，无文字',
-    'cover-koa': '发光的同心洋葱层，请求与响应的箭头向内向外螺旋，深蓝背景，紫青渐变，中间件分层概念，无文字',
-    'cover-nestjs': '发光的嵌套六边形模块组成结构化架构，深蓝背景，紫青渐变，模块化的概念，无文字',
-    'cover-prisma': '发光的数据库圆柱体，上方漂浮一张数据模型卡片，深蓝背景，紫青渐变，数据建模概念，无文字',
-    'cover-drizzle': '发光的 SQL 查询由发光的表格积木搭建而成，深蓝背景，紫青渐变，查询构建器概念，无文字',
-    'cover-mybatis': '发光的线条构成大象剪影，下方是一份 XML 文档，深蓝背景，紫青渐变，Java 持久层概念，无文字',
-    'cover-zod': '发光的盾牌带对勾，周围漂浮着结构字段，深蓝背景，紫青渐变，校验的概念，无文字',
-    'cover-linux': '发光的终端窗口，里面是命令行，旁边有企鹅剪影，深蓝背景，紫青渐变，shell 概念，无文字',
-    'cover-cipherlens': '放大镜审视着一把挂锁，周围有密码符号，深蓝背景，紫青渐变，安全分析概念，无文字',
-    'cover-code-review': '发光的漏斗过滤着代码碎片，底部是一小群人影，深蓝背景，紫青渐变，自动化筛选概念，无文字',
-    'agent-state-machines': '发光的状态机节点由转移箭头连接成分层流程，深蓝背景，紫青渐变，确定性脚手架概念，无文字',
-    'ai-critical-thinking': '一只人眼旁边是一团发光的神经网络大脑，深蓝背景，紫青渐变，批判性思考概念，无文字',
-    'super-agent-designs': '中央发光的枢纽把任务派发给许多微小的工作节点，两层架构，深蓝背景，紫青渐变，编排的概念，无文字',
-    'cover-code': '发光的代码括号、终端窗口与几何图形，深蓝背景，紫青渐变，通用科技美学，无文字',
-    'cover-notes': '发光的笔记本纸页，上面有抽象的代码与图示符号，深蓝背景，紫青渐变，笔记概念，无文字',
-    'cover-tools': '发光的各类工具图标排成网格，深蓝背景，紫青渐变，工具的概念，无文字',
+    'banner': 'wide panoramic abstract illustration of a glowing terminal window with layered code streams flowing into a connected node network, dark navy background, violet and teal gradient, subtle grid texture, cinematic depth, clean modern tech aesthetic, no text',
+    'cover-binary': 'abstract illustration of a glowing magnifying glass hovering above a sorted number line with a highlighted midpoint, dark navy background, violet and teal gradient, precision search concept, no text',
+    'cover-kmp': 'abstract illustration of a glowing needle passing through a haystack of floating letters with a pattern array behind it, dark navy background, violet and teal gradient, string matching concept, no text',
+    'cover-quicksort': 'abstract illustration of a glowing pivot element splitting an array into left and right partitions with sweeping motion arrows, dark navy background, violet and teal gradient, sorting concept, no text',
+    'cover-compare': 'abstract illustration of four glowing pillars of different heights standing side by side for comparison, dark navy background, violet and teal gradient, no text',
+    'cover-express': 'abstract illustration of a minimal glowing web server with a single route path and request response arrows, dark navy background, violet and teal gradient, no text',
+    'cover-hono': 'abstract illustration of a glowing feather made of light with tiny floating server nodes around it, dark navy background, violet and teal gradient, edge computing concept, no text',
+    'cover-fastify': 'abstract illustration of a glowing lightning bolt striking through a database schema diagram, dark navy background, violet and teal gradient, speed and validation concept, no text',
+    'cover-koa': 'abstract illustration of glowing concentric onion layers with request and response arrows spiraling inward and outward, dark navy background, violet and teal gradient, middleware layers concept, no text',
+    'cover-nestjs': 'abstract illustration of glowing nested hexagonal modules forming a structured architecture, dark navy background, violet and teal gradient, modular design concept, no text',
+    'cover-prisma': 'abstract illustration of a glowing database cylinder with a floating schema definition card above it, dark navy background, violet and teal gradient, data modeling concept, no text',
+    'cover-drizzle': 'abstract illustration of a glowing SQL query being assembled from glowing table blocks, dark navy background, violet and teal gradient, query builder concept, no text',
+    'cover-mybatis': 'abstract illustration of a glowing elephant silhouette formed by light lines above an XML document, dark navy background, violet and teal gradient, java persistence concept, no text',
+    'cover-zod': 'abstract illustration of a glowing shield with a checkmark surrounded by floating schema field labels, dark navy background, violet and teal gradient, validation concept, no text',
+    'cover-linux': 'abstract illustration of a glowing terminal window with command lines and a small penguin silhouette, dark navy background, violet and teal gradient, shell concept, no text',
+    'cover-cipherlens': 'abstract illustration of a magnifying glass examining a padlock surrounded by cipher symbols, dark navy background, violet and teal gradient, security analysis concept, no text',
+    'cover-code-review': 'abstract illustration of a glowing funnel filtering code fragments down to a small group of human reviewers, dark navy background, violet and teal gradient, automated filtering concept, no text',
+    'agent-state-machines': 'abstract illustration of glowing state machine nodes connected by transition arrows in a layered flow diagram, dark navy background, violet and teal gradient, deterministic scaffolding concept, no text',
+    'ai-critical-thinking': 'abstract illustration of a human eye next to a glowing neural network brain, dark navy background, violet and teal gradient, critical thinking concept, no text',
+    'super-agent-designs': 'abstract illustration of a central glowing hub dispatching tasks to many small worker nodes in a two-layer architecture, dark navy background, violet and teal gradient, orchestration concept, no text',
+    'cover-code': 'abstract illustration of glowing code brackets, a terminal window and geometric shapes, dark navy background, violet and teal gradient, general tech aesthetic, no text',
+    'cover-notes': 'abstract illustration of glowing notebook pages with abstract code and diagram marks, dark navy background, violet and teal gradient, notes concept, no text',
+    'cover-tools': 'abstract illustration of glowing tool icons arranged in a neat grid, dark navy background, violet and teal gradient, tooling concept, no text',
 }
 
 
-def sha256_hex(s):
-    return hashlib.sha256(s.encode('utf-8')).hexdigest()
-
-
-def hmac256(key, msg):
-    return hmac.new(key, msg.encode('utf-8'), hashlib.sha256).digest()
-
-
-def call_api(payload):
-    """TC3-HMAC-SHA256 签名并调用"""
-    body = json.dumps(payload, ensure_ascii=False)
-    ts = int(time.time())
-    date = time.strftime('%Y-%m-%d', time.gmtime(ts))
-
-    # 1. 规范请求串
-    ct = 'application/json; charset=utf-8'
-    canonical_headers = 'content-type:%s\nhost:%s\nx-tc-action:%s\n' % (ct, HOST, ACTION.lower())
-    signed_headers = 'content-type;host;x-tc-action'
-    hashed_payload = sha256_hex(body)
-    canonical_request = '\n'.join(['POST', '/', '', canonical_headers, signed_headers, hashed_payload])
-
-    # 2. 待签名字符串
-    credential_scope = '%s/%s/tc3_request' % (date, SERVICE)
-    string_to_sign = '\n'.join([
-        'TC3-HMAC-SHA256', str(ts), credential_scope, sha256_hex(canonical_request)
-    ])
-
-    # 3. 计算签名
-    secret_date = hmac256(('TC3' + SECRET_KEY).encode('utf-8'), date)
-    secret_service = hmac256(secret_date, SERVICE)
-    secret_signing = hmac256(secret_service, 'tc3_request')
-    signature = hmac.new(secret_signing, string_to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
-
-    # 4. 拼接 Authorization
-    authorization = ('TC3-HMAC-SHA256 Credential=%s/%s, SignedHeaders=%s, Signature=%s'
-                     % (SECRET_ID, credential_scope, signed_headers, signature))
-
-    headers = {
-        'Authorization': authorization,
-        'Content-Type': ct,
-        'Host': HOST,
-        'X-TC-Action': ACTION,
-        'X-TC-Version': VERSION,
-        'X-TC-Timestamp': str(ts),
-        'X-TC-Region': REGION,
+def generate(prompt, size=SIZE):
+    body = {
+        'model': MODEL,
+        'messages': [{
+            'role': 'user',
+            'content': [{'type': 'text', 'text': prompt}],
+        }],
     }
-    req = urllib.request.Request('https://' + HOST, data=body.encode('utf-8'),
-                                 headers=headers, method='POST')
-    with urllib.request.urlopen(req, timeout=120) as r:
-        return json.load(r)
+    # 尺寸参数（如果 API 支持）
+    try:
+        body['size'] = size
+    except Exception:
+        pass
+
+    data = json.dumps(body, ensure_ascii=False).encode('utf-8')
+    req = urllib.request.Request(API_URL, data=data, method='POST', headers={
+        'Authorization': 'Bearer ' + KEY,
+        'Content-Type': 'application/json',
+    })
+    with urllib.request.urlopen(req, timeout=180) as r:
+        return json.loads(r.read().decode('utf-8'))
+
+
+def download(url, dest):
+    with urllib.request.urlopen(url, timeout=180) as r:
+        data = r.read()
+    with open(dest, 'wb') as f:
+        f.write(data)
+    return len(data)
 
 
 def main():
-    if not SECRET_ID or not SECRET_KEY:
-        print('错误：缺少腾讯云凭证。PowerShell 里先设置：')
-        print('  $env:TENCENT_SECRET_ID  = "AKIDxxxx"')
-        print('  $env:TENCENT_SECRET_KEY = "xxxx"')
-        sys.exit(1)
-
     args = sys.argv[1:]
-    only = None
-    if '--only' in args:
-        only = args[args.index('--only') + 1].split(',')
+    only = args[args.index('--only') + 1].split(',') if '--only' in args else None
     dry = '--dry-run' in args
 
     targets = [k for k in PROMPTS if not only or k in only]
@@ -132,36 +99,37 @@ def main():
     for slug in targets:
         dest = 'source/img/%s.jpg' % slug
         try:
-            resp = call_api({
-                'Prompt': PROMPTS[slug],
-                'Resolution': '1280:960',      # 4:3
-                'Seed': 0,
-                'LogoAdd': 0,                   # 不加"AI生成"水印
-                'RspImgType': 'url',
-            })
-            r = resp.get('Response', {})
-            if r.get('Error'):
-                raise RuntimeError('%s: %s' % (r['Error'].get('Code'), r['Error'].get('Message')))
-            url = r.get('ResultImage')
-            if not url:
-                raise RuntimeError('无 ResultImage：' + json.dumps(r, ensure_ascii=False)[:150])
-            with urllib.request.urlopen(url, timeout=180) as img:
-                data = img.read()
-            with open(dest, 'wb') as f:
-                f.write(data)
+            resp = generate(PROMPTS[slug])
+            # 返回格式可能有多种，兼容几种
+            data = None
+            if 'data' in resp and isinstance(resp['data'], list) and resp['data']:
+                data = resp['data'][0]
+            elif 'images' in resp:
+                data = resp['images'][0]
+            elif 'output' in resp:
+                data = resp['output']
+            if not data:
+                raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:200])
+            url = data.get('url') or data.get('b64_json')
+            if data.get('b64_json'):
+                import base64
+                with open(dest, 'wb') as f:
+                    f.write(base64.b64decode(data['b64_json']))
+            else:
+                n = download(url, dest)
             ok += 1
-            print('OK  ', slug, '(%dKB)' % (len(data) // 1024))
-            time.sleep(0.5)
+            print('OK  ', slug)
+            time.sleep(0.4)
         except urllib.error.HTTPError as e:
             fail += 1
-            print('FAIL', slug, e.code, e.read()[:150].decode('utf-8', 'ignore'))
+            print('FAIL', slug, e.code, e.read().decode('utf-8', 'ignore')[:200])
         except Exception as e:
             fail += 1
-            print('FAIL', slug, str(e)[:150])
+            print('FAIL', slug, str(e)[:200])
 
     print('\n完成：%d 成功 / %d 失败' % (ok, fail))
     if ok:
-        print('\n下一步：python scripts/resize-covers.py')
+        print('下一步：python scripts/resize-covers.py')
 
 
 if __name__ == '__main__':
