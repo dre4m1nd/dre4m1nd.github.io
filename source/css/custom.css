@@ -156,8 +156,7 @@
 
 /* ---------- 首页分类横栏：桌面端与 hero 三张分类卡 + 顶部菜单「分类」完全重复，隐藏 ----------
    主题模板 index.pug 里写死、没有配置开关，只能这样去掉。
-   移动端（≤768px）不能藏：主题在窄屏会 display:none 掉 .categoryGroup 卡片，
-   这条 sticky 横栏是手机上唯一的分类入口。 */
+   移动端（≤768px）保留：窄屏下它变成 position:sticky，卡片滚出视口后仍是分类入口。 */
 @media screen and (min-width: 769px) {
   #categoryBar {
     display: none;
