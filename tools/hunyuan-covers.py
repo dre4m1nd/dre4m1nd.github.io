@@ -55,6 +55,7 @@ TEXTS = {
     'cover-quicksort':   '快速排序',
     'cover-cipherlens':  'CipherLens 拆解',
     'agent-state-machines':   'Agent 状态机',
+    'agents-going-async':     'Agent 异步',
     'ai-critical-thinking':   '批判性思考',
     'cover-code-review':      '代码审查',
     'super-agent-designs':    'Super Agent',
@@ -73,6 +74,7 @@ PROMPTS = {
     # ── AI 笔记 ──
     'ai-critical-thinking':   'flat vector icon of a human head profile drawn as a simple line-art outline containing a glowing network of nodes, three gears beside it with one gear highlighted, critical thinking concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no gray statue, no beige or warm tones, no text, no letters, no watermark',
     'agent-state-machines':   'flat vector diagram of four small circular states connected in a closed loop by curved arrows, one circle filled solid blue as the current state, others outlined, deterministic state machine concept, zoomed out wide shot, entire diagram fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no tree, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    'agents-going-async':     'flat vector illustration of one central orchestrator node beside a chat bubble, thin arrows fanning out to several small independent worker nodes running in parallel in the background, asynchronous task orchestration concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'cover-code-review':      'flat vector illustration of curly code brackets flowing down into a funnel and out into a rounded checklist card with a checkmark, automated code review concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'super-agent-designs':    'flat vector illustration of a central glowing hub dispatching tasks along thin arrows to many small worker nodes arranged in two layers, orchestration concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     # ── 默认封面（frontmatter 没写 cover 时随机用）──
