@@ -38,7 +38,8 @@ const RULES = [
   "不碰 themes/：样式只进 source/css/custom.css，主题配置只进 _config.anzhiyu.yml。",
   "图片跟文章走：封面放 source/img/<年>/<月>/（frontmatter cover 写 /img/<年>/<月>/<slug>.jpg），",
   "  站点级图片（默认封面、banner）在 source/img/common/。",
-  "代码块一律带语言标记；结尾章节统一「重点总结」+「参考」。"
+  "代码块一律带语言标记；结尾章节统一「重点总结」+「参考」。",
+  "标题自动编号：发布前跑 `python tools/number-headings.py <文章路径>` 给 ##（1.）/###（1.1）加序号（脚本幂等，改了标题重跑不会重复加号）；不要手写序号。"
 ].join("\n");
 
 // ── 阶段 1：调研（有原文就跳过，直接当资料）──
@@ -161,6 +162,7 @@ const publish = await runs.run("publish", {
     "⚠️ 修订时用 write 整文件重写，不要用 edit 增量改。",
     "",
     "然后发布（每一步都要看结果，不能跳过）：",
+    "0) python tools/number-headings.py <本篇文章的 .md 路径> —— 自动给 ## / ### 加 1./1.1 序号（幂等，重跑安全）",
     "1) npx hexo clean && npx hexo generate —— 无报错、文章数正确",
     "2) python tools/check-links.py —— 有死链必须修掉再继续（非 0 返回码就是有）",
     "3) 若这篇用了新分类：确认 _config.yml 的 category_map 和 _config.anzhiyu.yml 的",

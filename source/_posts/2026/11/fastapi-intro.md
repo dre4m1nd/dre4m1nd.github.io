@@ -12,7 +12,7 @@ tags:
 cover: /img/2026/11/cover-fastapi-py.jpg
 ---
 
-## FastAPI 是什么
+## 1. FastAPI 是什么
 
 FastAPI 是 Python 的现代 Web 框架，站在两个库肩上：**Starlette 管 Web 部分（ASGI、路由、中间件），Pydantic 管数据部分（校验、序列化）**。它的核心思路只有一句：**把类型注解当契约，一次声明，四处受益**。
 
@@ -42,9 +42,9 @@ async def read_item(item_id: int) -> Item:
 
 一句话选型：**要"类型安全 + 自动文档 + 异步"的 API 服务，选 FastAPI；要 Admin/ORM/全家桶的中后台，Django 仍然更省事。**
 
-## 环境与起步
+## 2. 环境与起步
 
-### 装什么
+### 2.1. 装什么
 
 FastAPI 要求 **Python ≥ 3.10**（0.162 的 `requires_python`）。官方推荐用 `uv` 管项目，用 pip 也行：
 
@@ -73,7 +73,7 @@ pip install "fastapi[standard]"
 | `jinja2` | 模板渲染 |
 | `opentelemetry-sdk` + `otlp-proto-http` | 0.142 起内置的 OTel 遥测 |
 
-### 最小可运行
+### 2.2. 最小可运行
 
 ```python
 # main.py
@@ -120,7 +120,7 @@ fastapi run main.py     # 生产：0.0.0.0:8000，无重载
 
 > 容器里跑 `fastapi dev` 会连不上：它只绑 `127.0.0.1`。要调试就用 `fastapi dev --host 0.0.0.0` 或直接 `uvicorn main:app --host 0.0.0.0`。
 
-## 参数从哪来：一条判断规则
+## 3. 参数从哪来：一条判断规则
 
 FastAPI 的参数来源判定很简单，记住这张表就不会猜错：
 
@@ -148,7 +148,7 @@ async def search(
 
 `?tags=a&tags=b` 会解析成 `["a", "b"]`；`Header()` 默认把下划线转成中划线（`user_agent` → `User-Agent`），不想转就 `Header(convert_underscores=False)`。
 
-### 参数模型：一组查询参数收进一个类
+### 3.1. 参数模型：一组查询参数收进一个类
 
 参数多起来时，别再往函数签名里堆。用 Pydantic 模型 + `Query()`（**0.115 起支持**）：
 
@@ -186,7 +186,7 @@ def sibling(f: Annotated[Filter, Query()], q: str | None = None): ...
 
 这是 0.160 的破坏性变更，升级时要检查"同一位置既有 forbid 模型、又有裸参数"的端点。
 
-## Pydantic v2：校验的实际用法
+## 4. Pydantic v2：校验的实际用法
 
 FastAPI 0.100 之后全面转向 Pydantic v2，写法有几处和 v1 不同（`model_config` 取代 `class Config`、`model_validate` 取代 `parse_obj`）。日常最常用的三件事：
 
@@ -205,7 +205,7 @@ class UserOut(BaseModel):
     email: str
 ```
 
-### 输入模型和输出模型分开
+### 4.1. 输入模型和输出模型分开
 
 **永远不要把"能写入的字段"和"能读出的字段"用同一个模型**。分开写有三个实际好处：
 
@@ -222,7 +222,7 @@ async def read_item(item_id: int):
 
 这个行为值得亲手验证一次：`response_model` 不是"提示"，是真的会把多出来的字段丢掉。
 
-### 校验失败长什么样
+### 4.2. 校验失败长什么样
 
 422 的响应体结构固定，前端可以直接按 `loc` 定位到字段：
 
@@ -233,7 +233,7 @@ async def read_item(item_id: int):
 
 `loc` 的第一段就是位置（`path` / `query` / `header` / `cookie` / `body`）。头模型的报错在 0.152 起会显示 HTTP 头名（`x-tag`）而不是 Python 字段名（`x_tag`）。
 
-## 依赖注入：Depends
+## 5. 依赖注入：Depends
 
 `Depends` 是 FastAPI 区别于 Flask 的最大一块。它解决的问题是：**"多个端点都要做的准备动作，怎么写成可复用、可测试、能自动清理的东西"**。
 
@@ -252,7 +252,7 @@ async def list_users(p: Annotated[dict, Depends(pagination)]):
     return p
 ```
 
-### 带 yield 的依赖：资源必须还回去
+### 5.1. 带 yield 的依赖：资源必须还回去
 
 数据库会话、文件句柄、锁——这些东西的正确写法是 `yield`：
 
@@ -262,7 +262,7 @@ async def get_db() -> AsyncIterator[AsyncSession]:
         yield session            # 出了这个块，session 一定被关
 ```
 
-### `scope="function"`：提前释放（0.121 新增）
+### 5.2. `scope="function"`：提前释放（0.121 新增）
 
 默认行为（`scope="request"`）是：**响应发完之后**才执行 `yield` 后面的清理代码。这对 `StreamingResponse` 是必须的（流还没发完，会话不能关），但对"只在依赖里用一次数据库"的场景就白白占着连接。
 
@@ -289,7 +289,7 @@ fn-open → req-open → handler → fn-close → bg-task → req-close
 
 规则：**`scope="request"` 的依赖，其子依赖也必须是 `"request"`；`"function"` 可以套 `"request"`。** 因为外层的清理代码可能要引用子依赖的返回值，清理顺序必须是"后进先出"。
 
-### 类依赖
+### 5.3. 类依赖
 
 把参数组写成类，`Depends()` 不传参时会自动读 `__init__` 的签名：
 
@@ -306,7 +306,7 @@ def lst(p: Annotated[Paginator, Depends()]):
 # GET /list?limit=3&offset=2 → [2, 3, 4]
 ```
 
-### 复用、缓存与覆盖
+### 5.4. 复用、缓存与覆盖
 
 - **同一请求内默认复用**：一个依赖被多个参数/多个依赖声明时，只调用一次（`use_cache=True`）。想每次都重新算就 `Depends(dep, use_cache=False)`。
 - **路由级依赖**：`APIRouter(dependencies=[Depends(verify_token)])`，整组端点统一加校验，不用每个函数都写一遍。
@@ -316,7 +316,7 @@ def lst(p: Annotated[Paginator, Depends()]):
 app.dependency_overrides[get_config] = lambda: "test"   # 测试里
 ```
 
-## 鉴权：三种常见写法
+## 6. 鉴权：三种常见写法
 
 | 需求 | 方案 | 缺凭证时返回 |
 | --- | --- | --- |
@@ -345,7 +345,7 @@ def me(user: Annotated[str, Depends(current_user)]):
 
 `OAuth2PasswordBearer` 会把自己写进 OpenAPI 的 `securitySchemes`，所以 `/docs` 右上角会出现 **Authorize** 按钮——点一下填 token，之后所有请求自动带头。**这个按钮不是装饰，是安全方案声明带来的。**
 
-## 异步、线程池，以及最容易踩的那个坑
+## 7. 异步、线程池，以及最容易踩的那个坑
 
 FastAPI 对 `def` 和 `async def` 的处理不一样：
 
@@ -388,7 +388,7 @@ limiter.total_tokens = 100      # 默认 40
 
 调大会有内存开销，先量再调。
 
-## lifespan：启动和关闭
+## 8. lifespan：启动和关闭
 
 **Starlette 1.0（2026-03）在自己的 API 上删掉了 `on_startup` / `on_shutdown` / `@app.on_event`**。FastAPI 在应用层保留了兼容层（`app.on_event` 会发 DeprecationWarning，`on_startup=` 参数仍能传），但新代码统一用 `lifespan`：
 
@@ -419,7 +419,7 @@ def state(request: Request):
     return {"pool": request.state.pool}      # {'pool': 'fake-pool'}
 ```
 
-## 中间件与 CORS
+## 9. 中间件与 CORS
 
 中间件是"包在路由外面"的一层，比依赖更靠外（请求进来先过中间件，再解析参数、跑依赖）：
 
@@ -445,7 +445,7 @@ app.add_middleware(
 )
 ```
 
-## 错误处理
+## 10. 错误处理
 
 ```python
 from fastapi import HTTPException, status, Request
@@ -465,7 +465,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 - **`raise HTTPException` 和 `return` 是一回事，别都写**——抛了异常就不会再 return
 - 想统一错误体（比如 `{"error": ..., "code": ...}`），用 `@app.exception_handler` 覆盖；422 的校验错误要覆盖得处理 `RequestValidationError`
 
-## 工程结构：从单文件到能维护
+## 11. 工程结构：从单文件到能维护
 
 单文件写到两三百行就该拆了。一个够用的结构：
 
@@ -517,7 +517,7 @@ settings = Settings()
 # APP_DB_URL=... APP_DEBUG=true 会被自动读到
 ```
 
-## 数据库：异步 SQLAlchemy 的最小闭环
+## 12. 数据库：异步 SQLAlchemy 的最小闭环
 
 FastAPI 官方教程用的是 SQLAlchemy。异步版的关键是三个东西：`create_async_engine`、`async_sessionmaker`、`expire_on_commit=False`。
 
@@ -577,7 +577,7 @@ async def list_todos(db: Annotated[AsyncSession, Depends(get_db)]):
 
 三个容易忘的点：`expire_on_commit=False`（否则 commit 后属性会失效，序列化时触发 lazy load 报错）、`await db.refresh()`（要自增 id）、`from_attributes=True`（不然不能直接返回 ORM 对象）。
 
-## 测试
+## 13. 测试
 
 同步用 `TestClient`（底层是 httpx），异步用 `httpx.AsyncClient` + `ASGITransport`：
 
@@ -615,7 +615,7 @@ def test_override():
     app.dependency_overrides.clear()
 ```
 
-## 可观测性：内置 OpenTelemetry（0.142+）
+## 14. 可观测性：内置 OpenTelemetry（0.142+）
 
 FastAPI 从 **0.142.0（2026-09-29）** 起**原生支持 OpenTelemetry**，不用再装 `opentelemetry-instrumentation-fastapi`：装上 `fastapi[standard]` 就有 SDK 和 OTLP/HTTP 导出器，框架自己给每个请求打 span（还有 `fastapi.dependencies` / `fastapi.endpoint` / `fastapi.serialization` 这些细粒度 span）。
 
@@ -652,7 +652,7 @@ app = FastAPI(telemetry={"tracing": False})         # 关掉 FastAPI 自己的�
 
 另外两个坑：自动配置只支持 **OTLP/HTTP**（`OTEL_EXPORTER_OTLP_PROTOCOL=grpc` 会启动报错、静默不发数据）；健康检查端点记得用 `exclude` 排除，不然 trace 里全是 `/health`。
 
-## 部署
+## 15. 部署
 
 最小可用的容器跑法：
 
@@ -697,7 +697,7 @@ async def health():
     return {"ok": True}
 ```
 
-## 易错点清单
+## 16. 易错点清单
 
 - **`Annotated` 是唯一推荐写法**：`q: Annotated[str, Query(...)] = None`。老的 `q: str = Query(None, ...)` 还能用，但默认值和校验混在一个调用里，容易写反
 - **0.155 起 `Query(custom="x")` 会 `TypeError`**：`Path/Query/Header/Cookie/Body/Form/File` 的 `**extra` 被删了，额外的 JSON Schema 属性要写 `json_schema_extra={"custom": "x"}`
@@ -714,7 +714,7 @@ async def health():
 - **`TestClient` 不进 `with` 就不会跑 lifespan**，测启动逻辑时容易误判
 - **藏文档要显式关**：`docs_url=None` 只关 Swagger UI（`/openapi.json` 还在），`openapi_url=None` 才是文档和 schema 一起消失
 
-## 重点总结
+## 17. 重点总结
 
 - **一次类型声明，四处收益**：解析、校验、依赖注入、OpenAPI。这是 FastAPI 的全部卖点，也是它的约束——**类型写得含糊，框架就帮不了你**
 - **参数来源只看类型和注解**：路径里的名字 → 路径；Pydantic 模型 → body；基本类型 → query；`Annotated[X, Query()/Header()/Form()]` 强制指定
@@ -726,7 +726,7 @@ async def health():
 - **值得记住的新东西**：参数模型（0.113 表单 / 0.115 query+header+cookie，0.157/0.161 支持多模型合并）、`Depends(scope=...)`（0.121）、内置 OpenTelemetry（0.142，0.143 起 auto_configure 需 opt-in）、`**extra` 移除（0.155）、`extra` 作用范围扩大（0.160）、必填 bool 表单（0.162）
 - **pin 版本**：`0.x` 的 minor 就可能破坏兼容，升级靠测试兜底
 
-## 参考
+## 18. 参考
 
 - [FastAPI 官方文档](https://fastapi.tiangolo.com/)
 - [FastAPI 发布说明（release notes）](https://fastapi.tiangolo.com/release-notes/)
