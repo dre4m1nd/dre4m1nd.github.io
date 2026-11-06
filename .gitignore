@@ -11,3 +11,5 @@ obsidian
 .tmp-img/
 __pycache__/
 *.pyc
+
+.obsidian/
