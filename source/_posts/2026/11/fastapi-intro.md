@@ -239,7 +239,7 @@ async def read_item(item_id: int):
 
 ```python
 from typing import Annotated
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Query
 
 app = FastAPI()
 
@@ -660,6 +660,24 @@ app = FastAPI(telemetry={"tracing": False})         # 关掉 FastAPI 自己的�
 # 生产：多进程，不带 reload
 fastapi run main.py --host 0.0.0.0 --port 8000 --workers 4
 # 等价于 uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
+```
+
+对应的 Dockerfile（多阶段不必须，重点是 `[standard]` 和 `--host 0.0.0.0`）：
+
+```dockerfile
+FROM python:3.13-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+EXPOSE 8000
+# 容器里监听 0.0.0.0，workers 数按 CPU 核数定，通常 2*核数+1
+CMD ["fastapi", "run", "main.py", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
+```
+
+```text
+# requirements.txt
+fastapi[standard]==0.162.0
 ```
 
 要点：
