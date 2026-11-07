@@ -50,6 +50,16 @@ STYLE = ('pure white background, bright blue #425AEF and cyan #00c4b6 only, no b
          'inside the frame, centered with wide margins on all sides, nothing cropped, '
          'no 3d render, no photorealistic, no text, no letters, no watermark, no signature')
 
+# ── 图内短标签（可选；本地渲染，不交给模型画，中文/英文都不会错字）──
+# 只放 1 条、尽量短（英文单词或 2~4 个汉字），位置在左上角，和 logo 封面的分类 chip 呼应。
+LABELS = {
+    'design-patterns-creational': 'CREATE',
+    'design-patterns-structural': 'STRUCTURE',
+    'design-patterns-behavioral': 'BEHAVIOR',
+    'agent-memory-components': 'MEMORY',
+    'agents-going-async': 'ASYNC',
+}
+
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
 TEXTS = {
     'cover-binary':      '二分查找',
@@ -152,7 +162,23 @@ def draw_caption(im, text):
     return im
 
 
-def save(out_path, data, text=''):
+def draw_label(im, text):
+    """左上角叠一个短标签（本地渲染），和 logo 封面左上角的分类 chip 呼应"""
+    scale = im.width / 900
+    font = ImageFont.truetype(CAPTION_FONT, max(18, int(23 * scale)))
+    draw = ImageDraw.Draw(im)
+    pad_x, pad_y = int(16 * scale), int(8 * scale)
+    box = draw.textbbox((0, 0), text, font=font)
+    tw, th = box[2] - box[0], box[3] - box[1]
+    x0, y0 = int(56 * scale), int(38 * scale)
+    draw.rounded_rectangle(
+        [x0, y0, x0 + tw + pad_x * 2, y0 + th + pad_y * 2],
+        radius=int(5 * scale), outline=(205, 214, 250), width=max(1, int(scale)))
+    draw.text((x0 + pad_x - box[0], y0 + pad_y - box[1]), text, font=font, fill=(66, 90, 239))
+    return im
+
+
+def save(out_path, data, text='', label=''):
     """下载（或 base64 解码）→ 压到 900x675 → 叠小标题 → 落盘，
     返回 (尺寸, KB, 平均亮度, 内容留白比例)"""
     import base64
@@ -173,6 +199,8 @@ def save(out_path, data, text=''):
     box = grey.point(lambda v: 255 if v < 235 else 0).getbbox()
     margin = min(box[0], box[1], im.width - box[2], im.height - box[3]) / min(im.width, im.height) if box else 1.0
 
+    if label:
+        im = draw_label(im, label)
     if text:
         im = draw_caption(im, text)
     im.save(out_path, 'JPEG', quality=QUALITY, optimize=True, progressive=True)
@@ -202,7 +230,8 @@ def main():
             if not data:
                 raise RuntimeError(json.dumps(resp, ensure_ascii=False)[:300])
             text = TEXTS.get(slug, '')
-            size, kb, mean, margin = save(dest, data, text)
+            label = LABELS.get(slug, '')
+            size, kb, mean, margin = save(dest, data, text, label)
             ok += 1
             warn = []
             if mean < 200:
@@ -212,7 +241,7 @@ def main():
             print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s%s' % (
                 dest.replace('\\', '/'), size, kb, mean, margin * 100,
                 ('  ⚠️ ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else '',
-                ('  小标题: ' + text) if text else ''))
+                ('  小标题: ' + text) if text else '', ('  标签: ' + label) if label else ''))
             time.sleep(0.4)
         except urllib.error.HTTPError as e:
             fail += 1
