@@ -59,6 +59,7 @@ TEXTS = {
     'design-patterns-creational': '创建型模式',
     'design-patterns-structural': '结构型模式',
     'design-patterns-behavioral': '行为型模式',
+    'agent-memory-components': 'Agent 记忆',
     'ai-critical-thinking':   '批判性思考',
     'cover-code-review':      '代码审查',
     'super-agent-designs':    'Super Agent',
@@ -81,6 +82,7 @@ PROMPTS = {
     'design-patterns-creational': 'flat vector illustration of a small machine stamping out three distinct rounded object shapes onto a short conveyor belt, object creation concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'design-patterns-structural': 'flat vector illustration of distinct geometric blocks snapping together into one larger connected structure, composition and assembly concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'design-patterns-behavioral': 'flat vector illustration of several small nodes passing a glowing token along curved arrows in a coordinated flow, collaboration concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
+    'agent-memory-components': 'flat vector illustration of a network of small linked note cards forming a map, with a simple crescent moon above them, memory consolidation and dreaming concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'cover-code-review':      'flat vector illustration of curly code brackets flowing down into a funnel and out into a rounded checklist card with a checkmark, automated code review concept, zoomed out wide shot, entire composition fully visible inside the frame, centered with wide margins, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'super-agent-designs':    'flat vector illustration of a central glowing hub dispatching tasks along thin arrows to many small worker nodes arranged in two layers, orchestration concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     # ── 默认封面（frontmatter 没写 cover 时随机用）──
