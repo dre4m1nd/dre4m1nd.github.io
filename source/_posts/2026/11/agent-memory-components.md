@@ -13,7 +13,7 @@ tags:
 cover: /img/2026/11/agent-memory-components.jpg
 ---
 
-> 本文是对 Anthropic Engineering《The components of agent memory》（2026-11-06，Lance Martin 执笔）的中文笔记转述，结构跟随原文；名词解释是我补的，数据和结论归属原作者。原文链接见文末。
+> Anthropic《The components of agent memory》（2026-11-06）摘要：agent 记忆是跨会话保留的可读知识；判断「什么值得记」比「怎么记」更重要；dreaming 负责纠错、建 wiki、把要点提到记忆层级顶端。
 
 ## 1. 先说结论
 
