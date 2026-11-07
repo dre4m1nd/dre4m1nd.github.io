@@ -44,7 +44,9 @@ QUALITY = 85
 # 风格模板：白底 + 主题蓝/青，扁平矢量，整幅完整入画。
 # 文字由脚本在本地合成（不交给模型画）——混元画中文容易错字，本地叠字字形一定正确。
 STYLE = ('pure white background, bright blue #425AEF and cyan #00c4b6 only, no beige, no warm tones, '
-         'minimal flat vector illustration, zoomed out wide shot, entire composition fully visible '
+         'minimal flat vector illustration, concrete recognizable objects in a clear real-world scene '
+         '(a machine, a device, a tool, physical props), never abstract node graphs, arrows, or color-block patterns, '
+         'zoomed out wide shot, entire composition fully visible '
          'inside the frame, centered with wide margins on all sides, nothing cropped, '
          'no 3d render, no photorealistic, no text, no letters, no watermark, no signature')
 
