@@ -58,6 +58,7 @@ LABELS = {
     'design-patterns-behavioral': 'BEHAVIOR',
     'agent-memory-components': 'MEMORY',
     'agents-going-async': 'ASYNC',
+    'pi-agent-loop': 'LOOP',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -78,6 +79,7 @@ TEXTS = {
     'cover-code':       '代码',
     'cover-notes':      '笔记',
     'cover-tools':      '工具',
+    'pi-agent-loop':    'Agent Loop',
 }
 
 PROMPTS = {
@@ -101,6 +103,7 @@ PROMPTS = {
     'cover-code':   'flat vector illustration of a pair of curly code brackets in solid blue with a small cyan terminal window below, general tech aesthetic, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     'cover-notes':  'abstract illustration of floating notebook pages with abstract diagram marks and code brackets, notes concept, ' + STYLE,
     'cover-tools':  'abstract illustration of a wrench, gears and tool icons arranged in a neat grid, tooling concept, ' + STYLE,
+    'pi-agent-loop':    'flat vector illustration of a smooth closed circular track with a small cart rolling along it in a continuous loop, three simple machines placed along the track, iterative loop concept, ' + STYLE,
 }
 
 
@@ -238,7 +241,7 @@ def main():
                 warn.append('底色偏暗(亮度%.0f)' % mean)
             if margin < 0.03:
                 warn.append('构图贴边(留白%.1f%%)' % (margin * 100))
-            print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s%s' % (
+            print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s%s%s' % (
                 dest.replace('\\', '/'), size, kb, mean, margin * 100,
                 ('  ⚠️ ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else '',
                 ('  小标题: ' + text) if text else '', ('  标签: ' + label) if label else ''))
