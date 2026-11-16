@@ -1,5 +1,5 @@
 ---
-title: Agent Loop：十几行内核撑起一个 Agent
+title: Pi 源码解读：Agent Loop——十几行内核撑起一个 Agent
 date: 2026-11-16 12:00:00
 description: 拆解 earendil-works/pi 的 Agent Loop 源码，看十几行内核如何通过双层循环、stopReason 判停与流式原地替换撑起一个完整的 Agent。
 categories:
