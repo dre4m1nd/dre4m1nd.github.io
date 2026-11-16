@@ -59,6 +59,7 @@ LABELS = {
     'agent-memory-components': 'MEMORY',
     'agents-going-async': 'ASYNC',
     'pi-agent-loop': 'LOOP',
+    'pi-tool-pipeline': 'TOOLS',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -80,6 +81,7 @@ TEXTS = {
     'cover-notes':      '笔记',
     'cover-tools':      '工具',
     'pi-agent-loop':    'Agent Loop',
+    'pi-tool-pipeline':     '工具管道',
 }
 
 PROMPTS = {
@@ -104,6 +106,7 @@ PROMPTS = {
     'cover-notes':  'abstract illustration of floating notebook pages with abstract diagram marks and code brackets, notes concept, ' + STYLE,
     'cover-tools':  'abstract illustration of a wrench, gears and tool icons arranged in a neat grid, tooling concept, ' + STYLE,
     'pi-agent-loop':    'flat vector illustration of a smooth closed circular track with a small cart rolling along it in a continuous loop, three simple machines placed along the track, iterative loop concept, ' + STYLE,
+    'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, ' + STYLE,
 }
 
 
