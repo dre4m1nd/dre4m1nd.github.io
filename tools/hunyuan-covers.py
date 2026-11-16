@@ -2,9 +2,10 @@
 # 用腾讯 TokenHub 混元 hy-image-v3.5-preview 生成博客封面
 #
 # 只负责「没有官方 logo 可用」的文章（算法、AI 笔记、项目拆解、默认封面）；
-# 框架/工具类文章的封面走 tools/make-covers.py（白底 + 官方 logo），两边共用同一套主题配色。
+# 框架/工具类文章的封面走 tools/make-covers.py（白底 + 官方 logo，沿用品牌色）。
 #
-# 配色硬约束（和主题一致）：白底 #FFFFFF、主色蓝 #425AEF、辅色青 #00c4b6，
+# 配色：贴合实际生活的自然配色（木质、金属、织物、食物、皮肤等真实颜色），
+# 不再强制主题蓝/青单色调；保持画面干净明亮，避免脏灰、荧光色与全图蓝紫洗。
 # 生成后自动压到 900x675（4:3）quality 85。
 # 落盘目录：文章封面 source/img/<年>/<月>/，站点级图片 source/img/common/
 # （按「哪篇文章引用了这张封面」自动定位，见 tools/imgpaths.py；文章还没写
@@ -41,13 +42,16 @@ KEY = os.environ.get('HUNYUAN_API_KEY', 'sk-NzawHDAIHMqxhqhn93tXMj1JW8omLdd810Hj
 SIZE = '1280x960'
 OUT_W, OUT_H = 900, 675
 QUALITY = 85
-# 风格模板：白底 + 主题蓝/青，扁平矢量，整幅完整入画。
+# 风格模板：自然配色 + 扁平矢量，整幅完整入画。
 # 文字由脚本在本地合成（不交给模型画）——混元画中文容易错字，本地叠字字形一定正确。
-STYLE = ('pure white background, bright blue #425AEF and cyan #00c4b6 only, no beige, no warm tones, '
+STYLE = ('natural, lifelike colors that fit each object in everyday life (wood, metal, fabric, food, '
+         'plant greens, skin tones where appropriate), a soft cohesive palette, '
+         'clean bright background with generous empty space around the subject, '
          'minimal flat vector illustration, concrete recognizable objects in a clear real-world scene '
          '(a machine, a device, a tool, physical props), never abstract node graphs, arrows, or color-block patterns, '
          'zoomed out wide shot, entire composition fully visible '
          'inside the frame, centered with wide margins on all sides, nothing cropped, '
+         'no full-image blue or purple wash, no neon colors, no muddy gray, '
          'no 3d render, no photorealistic, no text, no letters, no watermark, no signature')
 
 # ── 图内短标签（可选；本地渲染，不交给模型画，中文/英文都不会错字）──
@@ -243,7 +247,7 @@ def main():
             size, kb, mean, margin = save(dest, data, text, label)
             ok += 1
             warn = []
-            if mean < 200:
+            if mean < 150:
                 warn.append('底色偏暗(亮度%.0f)' % mean)
             if margin < 0.03:
                 warn.append('构图贴边(留白%.1f%%)' % (margin * 100))

@@ -108,9 +108,9 @@ highlight_shrink: true       # 代码块默认折叠
 
 关掉自定义 CSS：把 `inject.head` 里那行 `<link ... custom.css>` 注释掉即可，不需要删文件。
 
-## 封面：logo 合成为主，混元生图为辅（同一套主题配色）
+## 封面：logo 合成为主，混元生图为辅（各自配色）
 
-封面按文章主题分两条路，**配色硬约束一致**：白底 `#FFFFFF`、主题蓝 `#425AEF`、辅色青 `#00c4b6`，输出 900x675。流程与坑也写在 `.pi/workflows/blog-write.js` 的阶段 3。
+封面按文章主题分两条路：logo 合成沿用品牌色 / INK 与白底；**生图走贴合实际生活的自然配色**（木质、金属、织物、食物等真实颜色，不要全图蓝紫单色调），保持画面干净明亮。输出统一 900x675。流程与坑也写在 `.pi/workflows/blog-write.js` 的阶段 3。
 
 **图片目录规则（2026-11 起）**
 - 文章封面跟着文章走：`source/img/<年>/<月>/<key>.jpg`，frontmatter 的 `cover` 也写这个路径
@@ -130,14 +130,14 @@ highlight_shrink: true       # 代码块默认折叠
 **B. 没有 logo 的（算法笔记、AI 概念、项目拆解、默认封面）→ `tools/hunyuan-covers.py`（混元生图）**
 - **封面必须具体、可辨识（硬要求）**：画出实物/场景（机器、装置、工具、棋盘、手、具体道具），让读者一眼看出"在干什么"。**不要抽象图形**（节点+箭头、色块拼贴、散点网络、纯几何图案）。标杆是 `design-patterns-creational` 那张：机器 + 传送带 + 产物。`STYLE` 已经把这句锁进去了，但每条 prompt 的主题描述也要往"具体物件"上写
 - **图内可以带短文字体现主题**：左上角一条短标签（`LABELS` 字典，英文单词或 2~4 个汉字，如 `CREATE`），底部小标题（`TEXTS`）。**所有文字都由脚本本地渲染，模型 prompt 仍写 `no text`**——混元画中文/字母容易错字。标签只放 1 条、尽量短（≤ 12 个字符）
-- prompt 模板 `STYLE` 已锁死主题配色（白底 + `#425AEF` + `#00c4b6`、扁平矢量、整幅不裁切、无文字无水印）+ 具体场景要求，只需在 `PROMPTS` 加每篇的主题描述
+- prompt 模板 `STYLE` 已约定：贴近生活的自然配色（木质、金属、织物、食物等）、扁平矢量、整幅不裁切、无文字无水印 + 具体场景要求，只需在 `PROMPTS` 加每篇的主题描述
 - 底部小标题**由脚本本地合成**（`TEXTS` 字典，key 与 `PROMPTS` 一致，例如 `'cover-kmp': 'KMP 算法'`），不交给模型画 —— 混元画中文容易错字，本地叠字字形一定正确，字号/位置/蓝线也和 logo 封面一致。改标题只改 `TEXTS`
 - 跑 `python tools/hunyuan-covers.py --only <slug>`，脚本自动下载、压到 900x675、落盘到文章的年/月目录并打印亮度/留白（指标在叠小标题**之前**量，不会被标题带偏）
 - 脚本自带硬指标，不合格必须改 prompt 只重跑该张（别整批重跑）：
-  - 平均亮度 ≥ 200（白底，否则报「底色偏暗」）
+  - 平均亮度 ≥ 150（画面干净明亮即可，不要求纯白底；低于报「底色偏暗」）
   - 内容距四边留白 ≥ 3%（否则报「构图贴边」）
-  - 无文字/字母/水印，无米黄或冷灰底，无 3D 写实
-  - 对症改词：`pure white background, no beige or warm tones` / `zoomed out wide shot, entire composition fully visible, nothing cropped` / `flat vector illustration, no 3d, no photorealistic` / `no text, no letters, no numbers, no watermark`
+  - 无文字/字母/水印，无脏灰/泥泞底色，无 3D 写实
+  - 对症改词：`clean bright background, no full-image blue or purple wash` / `zoomed out wide shot, entire composition fully visible, nothing cropped` / `flat vector illustration, no 3d, no photorealistic` / `no text, no letters, no numbers, no watermark`
 
 ## 常用工具
 
