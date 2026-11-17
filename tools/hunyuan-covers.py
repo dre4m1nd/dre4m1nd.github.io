@@ -116,7 +116,7 @@ PROMPTS = {
     'pi-agent-loop':    'flat vector illustration of a smooth closed circular track with a small cart rolling along it in a continuous loop, three simple machines placed along the track, iterative loop concept, ' + STYLE,
     'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, ' + STYLE,
     'pi-model-layer':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a translator figure at a small desk working on one document, multi-format translation concept, ' + STYLE,
-    'pi-message-system':    'a minimal simple icon of a small envelope, message concept, a tiny subject centered with huge empty margins on all four sides, plain background, ' + STYLE,
+    'pi-message-system':    'flat vector illustration of a single open envelope floating in the center of a plain background, slightly open to reveal a richly detailed inner document with colorful stamps and handwritten notes, a single centered subject with generous empty space around all edges, ' + STYLE,
 }
 
 
