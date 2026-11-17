@@ -5,11 +5,8 @@ description: Anthropic 关于 agent memory 的工程笔记：记忆的定义、�
 categories:
   - 笔记
 tags:
-  - AI
   - Agent
   - 记忆
-  - Anthropic
-  - 上下文工程
 cover: /img/2026/11/agent-memory-components.jpg
 ---
 

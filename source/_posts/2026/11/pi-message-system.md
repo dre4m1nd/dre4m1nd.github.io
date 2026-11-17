@@ -6,7 +6,6 @@ categories:
   - 技术
 tags:
   - pi
-  - 消息系统
   - 源码解读
   - TypeScript
 cover: /img/2026/11/pi-message-system.jpg

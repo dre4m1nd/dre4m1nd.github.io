@@ -6,9 +6,7 @@ description: 一份把 JSON 家族讲清楚的对照笔记：JSON 是格式，JS
 categories:
   - 技术
 tags:
-  - json
-  - json-rpc
-  - json-schema
+  - JSON
   - 技术辨析
 cover: /img/2026/11/json-family-protocols.jpg
 ---

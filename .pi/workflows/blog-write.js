@@ -43,9 +43,19 @@ const STRUCTURE_RULE = source
 
 // ── 本仓库的硬规则（都是实际踩过的坑，细节见 .pi/skills/hexo-anzhiyu-post/SKILL.md）──
 const RULES = [
-  "分类只能是 技术 / 笔记 / 折腾 之一；新增分类必须同时改两处：",
-  "  _config.yml 的 category_map（技术→tech、笔记→notes、折腾→tinkering）",
-  "  _config.anzhiyu.yml 的 home_top.category[].path（必须写映射后的英文路径，写中文就 404）",
+  "分类与标签标准（写文章前先判定，frontmatter 必须遵守）：",
+  "  分类（单选，三选一，互斥）：",
+  "    技术 = 主体在「做」：有实现、有代码、有源码拆解、有工程结论；",
+  "    笔记 = 主体在「想」：概念梳理、读后思考、方法论、趋势观察；",
+  "    折腾 = 记录一次动手过程：实验、踩坑、个人实践（暂无对应文章）。",
+  "    拿不准时按文章主要篇幅判：代码/实现细节占大头→技术，论述/思考占大头→笔记。",
+  "  标签（每篇 2-3 个 = 主题标签 1-2 个 + 技术栈标签 0-1 个）：",
+  "    首标签为主题标签，技术栈标签放最后；分类名（技术/笔记/折腾）不得作为标签；",
+  "    主题标签优先从既有词表选：Agent、AI、架构、记忆、异步、代码审查、工程实践、批判性思考、设计模式、Web 框架、JSON、pi、源码解读、技术辨析、Super Agent；",
+  "    技术栈标签词表：TypeScript、Python、Java、JSON、Claude Code、FastAPI；新主题/新栈先登记词表再使用。",
+  "  新增分类必须同时改两处：",
+  "    _config.yml 的 category_map（技术→tech、笔记→notes、折腾→tinkering）",
+  "    _config.anzhiyu.yml 的 home_top.category[].path（必须写映射后的英文路径，写中文就 404）",
   "frontmatter 的 date 写中午 12 点（如 2026-11-04 12:00:00）：GitHub Actions 跑在 UTC，",
   "  只写日期会被算成前一天。",
   "不碰 themes/：样式只进 source/css/custom.css，主题配置只进 _config.anzhiyu.yml。",

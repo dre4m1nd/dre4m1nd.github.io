@@ -7,7 +7,6 @@ categories:
 tags:
   - AI
   - 批判性思考
-  - 工程实践
   - Claude Code
 cover: /img/2026/11/ai-critical-thinking.jpg
 ---

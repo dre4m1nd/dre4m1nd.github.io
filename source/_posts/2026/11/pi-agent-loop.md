@@ -6,10 +6,8 @@ categories:
   - 技术
 tags:
   - pi
-  - Agent
   - 源码解读
   - TypeScript
-  - LLM
 cover: /img/2026/11/pi-agent-loop.jpg
 ---
 > **「Pi 源码解读」系列 · 第 1 篇（共 8 篇）**。本系列从真实源码出发，逐层拆解 earendil-works/pi 的运行时：Agent Loop、工具管道、模型调用、消息系统、上下文工程、会话树、扩展系统与 TUI。后续篇目会陆续发布。

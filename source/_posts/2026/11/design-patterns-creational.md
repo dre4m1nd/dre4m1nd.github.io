@@ -3,11 +3,10 @@ title: 设计模式（一）：创建型 5 种，用 Java 讲清楚
 date: 2026-11-06 12:00:00
 description: 创建型模式解决“怎么造对象”：单例、工厂方法、抽象工厂、建造者、原型。每节给意图、可运行的 Java 代码、什么时候用和坑，最后一张选型表。
 categories:
-  - 笔记
+  - 技术
 tags:
   - 设计模式
   - Java
-  - 后端
 cover: /img/2026/11/design-patterns-creational.jpg
 ---
 

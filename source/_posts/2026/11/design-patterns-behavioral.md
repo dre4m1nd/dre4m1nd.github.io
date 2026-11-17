@@ -3,11 +3,10 @@ title: 设计模式（三）：行为型 11 种，用 Java 讲清楚
 date: 2026-11-06 12:02:00
 description: 行为型模式解决“对象之间怎么分工协作”：责任链、命令、解释器、迭代器、中介者、备忘录、观察者、状态、策略、模板方法、访问者。每节给意图、可运行的 Java 代码、什么时候用和坑。
 categories:
-  - 笔记
+  - 技术
 tags:
   - 设计模式
   - Java
-  - 后端
 cover: /img/2026/11/design-patterns-behavioral.jpg
 ---
 

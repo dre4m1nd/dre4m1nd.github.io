@@ -5,7 +5,6 @@ description: 先讲清 code review 的目的，再看人工审查为什么越来
 categories:
   - 笔记
 tags:
-  - AI
   - 代码审查
   - 工程实践
   - Claude Code

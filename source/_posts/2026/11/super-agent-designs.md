@@ -5,10 +5,8 @@ description: 两篇文章（Agno 的 Building a Super Agent、DeepSeek Harness �
 categories:
   - 笔记
 tags:
-  - AI
   - Agent
   - 架构
-  - Super Agent
 cover: /img/2026/11/super-agent-designs.jpg
 ---
 

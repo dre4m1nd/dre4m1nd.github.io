@@ -183,3 +183,18 @@
     transform: none;
   }
 }
+
+/* ---------- 字体：舒适优先，系统字体栈，不依赖 CDN ----------
+   正文用现代无衬线系统栈（补充 Noto Sans SC / 思源黑体，照顾 Linux/Android）；
+   代码用 ui-monospace 起步的现代等宽栈（SF Mono / Cascadia Code / JetBrains Mono），
+   中文注释回退到系统中文字体。主题对代码字体用了 !important，这里必须同样加。 */
+body,
+#article-container,
+#article-container.post-content {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans SC', sans-serif;
+}
+
+#article-container pre,
+#article-container code {
+  font-family: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Consolas, Menlo, 'PingFang SC', 'Microsoft YaHei', monospace !important;
+}

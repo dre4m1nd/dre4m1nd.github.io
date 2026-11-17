@@ -5,11 +5,8 @@ description: 基于 Sydney Runkle《Agents Are Going Async》（2026-11-05）的
 categories:
   - 笔记
 tags:
-  - AI
   - Agent
-  - LangChain
   - 异步
-  - 架构
 cover: /img/2026/11/agents-going-async.jpg
 ---
 

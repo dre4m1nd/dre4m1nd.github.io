@@ -3,11 +3,10 @@ title: 设计模式（二）：结构型 7 种，用 Java 讲清楚
 date: 2026-11-06 12:01:00
 description: 结构型模式解决“怎么把类/对象拼成一个更大的结构”：适配器、桥接、组合、装饰器、外观、享元、代理。每节给意图、可运行的 Java 代码、什么时候用和坑。
 categories:
-  - 笔记
+  - 技术
 tags:
   - 设计模式
   - Java
-  - 后端
 cover: /img/2026/11/design-patterns-structural.jpg
 ---
 

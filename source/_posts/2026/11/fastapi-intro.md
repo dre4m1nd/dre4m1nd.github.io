@@ -7,7 +7,6 @@ categories:
 tags:
   - Python
   - FastAPI
-  - 后端
   - Web 框架
 cover: /img/2026/11/cover-fastapi-py.jpg
 ---

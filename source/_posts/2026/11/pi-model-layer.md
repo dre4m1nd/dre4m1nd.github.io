@@ -7,7 +7,6 @@ categories:
   - 技术
 tags:
   - pi
-  - 模型调用
   - 源码解读
   - TypeScript
 cover: /img/2026/11/pi-model-layer.jpg

@@ -7,7 +7,6 @@ categories:
   - 技术
 tags:
   - pi
-  - 终端渲染
   - 源码解读
   - TypeScript
 cover: /img/2026/11/pi-tui-rendering.jpg

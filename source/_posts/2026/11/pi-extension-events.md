@@ -7,7 +7,6 @@ categories:
   - 技术
 tags:
   - pi
-  - 扩展事件
   - 源码解读
   - TypeScript
 cover: /img/2026/11/pi-extension-events.jpg

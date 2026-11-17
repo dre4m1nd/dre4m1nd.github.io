@@ -6,10 +6,8 @@ categories:
   - 技术
 tags:
   - pi
-  - Agent
   - 源码解读
   - TypeScript
-  - 工具调用
 cover: /img/2026/11/pi-tool-pipeline.jpg
 ---
 
