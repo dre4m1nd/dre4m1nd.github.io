@@ -3,12 +3,10 @@ title: MyBatis 入门到进阶：从 XML 到 MyBatis-Plus
 date: 2026-10-29
 description: MyBatis 是 Java 半自动持久层框架，SQL 握在自己手里、映射交给框架。这篇覆盖 Spring Boot 接入、Mapper 接口与 XML、#{} 与 ${}、动态 SQL、resultMap 关联映射、缓存、插件，以及 MyBatis-Plus 的 BaseMapper/条件构造器/分页插件与常见坑。
 categories:
-  - 技术
+  - 实践
 tags:
-  - Java
   - MyBatis
-  - MyBatis-Plus
-  - 后端
+  - Java
 cover: /img/2026/10/cover-mybatis.jpg
 ---
 

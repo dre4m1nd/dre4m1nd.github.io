@@ -3,13 +3,11 @@ title: CipherLens 项目拆解：从架构到代码细节
 date: 2026-10-29
 description: 拆解密鉴 CipherLens（密码管理与安全评估平台）：Spring Boot 3.5 + MyBatis-Plus + MySQL + Redis 后端，Vue3 + Element Plus + Vite 前端，Docker Compose 一键部署。覆盖认证、密码信封加密、安全评分、AOP 日志、前端鉴权与构建，并给出工程上可再打磨的点。
 categories:
-  - 折腾
+  - 技术
 tags:
   - 项目拆解
-  - Java
-  - Vue
-  - Spring Boot
   - 安全
+  - Java
 cover: /img/2026/10/cover-cipherlens.jpg
 ---
 

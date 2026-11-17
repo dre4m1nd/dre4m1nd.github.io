@@ -7,7 +7,6 @@ categories:
 tags:
   - Linux
   - 命令
-  - 速查
 cover: /img/2026/10/cover-linux.jpg
 ---
 

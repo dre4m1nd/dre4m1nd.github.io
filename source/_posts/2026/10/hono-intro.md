@@ -3,11 +3,10 @@ title: Hono 入门到进阶：从路由到类型安全 RPC
 date: 2026-10-29
 description: Hono 是跑在边缘运行时、基于 Web 标准的小框架。这篇覆盖路由、Context、中间件洋葱模型、zod 校验、错误处理、安全头、测试、类型安全 RPC 和多运行时部署。
 categories:
-  - 技术
+  - 实践
 tags:
-  - Node.js
   - Hono
-  - TypeScript
+  - Node.js
 cover: /img/2026/10/cover-hono.jpg
 ---
 

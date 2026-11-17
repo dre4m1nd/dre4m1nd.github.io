@@ -7,7 +7,6 @@ categories:
 tags:
   - 算法
   - 排序
-  - 快速排序
 cover: /img/2026/10/cover-quicksort.jpg
 ---
 

@@ -8,7 +8,6 @@ categories:
 tags:
   - 算法
   - 字符串
-  - KMP
 ---
 
 ## 为什么需要 KMP

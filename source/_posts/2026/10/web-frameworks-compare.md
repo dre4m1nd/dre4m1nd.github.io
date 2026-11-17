@@ -5,10 +5,8 @@ description: Express、Koa、Fastify、Hono 四个 Node Web 框架的定位、�
 categories:
   - 笔记
 tags:
+  - Web 框架
   - Node.js
-  - 后端
-  - 框架对比
-  - 选型
 cover: /img/2026/10/cover-compare.jpg
 ---
 
