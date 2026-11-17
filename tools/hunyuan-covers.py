@@ -65,6 +65,7 @@ LABELS = {
     'pi-agent-loop': 'LOOP',
     'pi-tool-pipeline': 'TOOLS',
     'pi-model-layer': 'MODEL',
+    'pi-message-system': 'MESSAGE',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -88,6 +89,7 @@ TEXTS = {
     'pi-agent-loop':    'Agent Loop',
     'pi-tool-pipeline':     '工具管道',
     'pi-model-layer':     '模型调用层',
+    'pi-message-system':     '消息系统',
 }
 
 PROMPTS = {
@@ -114,6 +116,7 @@ PROMPTS = {
     'pi-agent-loop':    'flat vector illustration of a smooth closed circular track with a small cart rolling along it in a continuous loop, three simple machines placed along the track, iterative loop concept, ' + STYLE,
     'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, ' + STYLE,
     'pi-model-layer':    'flat vector illustration of a translator figure at a wooden desk working on a single document, a central hub machine with four small output cards arranged around it, each card holding a different document format, multi-format translation concept, ' + STYLE,
+    'pi-message-system':    'flat vector illustration of a single open envelope floating in the center of a plain background, slightly open to reveal a richly detailed inner document with colorful stamps and handwritten notes, a single centered subject with generous empty space around all edges, ' + STYLE,
 }
 
 
