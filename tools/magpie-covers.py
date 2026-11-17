@@ -4,15 +4,15 @@
 # 只负责「没有官方 logo 可用」的文章（算法、AI 笔记、项目拆解、默认封面）；
 # 框架/工具类文章的封面走 tools/make-covers.py（白底 + 官方 logo，沿用品牌色）。
 #
-# 配色：贴合实际生活的自然配色（木质、金属、织物、食物、皮肤等真实颜色），
-# 保持画面干净明亮，避免脏灰、荧光色与全图蓝紫洗。
+# 配色硬约束：整体暖色自然系（木棕、奶油、米白、灰绿、陶土），严禁蓝紫主调或冷青色。
+# doubao 会默认蓝紫洗，所以配色要求写两遍：STYLE 里锁一次，每条 prompt 再点名一次。
 # 生成后压到 900x675（4:3）quality 85。
 # 落盘目录：文章封面 source/img/<年>/<月>/，站点级图片 source/img/common/
 # （按「哪篇文章引用了这张封面」自动定位，见 tools/imgpaths.py；文章还没写
 #   frontmatter 时加 --dir <目录>）
 #
-# 生成模型：默认 openrouter/google/gemini-3.1-flash-image（走 Magpie 的 OpenRouter
-# 通道），可用 --model 覆盖；不使用腾讯系模型。
+# 生成模型：默认 loomy/doubao-seedream-5-lite（讯飞 Loomy 通道），可用 --model 覆盖；
+# 不使用腾讯系模型（OpenRouter 系列区域受限不可用）。
 #
 # 用法：
 #   python tools/magpie-covers.py                  # 全部
@@ -31,16 +31,16 @@ from magpie_mcp import MagpieImage, DEFAULT_MODEL
 
 OUT_W, OUT_H = 900, 675
 QUALITY = 85
-# 风格模板：自然配色 + 扁平矢量，整幅完整入画。
+# 风格模板：暖色自然系 + 扁平矢量，整幅完整入画。
 # 文字由脚本在本地合成（不交给模型画）——本地叠字字形一定正确，不会错字。
-STYLE = ('natural, lifelike colors that fit each object in everyday life (wood, metal, fabric, food, '
-         'plant greens, skin tones where appropriate), a soft cohesive palette, '
+STYLE = ('warm natural lifelike colors, earthy palette of wood brown, cream, beige, sage green, '
+         'terracotta and soft warm whites, a soft cohesive palette, '
          'clean bright background with generous empty space around the subject, '
          'minimal flat vector illustration, concrete recognizable objects in a clear real-world scene '
          '(a machine, a device, a tool, physical props), never abstract node graphs, arrows, or color-block patterns, '
          'zoomed out wide shot, entire composition fully visible '
          'inside the frame, centered with wide margins on all sides, nothing cropped, '
-         'no full-image blue or purple wash, no neon colors, no muddy gray, '
+         'no full-image blue or purple wash, no cold cyan tones, no neon colors, no muddy gray, '
          'no 3d render, no photorealistic, no text, no letters, no watermark, no signature')
 
 # ── 图内短标签（可选；本地渲染，英文/中文都不会错字）──
@@ -71,15 +71,15 @@ TEXTS = {
 }
 
 PROMPTS = {
-    'pi-agent-loop':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small golden gear with a smooth flywheel driving a tiny chain, an engine in motion concept, pure white background, ' + STYLE,
-    'pi-model-layer':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a translator figure at a small desk working on one document, multi-format translation concept, ' + STYLE,
-    'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, ' + STYLE,
-    'pi-message-system':    'flat vector illustration of a single open envelope floating in the center of a plain background, slightly open to reveal a richly detailed inner document with colorful stamps and handwritten notes, a single centered subject with generous empty space around all edges, ' + STYLE,
-    'pi-context-engineering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a paper funnel pressing a stack of loose documents down into one small neat summary card, context compression concept, pure white background, ' + STYLE,
-    'pi-session-tree':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a single bare stylized winter tree with symmetrically branching wooden branches and small round glowing fruits hanging at each branch tip, growth and branching concept, pure white background, ' + STYLE,
-    'pi-extension-events':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a set of clear bell-shaped light bulbs connected by thin elegant wires with small glowing signals traveling along them, signal and connection concept, pure white background, ' + STYLE,
-    'pi-tui-rendering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small old-style green-screen computer terminal with a neat grid of glowing monochrome text lines on its screen, terminal display concept, pure white background, ' + STYLE,
-    'json-family-protocols':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a neat wooden shelf holding five differently shaped glass jars, each jar filled with a different kind of small colorful items (folded paper slips, wooden beads, tiny gears, rubber stamps), sorting and comparing collection concept, pure white background, ' + STYLE,
+    'pi-agent-loop':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small golden gear with a smooth flywheel driving a tiny chain, an engine in motion concept, warm wood tones and cream background, ' + STYLE,
+    'pi-model-layer':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a translator figure at a small desk working on one document, multi-format translation concept, warm wood tones and cream background, ' + STYLE,
+    'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, warm wood workbench tones, ' + STYLE,
+    'pi-message-system':    'flat vector illustration of a single open envelope floating in the center of a plain background, slightly open to reveal a richly detailed inner document with colorful stamps and handwritten notes, a single centered subject with generous empty space around all edges, warm cream paper tones, ' + STYLE,
+    'pi-context-engineering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a paper funnel pressing a stack of loose documents down into one small neat summary card, context compression concept, warm cream paper tones, ' + STYLE,
+    'pi-session-tree':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a single bare stylized tree with symmetrically branching wooden branches and small round warm-colored fruits (amber, terracotta, olive) hanging at each branch tip, growth and branching concept, on a pure white background, bright white, ' + STYLE,
+    'pi-extension-events':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small vintage wooden radio with a few hanging amber light bulbs connected by thin wires, signal and connection concept, warm amber glow, on a pure white background, bright white, ' + STYLE,
+    'pi-tui-rendering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small old-style desktop computer with a green-screen display showing neat monochrome text lines on it, warm beige retro computer tones, ' + STYLE,
+    'json-family-protocols':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a wooden shelf with five small differently shaped glass jars, each jar holding a different kind of warm-colored small items (paper slips, wooden beads, brass gears, rubber stamps), sorting and comparing concept, on a pure white background, bright white, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
@@ -114,6 +114,8 @@ def draw_label(im, text):
         radius=int(5 * scale), outline=(205, 214, 250), width=max(1, int(scale)))
     draw.text((x0 + pad_x - box[0], y0 + pad_y - box[1]), text, font=font, fill=(66, 90, 239))
     return im
+
+
 def postprocess(raw_path, out_path, text, label):
     """下载 → 中心裁成 4:3 → 压到 900x675 → 叠小标题 → 落盘，
     返回 (尺寸, KB, 平均亮度, 内容留白比例)"""
