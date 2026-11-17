@@ -55,6 +55,7 @@ LABELS = {
     'pi-extension-events': 'EVENTS',
     'pi-tui-rendering': 'RENDER',
     'json-family-protocols': 'JSON',
+    'agent-memory-components': 'MEMORY',
     'agent-state-machines': 'STATE',
     'ai-critical-thinking': 'READ',
     'cover-code-review': 'REVIEW',
@@ -72,6 +73,7 @@ TEXTS = {
     'pi-tool-pipeline':      '工具管道',
     'pi-message-system':     '消息系统',
     'pi-context-engineering':     '上下文工程',
+    'agent-memory-components':     'Agent 记忆',
     'pi-session-tree':     '会话管理',
     'pi-extension-events':     '扩展与事件',
     'pi-tui-rendering':     '终端渲染',
@@ -102,7 +104,7 @@ PROMPTS = {
     'super-agent-designs':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small self-driving rover with sensors on a little track, autonomous system concept, warm metal and wood tones, on a pure white background, bright white, ' + STYLE,
     'agents-going-async':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small control desk with one big screen and one small worker device side by side connected by a cable, coordination concept, warm wood desk tones, on a pure white background, bright white, ' + STYLE,
     'design-patterns-creational':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small factory machine with a conveyor belt carrying small products off the end, creation concept, warm metal and wood tones, on a pure white background, bright white, ' + STYLE,
-
+    'agent-memory-components':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small wooden memory box with several open compartments holding a few warm-colored keepsakes (an old photo, a small key, a folded letter), memory concept, warm wood tones, on a pure white background, bright white, ' + STYLE,
     'design-patterns-behavioral':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of small brown birds perched side by side on a short wooden branch, coordinated group concept, warm wood branch tones, on a pure white background, bright white, ' + STYLE,
 }
 
