@@ -40,10 +40,10 @@ private async runPromptMessages(
 
 `runAgentLoop` 六个参数各司其职（agent-loop.ts:111）：`prompts` 是本轮注入的新消息；`context` 是运行上下文（消息历史 + 可执行工具集）；`config` 是回调集合；`emit` 是事件出口；`signal` 是中止信号；`streamFn` 是底层模型流函数。值得注意 `context` 的传入方式：`Agent` 通过 `createContextSnapshot()`（agent.ts:469）浅拷贝 `messages` 与 `tools`，循环内所有写入都发生在副本上，消息经由逐条 `message_end` 事件落回宿主（agent.ts:587），`agent_end` 仅表示运行结束并清理流式状态（agent.ts:610-612）。这就是"副本隔离"：内核随意改上下文，宿主状态只在事件确认后更新。
 
-入口先补发 `agent_start`、`turn_start`，把 prompts 逐条以 `message_start`/`message_end` 发出，然后进入主循环（agent-loop.ts:126-133），事件序列全程闭合：
+入口先补发 `agent_start`、`turn_start`（作用：标记一个 Turn 开始），把 prompts 逐条以 `message_start`/`message_end` 发出，然后进入主循环（agent-loop.ts:126-133），事件序列全程闭合：
 
 ```text
-agent_start → (turn_start → message_* → tool_execution_* → turn_end)* → agent_end
+agent_start → (turn_start（作用：标记一个 Turn 开始）→ message_* → tool_execution_* → turn_end)* → agent_end
 ```
 
 两个概念要分清：**一次完整运行** 指从 `agent_start` 到 `agent_end` 的整个过程（源码里没有 "trace" 这个术语，这里为行文方便借用）；**Turn（轮）** 指一次 assistant 响应及其引发的全部工具调用与工具结果（types.ts:532 注释原话："a turn is one assistant response + any tool calls/results"）。UI、日志、持久化订阅这套事件序列即可重建现场。
@@ -222,7 +222,7 @@ if (followUpMessages.length > 0) {
 
 **副本隔离。** 入口拷贝 `messages`/`tools`，内核在副本上自由读写，宿主通过逐条 `message_end` 事件接收新消息，`agent_end` 只作为运行结束信号。流式原地替换（2.3 节）也依赖这一前提：中间态可反复覆盖同一槽位而不污染外部状态。写自己的 Agent 时，"内核操作副本、事件驱动落库"远胜"内核直接改宿主状态"，重试、回放、分支都更简单。
 
-**事件序列闭合。** `agent_start → turn_start → message_* → tool_execution_* → turn_end → agent_end` 严格嵌套、成对闭合。UI、持久化、审计层可无差别订阅同一条事件流重建现场，内核与消费者无需共享内部状态。
+**事件序列闭合。** `agent_start → turn_start（作用：标记一个 Turn 开始）→ message_* → tool_execution_* → turn_end → agent_end` 严格嵌套、成对闭合。UI、持久化、审计层可无差别订阅同一条事件流重建现场，内核与消费者无需共享内部状态。
 
 **内核 + 叠加。** 内核只保留所有 Agent 都需要的最小闭环，产品特性（插队、续跑、轮间准备、权限钩子）以可选回调挂载。可迁移的做法：先写出不依赖任何回调的裸循环，再逐步叠加钩子，每加一个都验证内核行为不变。
 
