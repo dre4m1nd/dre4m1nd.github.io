@@ -55,6 +55,14 @@ LABELS = {
     'pi-extension-events': 'EVENTS',
     'pi-tui-rendering': 'RENDER',
     'json-family-protocols': 'JSON',
+    'agent-state-machines': 'STATE',
+    'ai-critical-thinking': 'READ',
+    'cover-code-review': 'REVIEW',
+    'super-agent-designs': 'AGENT',
+    'agents-going-async': 'ASYNC',
+    'design-patterns-creational': 'CREATE',
+    'design-patterns-behavioral': 'BEHAVE',
+    'design-patterns-structural': 'STRUCT',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -68,6 +76,14 @@ TEXTS = {
     'pi-extension-events':     '扩展与事件',
     'pi-tui-rendering':     '终端渲染',
     'json-family-protocols':     'JSON 家族辨析',
+    'agent-state-machines':     'Agent 状态机',
+    'ai-critical-thinking':     '批判性思考',
+    'cover-code-review':     '代码审查',
+    'super-agent-designs':     'Super Agent',
+    'agents-going-async':     '异步编排',
+    'design-patterns-creational':     '创建型模式',
+    'design-patterns-behavioral':     '行为型模式',
+    'design-patterns-structural':     '结构型模式',
 }
 
 PROMPTS = {
@@ -80,6 +96,14 @@ PROMPTS = {
     'pi-extension-events':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small vintage wooden radio with a few hanging amber light bulbs connected by thin wires, signal and connection concept, warm amber glow, on a pure white background, bright white, ' + STYLE,
     'pi-tui-rendering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small old-style desktop computer with a green-screen display showing neat monochrome text lines on it, warm beige retro computer tones, ' + STYLE,
     'json-family-protocols':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a wooden shelf with five small differently shaped glass jars, each jar holding a different kind of warm-colored small items (paper slips, wooden beads, brass gears, rubber stamps), sorting and comparing concept, on a pure white background, bright white, ' + STYLE,
+    'agent-state-machines':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small mechanical relay control panel with a few levers and warm indicator lights, deterministic control concept, on a pure white background, bright white, ' + STYLE,
+    'ai-critical-thinking':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a person sitting at a small desk reading an open book under a warm desk lamp, deep thinking concept, warm wood desk tones, on a pure white background, bright white, ' + STYLE,
+    'cover-code-review':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a paper checklist with a magnifying glass and a red rubber stamp resting on it, review concept, warm cream paper tones, on a pure white background, bright white, ' + STYLE,
+    'super-agent-designs':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small self-driving rover with sensors on a little track, autonomous system concept, warm metal and wood tones, on a pure white background, bright white, ' + STYLE,
+    'agents-going-async':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small control desk with one big screen and one small worker device side by side connected by a cable, coordination concept, warm wood desk tones, on a pure white background, bright white, ' + STYLE,
+    'design-patterns-creational':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small factory machine with a conveyor belt carrying small products off the end, creation concept, warm metal and wood tones, on a pure white background, bright white, ' + STYLE,
+
+    'design-patterns-behavioral':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of small brown birds perched side by side on a short wooden branch, coordinated group concept, warm wood branch tones, on a pure white background, bright white, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
