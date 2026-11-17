@@ -66,6 +66,7 @@ LABELS = {
     'pi-tool-pipeline': 'TOOLS',
     'pi-model-layer': 'MODEL',
     'pi-message-system': 'MESSAGE',
+    'pi-context-engineering': 'CONTEXT',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -90,6 +91,7 @@ TEXTS = {
     'pi-tool-pipeline':     '工具管道',
     'pi-model-layer':     '模型调用层',
     'pi-message-system':     '消息系统',
+    'pi-context-engineering':     '上下文工程',
 }
 
 PROMPTS = {
@@ -117,6 +119,7 @@ PROMPTS = {
     'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, ' + STYLE,
     'pi-model-layer':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a translator figure at a small desk working on one document, multi-format translation concept, ' + STYLE,
     'pi-message-system':    'flat vector illustration of a single open envelope floating in the center of a plain background, slightly open to reveal a richly detailed inner document with colorful stamps and handwritten notes, a single centered subject with generous empty space around all edges, ' + STYLE,
+    'pi-context-engineering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a paper funnel pressing a stack of loose documents down into one small neat summary card, context compression concept, pure white background, ' + STYLE,
 }
 
 
