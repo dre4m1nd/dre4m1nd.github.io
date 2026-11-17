@@ -5,6 +5,7 @@ description: 创建型模式解决“怎么造对象”：单例、工厂方法�
 categories:
   - 技术
 tags:
+  - 专栏
   - 设计模式
   - Java
 cover: /img/2026/11/design-patterns-creational.jpg

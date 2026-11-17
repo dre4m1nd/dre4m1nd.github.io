@@ -5,8 +5,8 @@ description: 从 Tool、AgentTool、ToolDefinition 三层类型出发，逐段�
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-tool-pipeline.jpg
 ---

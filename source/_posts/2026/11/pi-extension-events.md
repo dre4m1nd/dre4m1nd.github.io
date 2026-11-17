@@ -6,8 +6,8 @@ description: 从 AgentEvent 类型体系、agent-loop 的事件发射，到 Exte
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-extension-events.jpg
 ---

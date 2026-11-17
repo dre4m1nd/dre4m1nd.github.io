@@ -42,7 +42,7 @@ description: 一句话摘要      # 首页卡片/SEO 用，index_post_content.me
 cover: /img/xxx.jpg          # 封面；留空用 cover.default_cover（/img/default_cover.jpg）
 top_img:                     # 文章页顶部大图；false 表示不要顶部图
 categories:
-  - 技术
+  - 工程实践
 tags:
   - Hexo
 top_single:                  # 置顶单篇大卡（首页），可选
@@ -96,7 +96,7 @@ highlight_shrink: true       # 代码块默认折叠
 - 改了 `_config.anzhiyu.yml` 里的颜色值必须带双引号（`"#425AEF"`），否则 YAML 解析出错
 - 主题配置里 `CDN.internal_provider: local`，不要再改成外部 CDN
 - `.obsidian/` 也被提交进仓库（这是 Obsidian vault），改 Obsidian 配置会产生噪音 diff，除非必要别动
-- **首页三个分类卡片 404**：`_config.yml` 里有 `category_map`（技术→tech、笔记→notes、折腾→tinkering），Hexo 生成的是 `/categories/tech|notes|tinkering/`；`_config.anzhiyu.yml` 的 `home_top.category[].path` 如果写中文 `/categories/技术/` 就 404。**加/改分类时两处必须一起改**。验证办法：生成后遍历 `public/**/*.html` 的站内 `href`，逐个对 `public/` 落盘文件，一次就能抓出所有死链。
+- **首页分类卡片 404**：`_config.yml` 里有 `category_map`（技术→tech、笔记→notes、架构→architecture、概念→concepts、实践→practice），Hexo 生成的是对应的 `/categories/<英文>/`；`_config.anzhiyu.yml` 的 `home_top.category[].path` 如果写中文 `/categories/技术/` 就 404。**加/改分类时两处必须一起改**。分类共 5 类（内容类型维度），专栏（系列维度）承载在标签上（`专栏` 标记 + 系列名标签），不设为分类；判定标准见 `.pi/workflows/blog-write.js` 的「分类与标签标准」。验证办法：生成后遍历 `public/**/*.html` 的站内 `href`，逐个对 `public/` 落盘文件，一次就能抓出所有死链。
 
 ## 美化改动的边界
 

@@ -5,8 +5,8 @@ description: 拆解 earendil-works/pi 的 Agent Loop 源码，看十几行内核
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-agent-loop.jpg
 ---

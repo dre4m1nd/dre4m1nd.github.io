@@ -23,7 +23,7 @@
 
 const topic = args.topic || "未命名主题";
 const slug = args.slug || "new-post";
-const category = args.category || "技术";
+const category = args.category || "工程实践";
 const tags = (args.tags || []).join(", ");
 const source = args.source || "";
 const repo = args.repo || "D:/notes/blog-hexo";
@@ -44,18 +44,24 @@ const STRUCTURE_RULE = source
 // ── 本仓库的硬规则（都是实际踩过的坑，细节见 .pi/skills/hexo-anzhiyu-post/SKILL.md）──
 const RULES = [
   "分类与标签标准（写文章前先判定，frontmatter 必须遵守）：",
-  "  分类（单选，三选一，互斥）：",
-  "    技术 = 主体在「做」：有实现、有代码、有源码拆解、有工程结论；",
-  "    笔记 = 主体在「想」：概念梳理、读后思考、方法论、趋势观察；",
-  "    折腾 = 记录一次动手过程：实验、踩坑、个人实践（暂无对应文章）。",
-  "    拿不准时按文章主要篇幅判：代码/实现细节占大头→技术，论述/思考占大头→笔记。",
-  "  标签（每篇 2-3 个 = 主题标签 1-2 个 + 技术栈标签 0-1 个）：",
-  "    首标签为主题标签，技术栈标签放最后；分类名（技术/笔记/折腾）不得作为标签；",
-  "    主题标签优先从既有词表选：Agent、AI、架构、记忆、异步、代码审查、工程实践、批判性思考、设计模式、Web 框架、JSON、pi、源码解读、技术辨析、Super Agent；",
+  "  分类与专栏是两个维度，分开管理，不得混用：",
+  "  【分类】= 内容类型，单选五选一，互斥；按文章主要篇幅判归属：",
+  "    技术 = 主体在「做」：实现、代码、源码拆解、工程结论（如 Pi 源码解读、设计模式）；",
+  "    笔记 = 读后思考、方法论、趋势观察（如 Agent 记忆、批判性思考）；",
+  "    架构 = 系统/Agent 的架构思路、模式与设计取舍（如状态机、异步编排、Super Agent）；",
+  "    概念 = 概念辨析、知识体系梳理（如 JSON 家族辨析）；",
+  "    实践 = 框架/工具的使用落地与工程实践（如 FastAPI、代码审查）。",
+  "  【专栏】= 系列维度，承载在标签上，不设为分类：专栏文章必须加两个标签——",
+  "    「专栏」（标记位，固定写法）+ 系列名标签（如 Pi 源码解读、设计模式）；",
+  "    系列名同时登记进主题标签词表。专栏文章的分类仍按上述类型维度判定。",
+  "  标签（每篇 2-3 个，专栏文章 3-4 个 = 专栏标记 + 系列名 + 主题标签 1-2 个 + 技术栈标签 0-1 个）：",
+  "    首标签为主题标签（专栏文章首标签为「专栏」），技术栈标签放最后；分类名（技术/笔记/架构/概念/实践）不得作为标签；",
+  "    主题标签优先从既有词表选：Agent、AI、架构、记忆、异步、代码审查、工程实践、批判性思考、Web 框架、JSON、pi、源码解读、技术辨析、Super Agent、Pi 源码解读、设计模式；",
   "    技术栈标签词表：TypeScript、Python、Java、JSON、Claude Code、FastAPI；新主题/新栈先登记词表再使用。",
   "  新增分类必须同时改两处：",
-  "    _config.yml 的 category_map（技术→tech、笔记→notes、折腾→tinkering）",
-  "    _config.anzhiyu.yml 的 home_top.category[].path（必须写映射后的英文路径，写中文就 404）",
+  "    _config.yml 的 category_map（技术→tech、笔记→notes、架构→architecture、概念→concepts、实践→practice）",
+  "    _config.anzhiyu.yml 的 home_top.category[].path（必须写映射后的英文路径，写中文就 404；",
+  "    主题分类卡只支持 blue/red/green 三色 class，多卡循环复用）",
   "frontmatter 的 date 写中午 12 点（如 2026-11-04 12:00:00）：GitHub Actions 跑在 UTC，",
   "  只写日期会被算成前一天。",
   "不碰 themes/：样式只进 source/css/custom.css，主题配置只进 _config.anzhiyu.yml。",

@@ -6,8 +6,8 @@ slug: pi-session-tree
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-session-tree.jpg
 ---

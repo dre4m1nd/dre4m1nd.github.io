@@ -70,7 +70,9 @@ default_category: uncategorized
 category_map:
   技术: tech
   笔记: notes
-  折腾: tinkering
+  架构: architecture
+  概念: concepts
+  实践: practice
 tag_map:
 
 # Metadata elements

@@ -6,8 +6,8 @@ description: 深入 Pi 的模型调用层：streamSimple 一行背后的三层�
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-model-layer.jpg
 ---

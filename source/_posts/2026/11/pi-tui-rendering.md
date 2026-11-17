@@ -6,8 +6,8 @@ description: 深入 pi-tui 源码，拆解其声明式布局、帧渲染与终�
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-tui-rendering.jpg
 ---

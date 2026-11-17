@@ -5,6 +5,7 @@ description: 行为型模式解决“对象之间怎么分工协作”：责任�
 categories:
   - 技术
 tags:
+  - 专栏
   - 设计模式
   - Java
 cover: /img/2026/11/design-patterns-behavioral.jpg

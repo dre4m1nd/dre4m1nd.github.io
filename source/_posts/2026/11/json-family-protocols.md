@@ -4,7 +4,7 @@ date: 2026-11-17 22:30:00
 slug: json-family-protocols
 description: 一份把 JSON 家族讲清楚的对照笔记：JSON 是格式，JSONL 是流，JSON-RPC 才是协议，JSON Schema 是词汇表，JSON Pointer 是地址，JSON Patch 与 Merge Patch 是两种修改单。附选择决策表与七个常见误区。
 categories:
-  - 技术
+  - 概念
 tags:
   - JSON
   - 技术辨析

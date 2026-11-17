@@ -5,8 +5,8 @@ description: 从一条 `!ls -la` 命令出发，看 Pi 如何用 4 种标准消�
 categories:
   - 技术
 tags:
-  - pi
-  - 源码解读
+  - 专栏
+  - Pi 源码解读
   - TypeScript
 cover: /img/2026/11/pi-message-system.jpg
 ---

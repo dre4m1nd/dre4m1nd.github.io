@@ -5,6 +5,7 @@ description: 结构型模式解决“怎么把类/对象拼成一个更大的结
 categories:
   - 技术
 tags:
+  - 专栏
   - 设计模式
   - Java
 cover: /img/2026/11/design-patterns-structural.jpg
