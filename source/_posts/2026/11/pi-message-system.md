@@ -22,7 +22,7 @@ cover: /img/2026/11/pi-message-system.jpg
 
 **形态一：终端里的一段文本。** 你看到命令、输出、退出码，输出太长时还有一行「已截断，完整输出见某文件」。
 
-**形态二：会话历史里的一条结构化消息。** 执行结果由 `recordBashResult`（agent-session.ts:4055）落成 `BashExecutionMessage`：
+**形态二：会话历史里的一条结构化消息。** 执行结果由 `recordBashResult`（agent-session.ts:4053）落成 `BashExecutionMessage`：
 
 ```ts
 // packages/coding-agent/src/core/messages.ts:29
