@@ -94,9 +94,9 @@ TEXTS = {
 
 PROMPTS = {
     # ── 算法笔记 ──
-    'cover-binary':    'abstract illustration of a magnifying glass hovering above a sorted row of dots with a highlighted midpoint, precision binary search concept, ' + STYLE,
-    'cover-kmp':       'abstract illustration of a chain of beads being compared by a sliding pointer that never moves backward, string matching concept, ' + STYLE,
-    'cover-quicksort': 'abstract illustration of columns of blocks splitting around a highlighted pivot with sweeping arrows on both sides, quicksort partition concept, ' + STYLE,
+    'cover-binary':    'a minimal simple icon of a magnifying glass, binary search concept, a tiny subject centered, pure white background, ' + STYLE,
+    'cover-kmp':       'a minimal simple icon of a chain of beads, string matching concept, a tiny subject centered with huge empty margins on all four sides, plain background, ' + STYLE,
+    'cover-quicksort': 'a minimal simple icon of a small column of blocks, quicksort concept, a tiny subject centered with huge empty margins on all four sides, plain background, ' + STYLE,
     # ── 项目拆解 ──
     'cover-cipherlens':'flat vector illustration of a magnifying glass examining a padlock surrounded by cipher symbols and code brackets, security analysis concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     # ── AI 笔记 ──
@@ -111,12 +111,12 @@ PROMPTS = {
     'super-agent-designs':    'flat vector illustration of a central glowing hub dispatching tasks along thin arrows to many small worker nodes arranged in two layers, orchestration concept, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
     # ── 默认封面（frontmatter 没写 cover 时随机用）──
     'cover-code':   'flat vector illustration of a pair of curly code brackets in solid blue with a small cyan terminal window below, general tech aesthetic, pure white background, bright blue #425AEF and cyan #00c4b6 only, minimal flat shapes, no 3d, no photorealistic, no beige or warm tones, no text, no letters, no watermark',
-    'cover-notes':  'abstract illustration of floating notebook pages with abstract diagram marks and code brackets, notes concept, ' + STYLE,
-    'cover-tools':  'abstract illustration of a wrench, gears and tool icons arranged in a neat grid, tooling concept, ' + STYLE,
+    'cover-notes':  'a minimal simple icon of a small notebook, notes concept, a tiny subject centered, pure white background, ' + STYLE,
+    'cover-tools':  'a minimal simple icon of a small wrench, tooling concept, a tiny subject centered, pure white background, ' + STYLE,
     'pi-agent-loop':    'flat vector illustration of a smooth closed circular track with a small cart rolling along it in a continuous loop, three simple machines placed along the track, iterative loop concept, ' + STYLE,
     'pi-tool-pipeline':    'flat vector illustration of a neat workbench with a simple robotic arm holding a wrench above a small workpiece, a few hand tools (screwdriver, wrench, pliers) neatly arranged beside it, tool use concept, ' + STYLE,
-    'pi-model-layer':    'flat vector illustration of a translator figure at a wooden desk working on a single document, a central hub machine with four small output cards arranged around it, each card holding a different document format, multi-format translation concept, ' + STYLE,
-    'pi-message-system':    'flat vector illustration of a single open envelope floating in the center of a plain background, slightly open to reveal a richly detailed inner document with colorful stamps and handwritten notes, a single centered subject with generous empty space around all edges, ' + STYLE,
+    'pi-model-layer':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a translator figure at a small desk working on one document, multi-format translation concept, ' + STYLE,
+    'pi-message-system':    'a minimal simple icon of a small envelope, message concept, a tiny subject centered with huge empty margins on all four sides, plain background, ' + STYLE,
 }
 
 
