@@ -1,9 +1,9 @@
 menu:
-  文章:
+  文章||anzhiyu-icon-book-open:
     隧道: /archives/ || anzhiyu-icon-box-archive
     分类: /categories/ || anzhiyu-icon-shapes
     标签: /tags/ || anzhiyu-icon-tags
-    专栏: /tags/专栏/ || anzhiyu-icon-box-archive
+  专栏: /tags/专栏/ || fa-regular fa-lightbulb
 
   # 友链（需要先建 /link/ /fcircle/ /comments/ 页面，否则菜单是死链，先注释）
   # 友链:
