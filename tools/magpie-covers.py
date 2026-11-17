@@ -54,6 +54,7 @@ LABELS = {
     'pi-session-tree': 'SESSION',
     'pi-extension-events': 'EVENTS',
     'pi-tui-rendering': 'RENDER',
+    'json-family-protocols': 'JSON',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -66,6 +67,7 @@ TEXTS = {
     'pi-session-tree':     '会话管理',
     'pi-extension-events':     '扩展与事件',
     'pi-tui-rendering':     '终端渲染',
+    'json-family-protocols':     'JSON 家族辨析',
 }
 
 PROMPTS = {
@@ -77,6 +79,7 @@ PROMPTS = {
     'pi-session-tree':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a single bare stylized winter tree with symmetrically branching wooden branches and small round glowing fruits hanging at each branch tip, growth and branching concept, pure white background, ' + STYLE,
     'pi-extension-events':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a set of clear bell-shaped light bulbs connected by thin elegant wires with small glowing signals traveling along them, signal and connection concept, pure white background, ' + STYLE,
     'pi-tui-rendering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small old-style green-screen computer terminal with a neat grid of glowing monochrome text lines on its screen, terminal display concept, pure white background, ' + STYLE,
+    'json-family-protocols':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a neat wooden shelf holding five differently shaped glass jars, each jar filled with a different kind of small colorful items (folded paper slips, wooden beads, tiny gears, rubber stamps), sorting and comparing collection concept, pure white background, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
