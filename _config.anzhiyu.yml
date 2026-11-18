@@ -1060,31 +1060,21 @@ home_top:
   # path 必须用 _config.yml 里 category_map 映射后的英文路径（技术→tech、笔记→notes、架构→architecture、
   # 概念→concepts、实践→practice），
   category:
-    - name: 技术
-      path: /categories/tech/
+    - name: 全部文章 · 源码、架构与思考
+      path: /archives/
       shadow: var(--anzhiyu-shadow-red)
       class: red
-      icon: anzhiyu-icon-cube
-    - name: 笔记
-      path: /categories/notes/
-      shadow: var(--anzhiyu-shadow-blue)
+      icon: anzhiyu-icon-box-archive
+    - name: ""
+      path: /
+      shadow: none
       class: blue
-      icon: anzhiyu-icon-book-open
-    - name: 架构
-      path: /categories/architecture/
-      shadow: var(--anzhiyu-shadow-green)
+      icon: ""
+    - name: ""
+      path: /
+      shadow: none
       class: green
-      icon: anzhiyu-icon-shapes
-    - name: 概念
-      path: /categories/concepts/
-      shadow: var(--anzhiyu-shadow-red)
-      class: red
-      icon: anzhiyu-icon-lightbulb
-    - name: 实践
-      path: /categories/practice/
-      shadow: var(--anzhiyu-shadow-blue)
-      class: blue
-      icon: anzhiyu-icon-rocket
+      icon: ""
   default_descr: 一个记录学习笔记和技术折腾的地方。
   swiper:
     enable: false
