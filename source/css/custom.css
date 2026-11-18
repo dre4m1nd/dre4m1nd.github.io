@@ -540,3 +540,52 @@ body,
   --anzhiyu-hovertext: #34D399;
   --anzhiyu-lighttext: #34D399;
 }
+
+/* ---------- 代码块：深绿配色（与主题统一） ---------- */
+#article-container figure.highlight {
+  --hl-bg: #0C241C;
+  --hl-color: #D7F0E6;
+  --hlexpand-bg: linear-gradient(180deg, rgba(12, 36, 28, 0.6), rgba(12, 36, 28, 0.95));
+  --hlnumber-bg: #0A1E17;
+  --hlnumber-color: rgba(215, 240, 230, 0.35);
+  --hlscrollbar-bg: rgba(215, 240, 230, 0.18);
+  --hltools-bg: #0A1E17;
+  --hltools-color: #A7F3D0;
+  background: var(--hl-bg);
+  color: var(--hl-color);
+}
+#article-container figure.highlight pre .comment { color: #6E8F80; }
+#article-container figure.highlight pre .keyword,
+#article-container figure.highlight pre .tag,
+#article-container figure.highlight pre .title { color: #F0C987; }
+#article-container figure.highlight pre .string,
+#article-container figure.highlight pre .value,
+#article-container figure.highlight pre .cdata,
+#article-container figure.highlight pre .formula,
+#article-container figure.highlight pre .header,
+#article-container figure.highlight pre .special,
+#article-container figure.highlight pre .symbol,
+#article-container figure.highlight pre .inheritance { color: #A7F3D0; }
+#article-container figure.highlight pre .number,
+#article-container figure.highlight pre .preprocessor,
+#article-container figure.highlight pre .literal,
+#article-container figure.highlight pre .command,
+#article-container figure.highlight pre .params { color: #FBBF24; }
+#article-container figure.highlight pre .function,
+#article-container figure.highlight pre .sub,
+#article-container figure.highlight pre .decorator,
+#article-container figure.highlight pre .built_in,
+#article-container figure.highlight pre .attr { color: #6EE7B7; }
+#article-container figure.highlight pre .variable,
+#article-container figure.highlight pre .attribute,
+#article-container figure.highlight pre .class,
+#article-container figure.highlight pre .constant,
+#article-container figure.highlight pre .doctype,
+#article-container figure.highlight pre .name,
+#article-container figure.highlight pre .pi,
+#article-container figure.highlight pre .pseudo,
+#article-container figure.highlight pre .regexp { color: #34D399; }
+#article-container figure.highlight pre .meta,
+#article-container figure.highlight pre .hexcolor { color: #A7F3D0; }
+#article-container figure.highlight pre .addition { color: #34D399; }
+#article-container figure.highlight pre .deletion { color: #F87171; }
