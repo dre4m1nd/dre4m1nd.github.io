@@ -49,15 +49,17 @@
   opacity: 0.6;
   text-transform: none;
 }
-/* 箭头方向：展开态朝上（收回），收起态朝下（展开） */
+/* 箭头方向：展开态朝上（收回），收起态朝下（展开）；去掉旋转动画，直接换向 */
+#article-container .highlight-tools .expand,
+#article-container .code-expand-btn {
+  transition: none !important;
+}
+#article-container .highlight-tools.closed .expand,
 #article-container .highlight-tools .expand {
   transform: none !important;
 }
 #article-container .highlight-tools:not(.closed) .expand {
   transform: rotate(180deg) !important;
-}
-#article-container .highlight-tools.closed .expand {
-  transform: none !important;
 }
 #article-container .code-expand-btn:not(.expand-done) {
   transform: none !important;
