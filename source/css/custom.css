@@ -440,3 +440,36 @@ body,
   gap: 8px;
   margin: 0;
 }
+
+/* ---------- 侧栏分类卡：图标、分色与 hover ---------- */
+#aside-content .card-categories ul.card-category-list > .card-category-list-item a {
+  border-radius: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+#aside-content .card-categories ul.card-category-list > .card-category-list-item a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(66, 90, 239, 0.12);
+}
+#aside-content .card-categories .card-category-list-name::before {
+  margin-right: 6px;
+}
+#aside-content .card-categories a[href="/categories/tech/"] .card-category-list-name::before { content: "⚙️"; }
+#aside-content .card-categories a[href="/categories/practice/"] .card-category-list-name::before { content: "🛠️"; }
+#aside-content .card-categories a[href="/categories/architecture/"] .card-category-list-name::before { content: "🏗️"; }
+#aside-content .card-categories a[href="/categories/concepts/"] .card-category-list-name::before { content: "💡"; }
+#aside-content .card-categories a[href="/categories/notes/"] .card-category-list-name::before { content: "📒"; }
+#aside-content .card-categories a[href="/categories/tech/"] { background: rgba(66, 90, 239, 0.06); }
+#aside-content .card-categories a[href="/categories/practice/"] { background: rgba(247, 107, 28, 0.06); }
+#aside-content .card-categories a[href="/categories/architecture/"] { background: rgba(139, 92, 246, 0.07); }
+#aside-content .card-categories a[href="/categories/concepts/"] { background: rgba(217, 119, 6, 0.06); }
+#aside-content .card-categories a[href="/categories/notes/"] { background: rgba(24, 181, 102, 0.06); }
+#aside-content .card-categories a[href="/categories/tech/"] .card-category-list-count { color: #425aef; }
+#aside-content .card-categories a[href="/categories/practice/"] .card-category-list-count { color: #f76b1c; }
+#aside-content .card-categories a[href="/categories/architecture/"] .card-category-list-count { color: #8b5cf6; }
+#aside-content .card-categories a[href="/categories/concepts/"] .card-category-list-count { color: #d97706; }
+#aside-content .card-categories a[href="/categories/notes/"] .card-category-list-count { color: #18b566; }
+[data-theme="dark"] #aside-content .card-categories a[href="/categories/tech/"] { background: rgba(66, 90, 239, 0.16); }
+[data-theme="dark"] #aside-content .card-categories a[href="/categories/practice/"] { background: rgba(247, 107, 28, 0.16); }
+[data-theme="dark"] #aside-content .card-categories a[href="/categories/architecture/"] { background: rgba(139, 92, 246, 0.18); }
+[data-theme="dark"] #aside-content .card-categories a[href="/categories/concepts/"] { background: rgba(217, 119, 6, 0.16); }
+[data-theme="dark"] #aside-content .card-categories a[href="/categories/notes/"] { background: rgba(24, 181, 102, 0.16); }
