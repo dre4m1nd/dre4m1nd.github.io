@@ -64,6 +64,10 @@ LABELS = {
     'design-patterns-creational': 'CREATE',
     'design-patterns-behavioral': 'BEHAVE',
     'design-patterns-structural': 'STRUCT',
+    'cover-binary': 'SEARCH',
+    'cover-cipherlens': 'SECURITY',
+    'cover-kmp': 'KMP',
+    'cover-quicksort': 'SORT',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -86,6 +90,10 @@ TEXTS = {
     'design-patterns-creational':     '创建型模式',
     'design-patterns-behavioral':     '行为型模式',
     'design-patterns-structural':     '结构型模式',
+    'cover-binary':     '二分查找',
+    'cover-cipherlens':     '项目拆解',
+    'cover-kmp':     'KMP 算法',
+    'cover-quicksort':     '快速排序',
 }
 
 PROMPTS = {
@@ -106,6 +114,10 @@ PROMPTS = {
     'design-patterns-creational':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small factory machine with a conveyor belt carrying small products off the end, creation concept, warm metal and wood tones, on a pure white background, bright white, ' + STYLE,
     'agent-memory-components':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small cute robot at a small desk sorting a stack of memory cards into a wooden filing cabinet, agent memory organizing concept, warm wood cabinet tones and warm metal robot tones, on a pure white background, bright white, ' + STYLE,
     'design-patterns-behavioral':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of small brown birds perched side by side on a short wooden branch, coordinated group concept, warm wood branch tones, on a pure white background, bright white, ' + STYLE,
+    'cover-binary':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small brass balance scale with two pans holding tiny weights, searching and comparing concept, warm brass and wood tones, on a pure white background, bright white, ' + STYLE,
+    'cover-cipherlens':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small brass padlock with a key and a wooden lockbox, security concept, warm brass and wood tones, on a pure white background, bright white, ' + STYLE,
+    'cover-kmp':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a magnifying glass examining a long strip of paper with small pattern marks, pattern matching concept, warm cream paper tones, on a pure white background, bright white, ' + STYLE,
+    'cover-quicksort':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of wooden blocks sorted by height from short to tall on a table, sorting concept, warm wood block tones, on a pure white background, bright white, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
