@@ -56,6 +56,9 @@
 #article-container .highlight-tools:not(.closed) .expand {
   transform: rotate(180deg) !important;
 }
+#article-container .highlight-tools.closed .expand {
+  transform: none !important;
+}
 #article-container .code-expand-btn:not(.expand-done) {
   transform: none !important;
 }
