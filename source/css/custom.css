@@ -400,3 +400,43 @@ body,
   opacity: 1;
   transform: translateX(0);
 }
+
+/* ---------- 作者卡：放大间距，避免拥挤 ---------- */
+#aside-content .card-widget.card-info {
+  padding: 22px 24px 20px;
+}
+#aside-content .card-widget.card-info .author-info-avatar {
+  margin: 8px auto 14px;
+  justify-content: center;
+}
+#aside-content .card-widget.card-info .author-info__bottom-group {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "name icons" "desc desc";
+  align-items: center;
+  gap: 8px 10px;
+  width: 100%;
+}
+#aside-content .card-widget.card-info .author-info__bottom-group .author-info__bottom-group-left {
+  display: contents;
+}
+#aside-content .card-widget.card-info .author-info__bottom-group .author-info__name {
+  grid-area: name;
+  margin: 0;
+}
+#aside-content .card-widget.card-info .author-info__bottom-group .author-info__desc {
+  grid-area: desc;
+  font-size: 0.8rem;
+  line-height: 1.6;
+  opacity: 0.78;
+  margin-top: 2px;
+}
+#aside-content .card-widget.card-info .author-info__bottom-group .card-info-social-icons {
+  grid-area: icons;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
