@@ -1,4 +1,5 @@
 menu:
+  首页: / || fa-solid fa-house
   文章||anzhiyu-icon-book-open:
     隧道: /archives/ || anzhiyu-icon-box-archive
     分类: /categories/ || anzhiyu-icon-shapes

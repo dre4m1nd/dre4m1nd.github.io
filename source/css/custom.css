@@ -243,3 +243,42 @@ body,
 [data-theme="dark"] #card-heatmap .hm.l2 { background: #3d56b5; }
 [data-theme="dark"] #card-heatmap .hm.l3 { background: #5b78f6; }
 [data-theme="dark"] #card-heatmap .hm.l4 { background: #8ea6ff; }
+
+/* ---------- 视觉花样：导航细线与卡片微动效 ---------- */
+/* 导航菜单项 hover/active 时底部出现品牌色细线 */
+#nav .menus_items .menus_item > a {
+  position: relative;
+}
+#nav .menus_items .menus_item > a::after {
+  content: '';
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  bottom: -6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--anzhiyu-main);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+#nav .menus_items .menus_item > a:hover::after,
+#nav .menus_items .menus_item.active > a::after {
+  opacity: 0.85;
+}
+
+/* 首页文章卡片 hover 微抬升 */
+.recent-posts .recent-post-item {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.recent-posts .recent-post-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(66, 90, 239, 0.14);
+}
+
+/* 侧栏卡片 hover 微亮 */
+.aside-content .card-widget {
+  transition: transform 0.25s ease;
+}
+.aside-content .card-widget:hover {
+  transform: translateY(-2px);
+}
