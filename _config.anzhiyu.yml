@@ -811,7 +811,7 @@ aside:
     category: true
   card_author:
     enable: true
-    description: 源码 · 架构 · 思考
+    description: 从算法到架构，从后端到前端，记录学习过程中的思考与笔记。
     name_link: /
 
   card_announcement:
@@ -1054,7 +1054,7 @@ home_top:
   enable: true # 开关
   timemode: date #date/updated
   title: dre4m1nd
-  subTitle: 源码、架构与思考。
+  subTitle: 从算法到架构，从后端到前端，记录学习过程中的思考与笔记。
   siteText: dre4m1nd.github.io
   # 注意：数组是“按下标合并”的（hexo deepMerge），条目数要 ≥ 主题默认的 3 个，否则会残留主题 demo 项
   # path 必须用 _config.yml 里 category_map 映射后的英文路径（技术→tech、笔记→notes、架构→architecture、

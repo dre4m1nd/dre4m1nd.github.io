@@ -4,9 +4,9 @@
 
 # Site
 title: dre4m1nd 的笔记
-subtitle: "后端 · 算法 · 折腾记录"
-description: "dre4m1nd 的博客：记录后端开发、算法刷题与折腾过程中的笔记和思考。"
-keywords: dre4m1nd,后端开发,算法,刷题笔记,Hexo,Anzhiyu,技术博客
+subtitle: "从算法到架构，从后端到前端，记录学习过程中的思考与笔记。"
+description: "dre4m1nd 的博客：从算法到架构，从后端到前端，记录学习过程中的思考与笔记。"
+keywords: dre4m1nd,后端,前端,算法,架构,学习笔记,Hexo,Anzhiyu,技术博客
 author: dre4m1nd
 language: zh-cn
 timezone: "Asia/Shanghai"
