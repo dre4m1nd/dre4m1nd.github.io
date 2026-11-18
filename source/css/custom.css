@@ -335,6 +335,11 @@ body,
 .categoryGroup {
   height: auto;
 }
+@media screen and (max-width: 768px) {
+  .categoryGroup {
+    display: none !important;
+  }
+}
 .writing-stats {
   width: 100%;
   display: grid;
