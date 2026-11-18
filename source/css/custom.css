@@ -54,6 +54,9 @@
 #article-container .highlight-tools .expand {
   transform: none !important;
 }
+#article-container .code-expand-btn.expand-done {
+  transform: none !important;
+}
 #article-container figure.highlight ::-webkit-scrollbar {
   height: 6px;
 }
