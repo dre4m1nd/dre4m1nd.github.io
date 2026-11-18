@@ -49,6 +49,11 @@
   opacity: 0.6;
   text-transform: none;
 }
+/* 收起时箭头不再 180° 翻转 */
+#article-container .highlight-tools.closed .expand,
+#article-container .highlight-tools .expand {
+  transform: none !important;
+}
 #article-container figure.highlight ::-webkit-scrollbar {
   height: 6px;
 }
