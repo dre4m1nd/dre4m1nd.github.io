@@ -339,11 +339,11 @@ body,
   width: 100%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  background: linear-gradient(135deg, #F0FDF9 0%, #ECFDF5 60%, #D1FAE5 100%);
-  border: 1px solid rgba(16, 185, 129, 0.14);
+  background: #FFFFFF;
+  border: 1px solid rgba(16, 185, 129, 0.20);
   border-radius: 14px;
   padding: 10px 6px;
-  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.10);
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .writing-stats:hover {
@@ -351,12 +351,22 @@ body,
   box-shadow: 0 12px 26px rgba(16, 185, 129, 0.18);
 }
 [data-theme="dark"] .writing-stats {
-  background: linear-gradient(135deg, #1d2233 0%, #232a40 100%);
-  border-color: rgba(52, 211, 153, 0.16);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  background: var(--anzhiyu-card-bg, #232323);
+  border-color: rgba(52, 211, 153, 0.22);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 [data-theme="dark"] .writing-stats:hover {
   box-shadow: 0 12px 26px rgba(0, 0, 0, 0.4);
+}
+
+/* hero 大卡（名字+副标题）：淡墨绿渐变 + 墨绿描边，与写作动态卡搭配 */
+#random-banner {
+  background: linear-gradient(135deg, #F7FCFA 0%, #EAFBF3 55%, #D9F7E9 100%);
+  border-color: rgba(16, 185, 129, 0.20);
+}
+[data-theme="dark"] #random-banner {
+  background: linear-gradient(135deg, #17211D 0%, #0F2C24 100%);
+  border-color: rgba(52, 211, 153, 0.22);
 }
 .writing-stats .ws-item {
   display: flex;
