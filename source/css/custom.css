@@ -473,3 +473,14 @@ body,
 [data-theme="dark"] #aside-content .card-categories a[href="/categories/architecture/"] { background: rgba(139, 92, 246, 0.18); }
 [data-theme="dark"] #aside-content .card-categories a[href="/categories/concepts/"] { background: rgba(217, 119, 6, 0.16); }
 [data-theme="dark"] #aside-content .card-categories a[href="/categories/notes/"] { background: rgba(24, 181, 102, 0.16); }
+
+/* 分类卡文字：放大加粗 */
+#aside-content .card-categories .card-category-list-name {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 1;
+}
+#aside-content .card-categories .card-category-list-count {
+  font-size: 1.3rem;
+  font-weight: 700;
+}

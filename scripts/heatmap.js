@@ -1,12 +1,12 @@
 // scripts/heatmap.js
 // 构建时生成「文章热力图」侧栏卡片（GitHub 风格：按天统计文章数），
-// 通过 after_render:html 过滤器注入到侧栏「站点统计」卡之前。
+// 通过 after_render:html 过滤器注入为侧栏的独立顶级卡片（在 sticky_layout 之前）。
 // 零前端依赖：纯 HTML/CSS，日期与篇数写在 title 提示里。
 // 有新文章时重新构建即自动更新，无需维护任何页面。
 
 'use strict';
 
-const MARKER = '<div class="card-webinfo">';
+const MARKER = '<div class="sticky_layout">';
 const WEEKS = 25; // 近 25 周（约半年，适配窄侧栏，无滚动）
 
 function pad2(n) {
