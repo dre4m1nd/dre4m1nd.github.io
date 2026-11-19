@@ -68,6 +68,7 @@ LABELS = {
     'cover-cipherlens': 'SECURITY',
     'cover-kmp': 'KMP',
     'cover-quicksort': 'SORT',
+    'claude-docs-chaos-loop': 'CHAOS',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -94,6 +95,7 @@ TEXTS = {
     'cover-cipherlens':     '项目拆解',
     'cover-kmp':     'KMP 算法',
     'cover-quicksort':     '快速排序',
+    'claude-docs-chaos-loop':     '混沌循环',
 }
 
 PROMPTS = {
@@ -118,6 +120,7 @@ PROMPTS = {
     'cover-cipherlens':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small brass padlock with a key and a wooden lockbox, security concept, warm brass and wood tones, on a pure white background, bright white, ' + STYLE,
     'cover-kmp':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a magnifying glass examining a long strip of paper with small pattern marks, pattern matching concept, warm cream paper tones, on a pure white background, bright white, ' + STYLE,
     'cover-quicksort':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of wooden blocks sorted by height from short to tall on a table, sorting concept, warm wood block tones, on a pure white background, bright white, ' + STYLE,
+    'claude-docs-chaos-loop':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small cute robot holding a mallet testing a row of small wooden server boxes, one box rattling, stress testing concept, warm beige and wood tones, on a pure white background, bright white, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
