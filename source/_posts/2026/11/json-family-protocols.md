@@ -1,156 +1,129 @@
 ---
-title: JSONL 与 JSONB：同一个 JSON，文本流和二进制存储的差别
+title: JSON 的五种变体：JSONL、JSONC、JSON5、二进制编码与 json2
 date: 2026-11-17 22:30:00
-description: 同一条会话记录，写进日志文件（JSONL）和写进数据库（PostgreSQL/SQLite 的 JSONB）之后有什么不同？从逐行追加、坏行隔离，到二进制存储、键去重与 GIN 索引，讲清两种 JSON 存储形态的分工与取舍。
+description: 严格 JSON 之外，工程里还会遇到五类变体：结构变体 JSONL、语法扩展 JSONC 与 JSON5、二进制编码 JSONB/BSON/CBOR、以及已淘汰的历史库 json2。按「它改了什么、为什么存在、今天还用不用」逐个讲清。
 categories:
   - 概念
 tags:
   - JSON
-  - JSONB
+  - 技术辨析
 cover: /img/2026/11/json-family-protocols.jpg
 ---
 
-同一条会话记录，写到不同的地方，命运完全不同：写进日志文件，它是一行文本，`grep` 就能翻；写进数据库的 `jsonb` 列，它变成了一段二进制，能建索引、能按字段查询，但你再也读不到原来的键顺序。这篇文章就讲这两条路——**JSONL 和 JSONB**，以及它们各自适合的场景。
+RFC 8259 定义的 JSON 只有一种：文本、双引号、无注释、无尾逗号。但工程里遇到的「JSON」远不止一个名字——JSONL、JSONC、JSON5、JSONB、BSON、CBOR、json2……它们不是同一个东西的不同叫法，而是围绕 JSON 的五类变体。这篇按「**它改了什么、为什么存在、今天还用不用**」逐个讲清楚。
 
-## 1. 一、引子：同一条记录，两种存法
+## 1. 一、JSONL：结构变体
 
-一条会话记录，先看它在日志文件里的样子：
-
-```json
-{"id":"b2","parentId":"a1","role":"assistant","content":"好的","ts":"2026-11-17T10:02:00Z"}
-```
-
-它单独占一行，前后还排着别的记录。再看它进了 PostgreSQL 的表：
-
-```sql
-CREATE TABLE messages (
-  id   bigserial PRIMARY KEY,
-  data jsonb                   -- 二进制存储，可查询、可索引
-);
-INSERT INTO messages (data)
-VALUES ('{"id":"b2","parentId":"a1","role":"assistant","content":"好的","ts":"2026-11-17T10:02:00Z"}');
-```
-
-同样的内容，一个还能拿 `grep`/`tail` 直接看，一个已经变成二进制、只能通过 SQL 访问。这不是实现细节的差别，而是**两种存储形态的分工**。
-
-## 2. 二、JSONL：一行一个值的流
-
-JSONL（JSON Lines，jsonlines.org）和 NDJSON（ndjson.org）本质是同一件事：**每一行是一个独立、合法的 JSON 值，行之间用换行分隔。**
+JSONL（JSON Lines）不改变 JSON 的语法，只改变**组织方式**：每一行是一个独立、合法的 JSON 对象，行之间用换行分隔。
 
 ```text
-{"type":"message","id":"a1","parentId":null,"role":"user","content":"..."}
-{"type":"message","id":"b2","parentId":"a1","role":"assistant","content":"..."}
-{"type":"tool_result","id":"c3","parentId":"b2","content":"..."}
+{"id":1,"event":"login","ts":"2026-11-18T10:00:00Z"}
+{"id":2,"event":"query","ts":"2026-11-18T10:00:03Z"}
+{"id":3,"event":"logout","ts":"2026-11-18T10:05:12Z"}
 ```
 
 它和「一个 JSON 数组」的区别是结构性的：
 
 - 数组必须整体解析，末尾多一个逗号就全废；
-- JSONL 可以**逐行追加、逐行解析**，坏行只影响自己，天然适合日志与流式处理；
+- JSONL 可以**逐行追加、逐行解析**，坏行只影响自己；
 - 读取方不需要把整个文件载入内存。
 
-所以它常出现在三类地方：应用日志、模型批量推理的输入输出、会话记录（比如 Pi 的会话日志就是一行一条 entry）。
+所以它天然适合**日志、流式数据、大数据集**——应用日志、模型批量推理的输入输出、会话记录（Pi 的会话日志就是一行一条 entry）都是这个形态。读法就是按行 `JSON.parse`/`json.loads`，注意空行和末尾无换行两种情况。
 
-逐行读的写法也很直白：
+## 2. 二、JSONC：语法扩展（注释）
 
-```python
-import json
+JSONC 是 VS Code 的 JSON 方言：在严格 JSON 基础上允许**注释**（部分工具还允许尾逗号）。
 
-with open("session.jsonl", encoding="utf-8") as f:
-    for line in f:                      # 逐行读取，内存里只保留当前行
-        line = line.strip()
-        if not line:                    # 跳过空行
-            continue
-        rec = json.loads(line)          # 每行独立解析，坏行只影响这一条
-        print(rec["type"])
+```jsonc
+{
+  // 编译目标
+  "target": "ES2022",
+  "strict": true, /* 打开严格模式 */
+}
 ```
 
-这里有两个容易踩的坑：**不要用 `JSON.parse` 读整个文件**（它不是合法 JSON），以及**最后一行可能没有换行符**——按行读时通常没问题，但自己切分时要注意补上判断。
+它没有正式的 RFC，规范事实上由 VS Code 的 `jsonc-parser` 定义。用途很明确：**配置文件**——`tsconfig.json`、`.vscode/settings.json`、`devcontainer.json` 这些由人维护、需要写注释的文件。
 
-## 3. 三、JSONB（PostgreSQL）：可查询的二进制
+边界也只有一条：**JSONC 是给人写的，不是给机器传的**。读进来之后要转成严格 JSON 再交给 `JSON.parse` 或任何外部系统——浏览器和 Node 的原生解析器都不认注释。
 
-PostgreSQL 有两个 JSON 类型：`json` 和 `jsonb`。名字只差一个字母，行为差很多。
+## 3. 三、JSON5：语法扩展（宽松语法）
 
-- **`json`**：原样保存文本，保留空格、键顺序、重复键；写入快，但**不能建 GIN 索引**，查询每次都要重新解析。
-- **`jsonb`**：写入时解析成二进制、按键重组；**键顺序丢失、重复键只保留最后一个**；支持 GIN 索引和全套查询运算符，读写性能更均衡。
+JSON5 是更彻底的「人类友好版 JSON」，同样是严格 JSON 的超集：
+
+- 允许注释和尾逗号；
+- 键可以不加引号，字符串可以用单引号；
+- 支持十六进制数字、`+` 号、省略整数位的 `.5`、多行字符串。
+
+```json5
+{
+  // 手写配置
+  name: 'demo',
+  version: '1.0.0',
+  retries: 3,
+  timeout: 0x1F4,        // 500ms，十六进制
+}
+```
+
+和 JSONC 的区别：**JSONC 是编辑器方言（只放开注释/尾逗号），JSON5 是一份完整规范**（json5.org），有独立的解析库。用途也类似——**手写配置**，比如 Babel、部分构建工具和测试夹具。
+
+使用时同样要注意：JSON5 的宽松只在「人写」这一侧；跨系统交换仍然要用严格 JSON。
+
+## 4. 四、二进制编码：JSONB / BSON / CBOR
+
+前三类是文本变体，这一类的共同点是**二进制编码**：把 JSON 的树结构按二进制存，追求**高效、紧凑、支持二进制数据**，用在**底层传输/存储**。常见的三个代表：
+
+- **JSONB**：PostgreSQL 的内部二进制 JSON 类型（无公开规范），写入时解析重组，可建 GIN 索引；SQLite 3.45+ 也有公开文档的 JSONB 格式。代价是键顺序丢失、重复键去重、不可直接读文本。
+- **BSON**：MongoDB 的文档格式（bsonspec.org），长度前缀 + 扩展类型（日期、ObjectId、二进制），为数据库读写和遍历优化。
+- **CBOR**：IETF 标准（RFC 8949），与 JSON 数据模型兼容的二进制表示，支持标签和确定性编码，常用于 IoT、CoAP 等受限环境。
 
 ```sql
--- 重复键：jsonb 只保留最后一个
-SELECT '{"a":1,"a":2}'::jsonb;        -- {"a": 2}
-
--- 键顺序：jsonb 不保证原样
-SELECT '{"b":1,"a":2}'::jsonb::text;  -- {"a": 2, "b": 1}
-
--- 取字段：-> 返回 json，->> 返回文本
-SELECT data->'role', data->>'content' FROM messages;
-
--- 包含查询（走 GIN 索引）
-SELECT * FROM messages WHERE data @> '{"role":"assistant"}';
-
-CREATE INDEX idx_messages_data ON messages USING gin (data);
+-- PostgreSQL：jsonb 可索引、可查询
+SELECT payload->>'event' FROM events WHERE payload @> '{"event":"login"}';
 ```
 
-什么时候用 `jsonb`？**字段不固定、但又需要按字段查询**的数据——事件、配置快照、第三方回调。什么时候不该用？当这些字段其实很稳定、而且经常参与连接和聚合时，拆成真正的列（或子表）性能更好、约束也更清楚——`jsonb` 更像是「有查询能力的文本」，不是「不用设计表结构的借口」。
+这一类换来的是性能与表达力（二进制数据、索引、类型），付出的是**可读性和工具成本**——调试时要先转回文本。
 
-## 4. 四、JSONB（SQLite）：3.45+ 的二进制格式
+## 5. 五、json2：历史库
 
-SQLite 从 3.45.0 开始也引入了 JSONB——一个**有公开文档的二进制 JSON 格式**。它和 PostgreSQL 的 jsonb 思路一致：内部用二进制存储，解析更快、可按路径遍历；区别是 SQLite 的格式是公开的，而且提供了两个显式转换函数：
+`json2.js` 是 Douglas Crockford 在 2009 年前后发布的兼容库，作用是**给老浏览器补上 `JSON.parse` / `JSON.stringify`**——在 IE7 及更早的浏览器里，`JSON` 对象根本不存在，只能靠这个库的 `JSON.parse`/`stringify` 实现。
 
-```sql
--- 文本 JSON → JSONB 二进制
-SELECT jsonb('{"a":1,"b":[2,3]}');
+它属于历史产物：IE8 起浏览器内置原生 `JSON`，现代浏览器和 Node 全部内置。今天**不应再引入 json2**，见到就删——它既慢，又可能在原生实现存在时造成行为差异。
 
--- JSONB → 文本（用于展示或导出）
-SELECT json('{"a":1}'::blob);
+它的历史意义大于技术价值：它见证了 JSON 从「JavaScript 的对象字面量」变成「标准交换格式」的过渡期。
 
-CREATE TABLE kv (k TEXT PRIMARY KEY, v BLOB);          -- 存 JSONB
-INSERT INTO kv VALUES ('x', jsonb('{"a":1}'));
+## 6. 六、五种变体对照
 
-SELECT json_extract(v, '$.a') FROM kv;                 -- 函数可直接读 JSONB
-SELECT v ->> '$.b[0]' FROM kv;
-```
+| 名称 | 类别 | 形态 | 典型用途 | 状态 |
+| --- | --- | --- | --- | --- |
+| JSONL | 结构变体 | 文本，每行一个独立对象 | 日志、流式数据、大数据集 | 活跃 |
+| JSONC | 语法扩展 | 文本，允许注释 | 配置文件（VS Code） | 活跃（编辑器生态） |
+| JSON5 | 语法扩展 | 文本，宽松语法 | 手写配置 | 活跃（解析库） |
+| JSONB / BSON / CBOR | 二进制编码 | 二进制 | 底层传输 / 存储 | 活跃 |
+| json2 | 历史库 | JavaScript 库 | 老浏览器 JSON 垫片 | 已淘汰 |
 
-要点：SQLite 的 JSON 函数（`json_extract`、`->`、`->>` 等）**同时接受文本 JSON 和 JSONB**；`jsonb()` 负责转进去，`json()` 负责转出来。这样做的收益是解析速度和存储紧凑，代价是——和 PG 的 jsonb 一样，**你不能再直接读文本**，调试时要先转回来。
+## 7. 七、怎么选
 
-## 5. 五、对照：JSONL vs JSONB
+- **日志、流式、大数据集** → JSONL；
+- **要写注释的配置文件** → JSONC（VS Code 系）或 JSON5（需要更宽松语法时）；
+- **高频读写、要索引、要传二进制** → JSONB / BSON / CBOR；
+- **见到 json2** → 删掉，用原生 `JSON`。
 
-| 维度 | JSONL | JSONB（PG / SQLite） |
-| --- | --- | --- |
-| 形态 | 文本，一行一个值 | 二进制 |
-| 写入 | 追加一行，O(1) | 解析后入库，成本更高 |
-| 读取 | 逐行、可流式 | 按字段/路径查询，可建索引 |
-| 可读性 | 直接看、grep、diff | 需函数转文本 |
-| 键顺序 | 原样保留 | 丢失（PG 重组；SQLite 同理） |
-| 重复键 | 各自保留（不同行） | 同一对象内只留最后一个 |
-| 索引 | 无（就是文件） | GIN / 表达式索引 |
-| 典型用途 | 日志、流、批量数据 | 可查询的半结构化数据 |
-
-## 6. 六、怎么选
-
-- **持续追加、按时间看、需要直接读** → JSONL。日志、会话记录、模型批量输入输出都属于这里。
-- **要按字段查、要建索引、要和别的表关联** → JSONB。事件表、配置快照、第三方回调。
-- **两者组合**最常见的形态是：写入侧先落 JSONL（便宜、可回放），再批量导入 `jsonb` 表供查询——采集与查询分开，各取所长。
-
-## 7. 七、四个常见坑
-
-1. **把 JSONL 当 JSON 整体解析**：必须逐行 `loads`；空行、末尾无换行都要单独处理。
-2. **以为 jsonb 保留了键顺序**：PG 的 jsonb 会按键重组，SQLite 的 JSONB 也不保证——依赖顺序的代码要自己加序号字段。
-3. **重复键静默覆盖**：`'{"a":1,"a":2}'::jsonb` 结果是 `{"a":2}`，不会报错。
-4. **大整数精度**：JSON 数字没有精度规定，JavaScript 只有 double，`9007199254740993` 这类值会失真；跨语言存大整数请用字符串。
+一句话：**JSONL 改的是「怎么排列」，JSONC/JSON5 改的是「怎么写」，二进制编码改的是「怎么存」，json2 是「怎么在没有 JSON 的环境里假装有 JSON」。**
 
 ## 8. 重点总结
 
-- **JSONL** 是文本流：一行一个 JSON 值，可追加、可逐行解析、坏行隔离，适合日志、会话记录和批量数据。
-- **JSONB** 是二进制存储：写入时解析重组，换来可索引、可查询，代价是键顺序丢失、重复键去重、不可直接读文本。
-- PostgreSQL 的 `json` 保留原文但不可索引，`jsonb` 可索引但会重组；SQLite 3.45+ 的 `jsonb()`/`json()` 在文本与二进制之间显式转换，函数同时兼容两者。
-- 选型口诀：**持续追加看日志用 JSONL，按字段查用 JSONB，采集与查询分开用组合**。
-- 最容易踩的坑：JSONL 整体解析、依赖 jsonb 的键顺序、重复键静默覆盖、大整数精度。
+- JSONL 是结构变体：每行一个独立 JSON 对象，可追加、可逐行解析，适合日志与大数据集。
+- JSONC 与 JSON5 是语法扩展：前者是 VS Code 的注释方言，后者是完整的宽松语法规范；都只用于人写的配置，传递前要转严格 JSON。
+- JSONB / BSON / CBOR 是二进制编码：紧凑、可索引、支持二进制数据，用于底层存储与传输，代价是可读性与工具成本。
+- json2 是历史库：为老浏览器补 `JSON`，原生普及后已淘汰。
+- 变体再多，交换层的铁律不变：**跨系统传输用严格 JSON**。
 
 ## 9. 参考
 
 - [RFC 8259：JSON 数据交换格式](https://www.rfc-editor.org/rfc/rfc8259)
 - [JSON Lines](https://jsonlines.org/)
-- [NDJSON](https://github.com/ndjson/ndjson-spec)
+- [JSON5](https://json5.org/)
+- [BSON 规范](https://bsonspec.org/)
+- [RFC 8949：CBOR](https://www.rfc-editor.org/rfc/rfc8949)
 - [PostgreSQL：JSON 类型](https://www.postgresql.org/docs/current/datatype-json.html)
-- [PostgreSQL：JSON 函数与运算符](https://www.postgresql.org/docs/current/functions-json.html)
-- [SQLite：JSON 函数与 JSONB](https://www.sqlite.org/json1.html)
+- [json2（Douglas Crockford）](https://github.com/douglascrockford/JSON-js)
