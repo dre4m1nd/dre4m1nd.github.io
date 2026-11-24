@@ -54,6 +54,8 @@ LABELS = {
     'pi-session-tree': 'SESSION',
     'pi-extension-events': 'EVENTS',
     'pi-tui-rendering': 'RENDER',
+    'pi-policy-gate': 'POLICY',
+    'spring-filter-interceptor': 'FILTER',
     'json-family-protocols': 'JSON',
     'agent-memory-components': 'MEMORY',
     'agent-state-machines': 'STATE',
@@ -69,6 +71,7 @@ LABELS = {
     'cover-kmp': 'KMP',
     'cover-quicksort': 'SORT',
     'claude-docs-chaos-loop': 'CHAOS',
+    'agent-session-concurrency': 'SESSION',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -82,6 +85,8 @@ TEXTS = {
     'pi-session-tree':     '会话管理',
     'pi-extension-events':     '扩展与事件',
     'pi-tui-rendering':     '终端渲染',
+    'pi-policy-gate':     '权限闸门',
+    'spring-filter-interceptor':     '过滤器与拦截器',
     'json-family-protocols':     'JSON 家族辨析',
     'agent-state-machines':     'Agent 状态机',
     'ai-critical-thinking':     '批判性思考',
@@ -96,6 +101,7 @@ TEXTS = {
     'cover-kmp':     'KMP 算法',
     'cover-quicksort':     '快速排序',
     'claude-docs-chaos-loop':     '混沌循环',
+    'agent-session-concurrency':     '会话并发',
 }
 
 PROMPTS = {
@@ -107,6 +113,8 @@ PROMPTS = {
     'pi-session-tree':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a single bare stylized tree with symmetrically branching wooden branches and small round warm-colored fruits (amber, terracotta, olive) hanging at each branch tip, growth and branching concept, on a pure white background, bright white, ' + STYLE,
     'pi-extension-events':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small vintage wooden radio with a few hanging amber light bulbs connected by thin wires, signal and connection concept, warm amber glow, on a pure white background, bright white, ' + STYLE,
     'pi-tui-rendering':    'minimal composition, a single small subject centered with very large empty margins on all four sides, a small old-style desktop computer with a green-screen display showing neat monochrome text lines on it, warm beige retro computer tones, ' + STYLE,
+    'pi-policy-gate':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a sturdy small wooden gate with a brass padlock and a stack of stamped paper passes on a side table, access control and audit concept, warm brass and wood tones, on a pure white background, bright white, ' + STYLE,
+    'spring-filter-interceptor':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small wooden sieve with a mesh screen beside a small wooden turnstile gate, filtering and gating concept, warm wood and brass tones, on a pure white background, bright white, ' + STYLE,
     'json-family-protocols':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a wooden shelf with five small differently shaped glass jars, each jar holding a different kind of warm-colored small items (paper slips, wooden beads, brass gears, rubber stamps), sorting and comparing concept, on a pure white background, bright white, ' + STYLE,
     'agent-state-machines':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small mechanical relay control panel with a few levers and warm indicator lights, deterministic control concept, on a pure white background, bright white, ' + STYLE,
     'ai-critical-thinking':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a person sitting at a small desk reading an open book under a warm desk lamp, deep thinking concept, warm wood desk tones, on a pure white background, bright white, ' + STYLE,
@@ -121,6 +129,7 @@ PROMPTS = {
     'cover-kmp':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a magnifying glass examining a long strip of paper with small pattern marks, pattern matching concept, warm cream paper tones, on a pure white background, bright white, ' + STYLE,
     'cover-quicksort':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of wooden blocks sorted by height from short to tall on a table, sorting concept, warm wood block tones, on a pure white background, bright white, ' + STYLE,
     'claude-docs-chaos-loop':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small cute robot holding a mallet testing a row of small wooden server boxes, one box rattling, stress testing concept, warm beige and wood tones, on a pure white background, bright white, ' + STYLE,
+    'agent-session-concurrency':    'flat vector illustration of a narrow single-plank wooden footbridge over a small dry ditch, with one small wooden handcart waiting at each end facing the bridge, the two carts clearly too wide to pass each other, a few loose planks and a coil of rope on the ground beside it, single-file access concept, warm oak and terracotta tones, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
