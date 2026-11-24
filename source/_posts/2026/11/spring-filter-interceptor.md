@@ -11,9 +11,9 @@ tags:
 cover: /img/2026/11/spring-filter-interceptor.jpg
 ---
 
-同一个请求上，过滤器和拦截器都能"拦"，但拦的位置、拿到的信息、能做的事完全不同。一句话先记住：**Filter 是 Servlet 容器层面的关卡，Interceptor 是 Spring MVC 层面的关卡**。Filter 永远在 `DispatcherServlet` 之前，Interceptor 在 `DispatcherServlet` 内部、handler 映射完成之后。
-
-下面所有顺序结论都基于一个 **Spring Boot 3.5.7 + Java 21** 的最小工程，用 `MockMvc` 真实跑出来，不是背书式的口述。
+> 同一个请求上，过滤器和拦截器都能"拦"，但拦的位置、拿到的信息、能做的事完全不同。一句话先记住：**Filter 是 Servlet 容器层面的关卡，Interceptor 是 Spring MVC 层面的关卡**。Filter 永远在 `DispatcherServlet` 之前，Interceptor 在 `DispatcherServlet` 内部、handler 映射完成之后。
+>
+> 下面所有顺序结论都基于一个 **Spring Boot 3.5.7 + Java 21** 的最小工程，用 `MockMvc` 真实跑出来，不是背书式的口述。
 
 ## 1. 先给结论
 

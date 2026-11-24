@@ -10,11 +10,9 @@ tags:
 cover: /img/2026/11/super-agent-designs.jpg
 ---
 
-## 摘要
-
-**Super Agent 是一个"持续存在"的 agent 实体：它不再被绑在"一次手动发起的会话"上，而是跨会话保留上下文，同时推进多个复杂任务且互不干扰。** 人负责定目标、看结果；系统负责调度和管 agent。
-
-两篇文章几乎同时讲了这个东西——Agno 的 Ashpreet Bedi《Building a Super Agent》和 DeepSeek Harness 团队《Exploring Super-agent Design》。一个从产品角度描述它长什么样，一个从系统角度拆它怎么搭。这篇把两者合起来，讲清概念。
+> **Super Agent 是一个"持续存在"的 agent 实体：它不再被绑在"一次手动发起的会话"上，而是跨会话保留上下文，同时推进多个复杂任务且互不干扰。** 人负责定目标、看结果；系统负责调度和管 agent。
+>
+> 两篇文章几乎同时讲了这个东西——Agno 的 Ashpreet Bedi《Building a Super Agent》和 DeepSeek Harness 团队《Exploring Super-agent Design》。一个从产品角度描述它长什么样，一个从系统角度拆它怎么搭。这篇把两者合起来，讲清概念。
 
 ## 一、先看问题：为什么需要 Super Agent
 

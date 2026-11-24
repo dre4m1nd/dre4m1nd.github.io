@@ -10,7 +10,7 @@ tags:
 cover: /img/2026/11/json-family-protocols.jpg
 ---
 
-RFC 8259 定义的 JSON 只有一种：文本、双引号、无注释、无尾逗号。但工程里遇到的「JSON」远不止一个名字——JSONL、JSONC、JSON5、JSONB、BSON、CBOR、json2……它们不是同一个东西的不同叫法，而是围绕 JSON 的五类变体。这篇按「**它改了什么、为什么存在、今天还用不用**」逐个讲清楚。
+> RFC 8259 定义的 JSON 只有一种：文本、双引号、无注释、无尾逗号。但工程里遇到的「JSON」远不止一个名字——JSONL、JSONC、JSON5、JSONB、BSON、CBOR、json2……它们不是同一个东西的不同叫法，而是围绕 JSON 的五类变体。这篇按「**它改了什么、为什么存在、今天还用不用**」逐个讲清楚。
 
 ## 1. 一、JSONL：结构变体
 

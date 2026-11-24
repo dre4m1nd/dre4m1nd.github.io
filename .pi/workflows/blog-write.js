@@ -72,6 +72,8 @@ const RULES = [
   "图片跟文章走：封面放 source/img/<年>/<月>/（frontmatter cover 写 /img/<年>/<月>/<slug>.jpg），",
   "  站点级图片（默认封面、banner）在 source/img/common/。",
   CODE_COMMENT_RULE,
+  "摘要：正文最开头（frontmatter 之后、第一个 ## 之前）用 markdown 引用块 `> ` 写一段摘要，不要写「## 摘要」标题；",
+  "  多段之间用单独一行 `>` 分隔。摘要不复述 frontmatter 的 description，要写这篇文章的核心结论。",
   "结尾章节统一「重点总结」+「参考」。",
   STRUCTURE_RULE,
   "标题自动编号：发布前跑 `python tools/number-headings.py <文章路径>` 给 ##（1.）/###（1.1）加序号（脚本幂等，改了标题重跑不会重复加号）；不要手写序号。",

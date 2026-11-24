@@ -12,7 +12,7 @@ tags:
 cover: /img/2026/11/pi-tui-rendering.jpg
 ---
 
-在前几篇里，我们看了 Pi 的 LLM 调用、Agent 循环与工具系统。这一篇把镜头拉回到「界面」本身——Pi 里的 `pi-tui` 是一个与 Agent 完全解耦的正交终端 UI 库：它不依赖 `pi-ai`、不依赖 `pi-agent-core`，运行时依赖只有 `marked`、`marked-cjk-friendly`（Markdown 解析与 CJK 兼容处理）和 `get-east-asian-width`（东亚字符宽度计算，见 `packages/tui/package.json` 的 `dependencies`）。`pi-coding-agent` 把它当作一个普通工具包引入，通过 `@earendil-works/pi-tui` 别名解析到 `tui/dist/index.js`，在其上搭建对话界面。这种「零 Agent 依赖」的定位，是它能够被任意文本应用复用的前提。
+> 在前几篇里，我们看了 Pi 的 LLM 调用、Agent 循环与工具系统。这一篇把镜头拉回到「界面」本身——Pi 里的 `pi-tui` 是一个与 Agent 完全解耦的正交终端 UI 库：它不依赖 `pi-ai`、不依赖 `pi-agent-core`，运行时依赖只有 `marked`、`marked-cjk-friendly`（Markdown 解析与 CJK 兼容处理）和 `get-east-asian-width`（东亚字符宽度计算，见 `packages/tui/package.json` 的 `dependencies`）。`pi-coding-agent` 把它当作一个普通工具包引入，通过 `@earendil-works/pi-tui` 别名解析到 `tui/dist/index.js`，在其上搭建对话界面。这种「零 Agent 依赖」的定位，是它能够被任意文本应用复用的前提。
 
 ## 一、基础与进阶用法
 
