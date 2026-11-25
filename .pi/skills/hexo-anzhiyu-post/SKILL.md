@@ -95,6 +95,7 @@ highlight_shrink: true       # 代码块默认折叠
 
 - **本地 `hexo` 报 `Cannot find module './lib/parse'`**：node_modules 装坏了，跑 `npm install cross-spawn@7.0.6 --no-save` 即可（这是 `cross-spawn` 缺 `lib/parse.js`，不是 Hexo 问题）
 - **时区不是坑（已实测，别再照旧说法改）**：`permalink: :title/`，URL 里的年月来自**文件所在文件夹**，不来自 `date`。用 `TZ=UTC`、`TZ=Asia/Shanghai`、以及删掉 `timezone` 三种方式构建，路径与页面显示日期完全一致。所以**不需要在 CI 里设 `TZ`**，也不需要为了 URL 去改日期。`date` 统一写 `12:00:00` 只是保持排序稳定的约定。
+- **「更新于」靠 mtime，CI 里已还原（重要）**：`_config.yml` 是 `updated_option: mtime`，文章页「更新于」= 文件 mtime。CI 全新 clone 会把所有文件 mtime 变成 checkout 时刻，导致全站「更新于」都显示成构建时间。workflow 里已有 `Restore mtimes from git history` 步骤按每篇最后一次提交时间 `touch` 回来（配套 `fetch-depth: 0`，浅 clone 只能拿到同一个 tip 时间）。**不要删这两处，也不要改回浅 clone**，否则线上「更新于」会全部变成同一天。
 - 仓库同时有 `package-lock.json` 和 `yarn.lock`，CI 走 `npm install`。加依赖用 npm，别用 yarn
 - 构建产物残留导致页面不更新：先 `npx hexo clean`
 - 改了 `_config.anzhiyu.yml` 里的颜色值必须带双引号（`"#425AEF"`），否则 YAML 解析出错

@@ -19,6 +19,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # If your repository depends on submodule, please see: https://github.com/actions/checkout
           submodules: recursive
+          # 需要完整历史：下面的步骤要用每篇文章最后一次提交时间还原 mtime
+          fetch-depth: 0
       - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
@@ -27,6 +29,17 @@ jobs:
       - name: Install Dependencies
         # 用 npm ci 严格按 package-lock.json 装，避免旧 node_modules 树上做增量安装
         run: npm ci
+      - name: Restore mtimes from git history
+        # 文章页的「更新于」来自文件 mtime（_config.yml updated_option: mtime）。
+        # 全新 clone 里所有文件的 mtime 都是 checkout 的那一刻，会让全站「更新于」显示成构建时间。
+        # 这里按每篇文章最后一次提交的时间还原 mtime，让「更新于」等于真实改动时间。
+        run: |
+          git ls-files -z source/_posts | while IFS= read -r -d '' f; do
+            t=$(git log -1 --format=%cI -- "$f")
+            [ -n "$t" ] && touch -d "$t" "$f"
+          done
+          echo "还原后抽样："
+          git ls-files source/_posts | head -3 | xargs -r ls -l --time-style=+%Y-%m-%d_%H:%M
       - name: Build
         run: npm run build
       - name: Check internal links
