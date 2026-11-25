@@ -16,7 +16,9 @@ description: 在这个 Hexo 8 + anzhiyu 主题的博客仓库里写/改/发布�
   2. `source/css/custom.css`（已通过 `inject.head` 引入，写样式只加这里）
   3. `source/img/`（自己的图片，站内路径写 `/img/xxx.png`）
 - 站点根路径是 `/`（`url: https://dre4m1nd.github.io`，仓库名 `dre4m1nd.github.io`），**不要**加 `/blog` 之类的前缀
-- 部署：push `main` → `.github/workflows/pages.yml` → `npm install` → `npm run build` → 上传 `public/` 到 Pages。本地不需要 `hexo deploy`
+- 部署：push `main` → `.github/workflows/pages.yml` → `npm ci` → `npm run build` → `python3 tools/check-links.py` → 上传 `public/` 到 Pages。本地不需要 `hexo deploy`
+- **CI 是闸门，不是流水线**：死链检查不过就直接失败、不发布（旧版本继续在线）；同一分支的连续 push 会取消前一次未完成的运行。所以本地不必反复全量验证，但推送后要看 Actions 是否绿
+- **草稿**：frontmatter 加 `published: false` 即可 push 同步但不上线（Hexo 生成时跳过）；CI 会打印当前草稿数量作提醒。发布时删掉该行
 - `public/`、`node_modules/`、`db.json` 已 gitignore；`themes/anzhiyu` 是提交进仓库的普通目录（不是 submodule）
 
 ## 写一篇新文章
@@ -30,6 +32,8 @@ git add -A && git commit -m "post: 文章标题" && git push
 ```
 
 写完后可以 `npx hexo server` 本地预览（默认 http://localhost:4000）。
+
+**在 Pad / Obsidian 上写（没有 node）**：frontmatter 模板在 `templates/post.md`，Obsidian 的 Templates 核心插件已开启并指向 `templates/`，插模板即可，不用手敲 YAML。`scaffolds/post.md` 只服务 `npx hexo new`。
 
 ## Frontmatter（anzhiyu 实际读取的字段）
 
@@ -90,12 +94,12 @@ highlight_shrink: true       # 代码块默认折叠
 ## 常见坑
 
 - **本地 `hexo` 报 `Cannot find module './lib/parse'`**：node_modules 装坏了，跑 `npm install cross-spawn@7.0.6 --no-save` 即可（这是 `cross-spawn` 缺 `lib/parse.js`，不是 Hexo 问题）
-- **时区坑（线上 URL 会和本地对不上）**：本地机器是 UTC+8，GitHub Actions 是 UTC。frontmatter 的 `date` 如果落在**凌晨 00:00–07:59（北京时间）**，CI 算出的日期会变成前一天 —— 本地是 `/2026/10/29/x/`，线上变成 `/2026/10/28/x/`。写日期时统一用 **12:00 这类中午时间**，两边就一致了。
+- **时区不是坑（已实测，别再照旧说法改）**：`permalink: :title/`，URL 里的年月来自**文件所在文件夹**，不来自 `date`。用 `TZ=UTC`、`TZ=Asia/Shanghai`、以及删掉 `timezone` 三种方式构建，路径与页面显示日期完全一致。所以**不需要在 CI 里设 `TZ`**，也不需要为了 URL 去改日期。`date` 统一写 `12:00:00` 只是保持排序稳定的约定。
 - 仓库同时有 `package-lock.json` 和 `yarn.lock`，CI 走 `npm install`。加依赖用 npm，别用 yarn
 - 构建产物残留导致页面不更新：先 `npx hexo clean`
 - 改了 `_config.anzhiyu.yml` 里的颜色值必须带双引号（`"#425AEF"`），否则 YAML 解析出错
 - 主题配置里 `CDN.internal_provider: local`，不要再改成外部 CDN
-- `.obsidian/` 也被提交进仓库（这是 Obsidian vault），改 Obsidian 配置会产生噪音 diff，除非必要别动
+- `.obsidian/` 在 `.gitignore` 里，**没有被跟踪**（`git ls-files .obsidian` 为空）。Pad 与桌面之间靠 Obsidian Sync 同步配置，不会产生 diff；但也意味着 Obsidian 侧改动（模板、插件设置）不进 git，换机器只能靠 Sync
 - **首页分类卡片 404**：`_config.yml` 里有 `category_map`（技术→tech、笔记→notes、架构→architecture、概念→concepts、实践→practice），Hexo 生成的是对应的 `/categories/<英文>/`；`_config.anzhiyu.yml` 的 `home_top.category[].path` 如果写中文 `/categories/技术/` 就 404。**加/改分类时两处必须一起改**。分类共 5 类（内容类型维度），专栏（系列维度）承载在标签上（`专栏` 标记 + 系列名标签），不设为分类；判定标准见 `.pi/workflows/blog-write.js` 的「分类与标签标准」。验证办法：生成后遍历 `public/**/*.html` 的站内 `href`，逐个对 `public/` 落盘文件，一次就能抓出所有死链。
 
 ## 美化改动的边界
@@ -141,7 +145,7 @@ highlight_shrink: true       # 代码块默认折叠
 
 ## 常用工具
 
-- `python tools/check-links.py`：构建后自查站内死链（扫 `public/**/*.html` 的 `href="/..."` 逐个对落盘文件），有死链返回 1，`-v` 列出引用页。**发布前必跑**，它抓出过首页分类卡 404 那类问题。
+- `python tools/check-links.py`：构建后自查站内死链（扫 `public/**/*.html` 的 `href="/..."` 逐个对落盘文件），有死链返回 1，`-v` 列出引用页。**已接入 CI**，push 后死链会让部署失败；本地发布前跑一次能提前看到问题。
 - `python tools/make-covers.py --preview`：预览封面不覆盖 `source/img`
 - `tools/imgpaths.py`：封面目录推导（哪个脚本都不用改），它看的是「哪篇文章引用了这张图」
 
