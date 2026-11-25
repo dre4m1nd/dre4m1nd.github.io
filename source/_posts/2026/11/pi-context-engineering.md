@@ -1,6 +1,6 @@
 ---
 title: Pi 源码解读（五）：上下文工程——截断与压缩
-date: 2026-11-17 12:00:00
+date: 2026-11-17 14:47:31
 description: 深入 Pi 的上下文工程：从工具输出的双限制截断，到历史压缩的切点算法、结构化摘要与 firstKeptEntryId 生效路径，看懂一套大模型会话如何在固定窗口里对抗无限增长的上下文。
 slug: pi-context-engineering
 categories:

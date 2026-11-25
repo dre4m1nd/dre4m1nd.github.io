@@ -1,7 +1,7 @@
 ---
 title: Pi 源码解读（三）：模型调用层——一行 streamSimple 背后的查表与翻译
 slug: pi-model-layer
-date: 2026-11-16 12:00:00
+date: 2026-11-16 19:24:45
 description: 深入 Pi 的模型调用层：streamSimple 一行背后的三层结构——查表派活的统一入口、12 种事件协议，以及各厂商翻译器的请求翻译、SSE 自解析、思考级别映射与缓存打点。
 categories:
   - 技术

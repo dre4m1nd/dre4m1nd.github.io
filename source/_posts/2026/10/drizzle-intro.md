@@ -1,6 +1,6 @@
 ---
 title: Drizzle 入门到进阶
-date: 2026-10-29
+date: 2026-10-29 00:00:29
 description: Drizzle 是类型安全的 SQL 查询构建器，零运行时、贴近原生 SQL，还能跑边缘。这篇覆盖 schema 定义、drizzle-kit 迁移/推、select/insert/update/delete、关系查询、join、事务、upsert、libsql 边缘用法，以及与 Prisma 的选型对比。
 categories:
   - 实践

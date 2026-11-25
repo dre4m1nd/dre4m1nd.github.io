@@ -40,7 +40,7 @@ git add -A && git commit -m "post: 文章标题" && git push
 ```yaml
 ---
 title: 文章标题              # 必填
-date: 2026-10-23 12:00:00
+date: 2026-10-23 20:30:24      # 真实落笔时刻，同日多篇各不相同
 updated:                     # 留空则用 mtime（_config.yml updated_option: mtime）
 description: 一句话摘要      # 首页卡片/SEO 用，index_post_content.method=2 时优先显示
 cover: /img/xxx.jpg          # 封面；留空用 cover.default_cover（/img/default_cover.jpg）
@@ -60,7 +60,7 @@ highlight_shrink: true       # 代码块默认折叠
 ```
 
 - `categories` 只能取 **技术 / 笔记 / 架构 / 概念 / 实践** 五选一（`_config.yml` 的 `category_map` 只映射这五个）。写五类以外的词不会报错，但会生成一个 `/categories/工程实践/` 这样的野分类页，既不在导航条里、也和映射后的英文路径分裂成两份。
-- `date` 一律写 `YYYY-MM-DD 12:00:00`，不要只写日期：只写日期时同日多篇的排序由文件遍历决定、不可预测（URL 年月来自**文件夹**，不是 date）
+- `date` 写**真实时刻** `YYYY-MM-DD HH:MM:SS`，不要只写日期、也不要写死 `12:00:00`：首页/归档/atom 全按 `date` 降序排，只写日期或写死 12:00 会让同一天多篇的顺序由文件遍历决定、不可预测。`tools/check-frontmatter.py` 会把「date 缺时间」和「同日同一秒」都判成 ERROR（URL 年月来自**文件夹**，不是 date）
 - 图片一律放 `source/img/`，正文写 `![](/img/a.png)`（不要用外链图床，容易挂）
 
 ## 正文可用标签（主题自带，已验证存在）
@@ -95,7 +95,7 @@ highlight_shrink: true       # 代码块默认折叠
 ## 常见坑
 
 - **本地 `hexo` 报 `Cannot find module './lib/parse'`**：node_modules 装坏了，跑 `npm install cross-spawn@7.0.6 --no-save` 即可（这是 `cross-spawn` 缺 `lib/parse.js`，不是 Hexo 问题）
-- **时区不是坑（已实测，别再照旧说法改）**：`permalink: :title/`，URL 里的年月来自**文件所在文件夹**，不来自 `date`。用 `TZ=UTC`、`TZ=Asia/Shanghai`、以及删掉 `timezone` 三种方式构建，路径与页面显示日期完全一致。所以**不需要在 CI 里设 `TZ`**，也不需要为了 URL 去改日期。`date` 统一写 `12:00:00` 只是保持排序稳定的约定。
+- **时区不是坑（已实测，别再照旧说法改）**：`permalink: :title/`，URL 里的年月来自**文件所在文件夹**，不来自 `date`。用 `TZ=UTC`、`TZ=Asia/Shanghai`、以及删掉 `timezone` 三种方式构建，路径与页面显示日期完全一致。所以**不需要在 CI 里设 `TZ`**，也不需要为了 URL 去改日期。`date` 写真实时刻是为了同日排序稳定，与 URL 无关。
 - **「更新于」靠 mtime，CI 里已还原（重要）**：`_config.yml` 是 `updated_option: mtime`，文章页「更新于」= 文件 mtime。CI 全新 clone 会把所有文件 mtime 变成 checkout 时刻，导致全站「更新于」都显示成构建时间。workflow 里已有 `Restore mtimes from git history` 步骤按每篇最后一次提交时间 `touch` 回来（配套 `fetch-depth: 0`，浅 clone 只能拿到同一个 tip 时间）。**不要删这两处，也不要改回浅 clone**，否则线上「更新于」会全部变成同一天。
 - 仓库同时有 `package-lock.json` 和 `yarn.lock`，CI 走 `npm ci`。加依赖用 npm，别用 yarn
 - 构建产物残留导致页面不更新：先 `npx hexo clean`
@@ -149,10 +149,12 @@ highlight_shrink: true       # 代码块默认折叠
 
 - `python tools/check-frontmatter.py`：校验每篇文章的 frontmatter，**已接入 CI**（在 `npm ci` 之前跑，快失败）。它挡的是「能构建但结果不对」那类错：
   - `date` 与文件所在 `<年>/<月>` 文件夹不一致（URL 在 11 月、归档却归到 1 月，首页排序沉底——hexo 不报错）
+  - `date` 缺时间，或同一天两篇 `date` 完全相同（排序会不可预测）
   - `categories` 不是五类之一（会多出 `/categories/工程实践/` 这种野分类页）
   - 缺 `description` / `tags` / `cover`，或 `cover` 指向的文件不存在
   - 重复 slug / 重复 title、把分类名当标签用
-  - `-v` 看警告（date 缺时间、缺 `> ` 摘要块、tags 太多）
+  - `-v` 看警告（缺 `> ` 摘要块、tags 太多）
+- `python tools/fill-date-times.py`：把缺时间的 `date` 补成**真实落盘时刻**（Windows 文件 CreationTime），同日同秒的会标出来等你定先后。先 `--dry-run` 看表格。已经全站跑过一次（40 篇）。
 - `python tools/check-links.py`：构建后自查站内死链（扫 `public/**/*.html` 的 `href="/..."` 逐个对落盘文件），有死链返回 1，`-v` 列出引用页。**已接入 CI**，push 后死链会让部署失败；本地发布前跑一次能提前看到问题。
 - `python tools/make-covers.py --preview`：预览封面不覆盖 `source/img`
 - `tools/imgpaths.py`：封面目录推导（哪个脚本都不用改），它看的是「哪篇文章引用了这张图」

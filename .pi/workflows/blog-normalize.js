@@ -8,7 +8,7 @@
 //   } })
 //
 // 做的事（对全站笔记统一）：
-//   1. date 统一补成 `YYYY-MM-DD 12:00:00`（缺时间的补 12:00:00，已有时间的不改）
+//   1. date 缺时间的补成真实落盘时刻（tools/fill-date-times.py），同一天不能有两篇同一秒
 //   2. 结尾章节统一：常见坑 → 重点总结；易错点 → 重点总结
 //   3. 缺结尾章节的补上「重点总结」
 //   4. 统一 markdown 风格：代码块语言标记、表格、h2/h3 层级
@@ -25,7 +25,8 @@ const scan = await runs.run("scan", {
     "扫描 " + repo + "/source/_posts 下所有 .md 笔记，输出问题清单：",
     "",
     "1) frontmatter 问题：",
-    "   - date 是否缺时间（标准是 YYYY-MM-DD 12:00:00；只写日期的要补 12:00:00，已有时间的不动）",
+    "   - date 是否缺时间（标准是 YYYY-MM-DD HH:MM:SS；只写日期的用 python tools/fill-date-times.py 补落盘时刻）",
+    "   - 同一天是否有两篇 date 完全相同（会导致排序不可预测）",
     "   - 缺 title/description/categories/tags/cover 的",
     "   - categories 是否在 技术/笔记/架构/概念/实践 五类里",
     "   - date 与所在文件夹的年月是否一致",
@@ -50,7 +51,7 @@ const spec = await runs.run("spec", {
   task: [
     "根据下面这份体检清单，写一份「整理规范」，明确：",
     "",
-    "1) frontmatter 标准格式（date 带 12:00:00、必填字段、分类只取 技术/笔记/架构/概念/实践）",
+    "1) frontmatter 标准格式（date 带真实时刻且同日不重复、必填字段、分类只取 技术/笔记/架构/概念/实践）",
     "2) 结尾章节标准：统一用「重点总结」",
     "   - 原来叫「常见坑」/「常见坑清单」/「易错点」/「易错点清单」的，改名为「重点总结」",
     "   - 内容从「罗列坑」改写为「提炼全文重点」（一句话结论 + 关键点 + 容易忽略的地方）",
@@ -130,7 +131,7 @@ const check = await runs.run("check", {
   agent: "reviewer",
   task: [
     "复查 " + repo + "/source/_posts 下所有笔记，确认整理是否到位：",
-    "1) 所有 date 都是 `YYYY-MM-DD 12:00:00`（没有只写日期的）",
+    "1) 所有 date 都是 `YYYY-MM-DD HH:MM:SS`（没有只写日期的，也没有同日同一秒的）",
     "2) 所有笔记结尾都是「重点总结」+「参考」",
     "3) 代码块都有语言标记",
     "4) 没有内容被误删（对比 git diff）",

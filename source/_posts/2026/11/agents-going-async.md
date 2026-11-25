@@ -1,6 +1,6 @@
 ---
 title: Agents Are Going Async：Agent 正在拆成「编排官 + 后台 worker」
-date: 2026-11-06 12:00:00
+date: 2026-11-06 22:19:34
 description: 基于 Sydney Runkle《Agents Are Going Async》（2026-11-05）的中文笔记：为什么串行的 ReAct 循环撑不住大任务，业界为什么收敛到「一个陪用户的编排官 + 后台异步 subagent」，以及五个任务工具、update_strategy、通知与审批机制。结构跟原文一致，术语解释为补充。
 categories:
   - 架构

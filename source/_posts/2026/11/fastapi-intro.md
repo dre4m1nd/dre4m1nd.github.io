@@ -1,6 +1,6 @@
 ---
 title: FastAPI 入门到进阶
-date: 2026-11-06 12:00:00
+date: 2026-11-06 09:54:22
 description: 先讲 FastAPI 的基础和进阶用法（从最小服务到数据库、鉴权、部署），再总结它的核心优势，最后拆解这些优势背后的原理——类型注解+反射、模型即 Schema、依赖图、ASGI、Pydantic v2(Rust)。所有示例都在 FastAPI 0.162 上跑过。
 categories:
   - 实践

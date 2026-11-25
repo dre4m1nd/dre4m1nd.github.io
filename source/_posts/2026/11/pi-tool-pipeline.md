@@ -1,6 +1,6 @@
 ---
 title: "Pi 源码解读（二）：工具系统——五步管道与「错误即消息」"
-date: 2026-11-16 12:00:00
+date: 2026-11-16 18:47:21
 description: 从 Tool、AgentTool、ToolDefinition 三层类型出发，逐段拆解 Pi 的工具执行五步管道：参数预处理、TypeBox 校验、前置钩子、执行与进度回调、后置钩子，并讲透「错误即消息」的设计取舍。
 categories:
   - 技术

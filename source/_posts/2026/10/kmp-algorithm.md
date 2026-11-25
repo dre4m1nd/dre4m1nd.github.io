@@ -1,6 +1,6 @@
 ---
 title: KMP 算法笔记：从暴力匹配到 next 数组
-date: 2026-10-28
+date: 2026-10-28 19:22:25
 description: 只抓"主串指针不回溯"这一个点讲清 KMP：next 数组的定义、手算过程、两种写法的区别，以及 LeetCode 28 的完整实现。
 cover: /img/2026/10/cover-kmp.jpg
 categories:

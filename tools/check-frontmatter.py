@@ -76,6 +76,7 @@ def main():
     warns = []
     slugs = defaultdict(list)
     titles = defaultdict(list)
+    dates = defaultdict(list)
     checked = 0
 
     for path in sorted(glob.glob(os.path.join(args.root, '**', '*.md'), recursive=True)):
@@ -101,8 +102,8 @@ def main():
         else:
             year, month = m.group(1), m.group(2)
             if not m.group(4):
-                warns.append('%s: date 缺时间（建议写 %s-%s-%s 12:00:00，同日多篇排序才稳定）'
-                             % (rel, year, month, m.group(3)))
+                errors.append('%s: date 缺时间（要写真实落盘时刻，如 %s-%s-%s 21:43:48；'\
+                              '只写日期同日多篇排序会不可预测）' % (rel, year, month, m.group(3)))
             folder = os.path.dirname(rel).replace('\\', '/')
             mm = re.search(r'/(\d{4})/(\d{2})$', folder)
             if mm and (mm.group(1), mm.group(2)) != (year, month):
@@ -153,6 +154,14 @@ def main():
         title = scalar(fm, 'title') or ''
         if title:
             titles[title].append(rel)
+        if raw:
+            dates[raw].append(rel)
+
+    # 同一天同一秒 → 首页/归档/atom 的顺序由文件遍历决定，不可预测
+    for val, paths in dates.items():
+        if len(paths) > 1:
+            errors.append('date 重复「%s」: %s（同一天多篇要给不同时刻）'
+                          % (val, ', '.join(paths)))
 
     for slug, paths in slugs.items():
         if len(paths) > 1:

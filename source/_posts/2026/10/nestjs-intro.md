@@ -1,6 +1,6 @@
 ---
 title: NestJS 入门到进阶
-date: 2026-10-29
+date: 2026-10-28 23:40:20
 description: NestJS 是 TS 优先、装饰器驱动、内置 DI 的全家桶框架，跑在 Express/Fastify 之上。这篇覆盖脚手架、模块/控制器/服务、DTO 全局校验、守卫、管道、拦截器、异常过滤器、中间件、测试与切 Fastify，并横向对比 Express/Koa/Fastify/Hono。
 categories:
   - 实践
