@@ -72,6 +72,8 @@ LABELS = {
     'cover-quicksort': 'SORT',
     'claude-docs-chaos-loop': 'CHAOS',
     'agent-session-concurrency': 'SESSION',
+    'spring-transaction-propagation': 'TX',
+    'mcp-transports': 'MCP',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -102,6 +104,8 @@ TEXTS = {
     'cover-quicksort':     '快速排序',
     'claude-docs-chaos-loop':     '混沌循环',
     'agent-session-concurrency':     '会话并发',
+    'spring-transaction-propagation':     '事务传播',
+    'mcp-transports':     'MCP 传输层',
 }
 
 PROMPTS = {
@@ -130,6 +134,8 @@ PROMPTS = {
     'cover-quicksort':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a row of wooden blocks sorted by height from short to tall on a table, sorting concept, warm wood block tones, on a pure white background, bright white, ' + STYLE,
     'claude-docs-chaos-loop':    'minimal composition, a small subject centered with huge empty space on all four sides, nothing near the frame edges, a small cute robot holding a mallet testing a row of small wooden server boxes, one box rattling, stress testing concept, warm beige and wood tones, on a pure white background, bright white, ' + STYLE,
     'agent-session-concurrency':    'flat vector illustration of a narrow single-plank wooden footbridge over a small dry ditch, with one small wooden handcart waiting at each end facing the bridge, the two carts clearly too wide to pass each other, a few loose planks and a coil of rope on the ground beside it, single-file access concept, warm oak and terracotta tones, ' + STYLE,
+    'spring-transaction-propagation':    'flat vector illustration of a small wooden balance scale with two pans, one pan holding a stack of paper ledgers and a brass pen, the other pan holding a few brass coins, the scale resting on a plain surface, commitment concept, warm wood and brass tones, ' + STYLE,
+    'mcp-transports':    'flat vector illustration of a short open wooden pipe with a folded paper document sliding in through one end and sliding out the opposite end, a small brass toggle beside the pipe, two-way message exchange concept, warm wood and brass tones, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
