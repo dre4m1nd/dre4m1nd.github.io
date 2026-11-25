@@ -149,13 +149,11 @@ const publish = await runs.run("publish", {
   agent: "worker",
   task: [
     "在 " + repo + " 构建并发布（每步看结果，不许跳过）：",
-    "1) npx hexo clean && npx hexo generate —— 无报错、文章数正确",
-    "2) python tools/check-links.py —— 有死链必须修掉再继续（非 0 返回码就是有）",
-    "2b) python tools/check-frontmatter.py —— frontmatter 校验（date 与文件夹年月、分类合法性、cover 存在），非 0 不行",
-    "3) 若这批改了分类：确认 _config.yml 的 category_map 和 _config.anzhiyu.yml 的 home_top.category[].path 两处同步",
-    "4) 本地起 server 目测：首页卡片封面、文章页章节/代码块、右侧目录应清晰无雾化",
-    "5) git add -A && git commit && git push origin main",
-    "6) 等 CI（GitHub API 未认证会 403 限流，看 badge：pages.yml badge.svg 出现 passing），线上抽查 2-3 篇 200",
+    "1) python tools/prepublish.py —— 一次跑完 frontmatter 校验、分类一致性、hexo 构建、站内死链。",
+    "   返回码非 0 就按输出改掉再重跑；不要跳过、不要只跑其中一项。",
+    "2) 本地起 server 目测：首页卡片封面、文章页章节/代码块、右侧目录应清晰无雾化",
+    "3) git add -A && git commit && git push origin main",
+    "4) 等 CI（GitHub API 未认证会 403 限流，看 badge：pages.yml badge.svg 出现 passing），线上抽查 2-3 篇 200",
     "返回：最终状态 + 每条验证的实际结果。",
     "校验结果：",
     check.output

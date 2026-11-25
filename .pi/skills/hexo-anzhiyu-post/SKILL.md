@@ -147,7 +147,15 @@ highlight_shrink: true       # 代码块默认折叠
 
 ## 常用工具
 
-- `python tools/check-frontmatter.py`：校验每篇文章的 frontmatter，**已接入 CI**（在 `npm ci` 之前跑，快失败）。它挡的是「能构建但结果不对」那类错：
+- `python tools/prepublish.py`：**发布前跑这一个就够**。它按顺序跑四步，任一失败即中止并返回 1：
+  1. `check-frontmatter.py`（frontmatter 校验）
+  2. 分类一致性（文章实际分类 ⊆ `_config.yml` 的 `category_map`；`_config.anzhiyu.yml` 的 `home_top` 卡片 `path: /categories/xxx/` 必须用映射后的英文名）
+  3. `npx hexo clean && npx hexo generate`
+  4. `check-links.py`（站内死链）
+
+  `--fast` 只跑 1、2（改完 frontmatter 想快查时用），`-v` 透传详细输出。
+  **改检查规则只改这个脚本**：`.pi/workflows/blog-write.js` 和 `blog-normalize.js` 的发布阶段都只调用它一行，不再各自维护一份清单。
+- `python tools/check-frontmatter.py`：单独验 frontmatter，**已接入 CI**（在 `npm ci` 之前跑，快失败）。它挡的是「能构建但结果不对」那类错：
   - `date` 与文件所在 `<年>/<月>` 文件夹不一致（URL 在 11 月、归档却归到 1 月，首页排序沉底——hexo 不报错）
   - `date` 缺时间，或同一天两篇 `date` 完全相同（排序会不可预测）
   - `categories` 不是五类之一（会多出 `/categories/工程实践/` 这种野分类页）
