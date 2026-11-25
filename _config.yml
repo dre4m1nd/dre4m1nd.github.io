@@ -104,6 +104,21 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: anzhiyu
 
+# Sitemap（hexo-generator-sitemap）
+# 生成 /sitemap.xml，同时改写 robots.txt 里的 Sitemap 行（rel: true）
+sitemap:
+  path: sitemap.xml
+  rel: true
+  tags: true
+  categories: true
+
+# RSS/Atom（hexo-generator-feed）
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  content: false
+
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:

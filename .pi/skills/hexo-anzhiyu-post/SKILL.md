@@ -16,8 +16,8 @@ description: 在这个 Hexo 8 + anzhiyu 主题的博客仓库里写/改/发布�
   2. `source/css/custom.css`（已通过 `inject.head` 引入，写样式只加这里）
   3. `source/img/`（自己的图片，站内路径写 `/img/xxx.png`）
 - 站点根路径是 `/`（`url: https://dre4m1nd.github.io`，仓库名 `dre4m1nd.github.io`），**不要**加 `/blog` 之类的前缀
-- 部署：push `main` → `.github/workflows/pages.yml` → `npm ci` → `npm run build` → `python3 tools/check-links.py` → 上传 `public/` 到 Pages。本地不需要 `hexo deploy`
-- **CI 是闸门，不是流水线**：死链检查不过就直接失败、不发布（旧版本继续在线）；同一分支的连续 push 会取消前一次未完成的运行。所以本地不必反复全量验证，但推送后要看 Actions 是否绿
+- 部署：push `main` → `.github/workflows/pages.yml` → `check-frontmatter` → `npm ci` → 按 git 历史还原 mtime → `npm run build` → `check-links.py` → 上传 `public/` 到 Pages。本地不需要 `hexo deploy`
+- **CI 是闸门，不是流水线**：frontmatter 校验或死链检查不过就直接失败、不发布（旧版本继续在线）；同一分支的连续 push 会取消前一次未完成的运行。所以本地不必反复全量验证，但推送后要看 Actions 是否绿
 - **草稿**：frontmatter 加 `published: false` 即可 push 同步但不上线（Hexo 生成时跳过）；CI 会打印当前草稿数量作提醒。发布时删掉该行
 - `public/`、`node_modules/`、`db.json` 已 gitignore；`themes/anzhiyu` 是提交进仓库的普通目录（不是 submodule）
 
@@ -46,7 +46,7 @@ description: 一句话摘要      # 首页卡片/SEO 用，index_post_content.me
 cover: /img/xxx.jpg          # 封面；留空用 cover.default_cover（/img/default_cover.jpg）
 top_img:                     # 文章页顶部大图；false 表示不要顶部图
 categories:
-  - 工程实践
+  - 技术                    # 只能五选一：技术 / 笔记 / 架构 / 概念 / 实践
 tags:
   - Hexo
 top_single:                  # 置顶单篇大卡（首页），可选
@@ -59,7 +59,8 @@ highlight_shrink: true       # 代码块默认折叠
 ---
 ```
 
-- `categories` 会生成 `/categories/分类名/` 页面；写成不存在的分类没问题，但不要写拼写错误
+- `categories` 只能取 **技术 / 笔记 / 架构 / 概念 / 实践** 五选一（`_config.yml` 的 `category_map` 只映射这五个）。写五类以外的词不会报错，但会生成一个 `/categories/工程实践/` 这样的野分类页，既不在导航条里、也和映射后的英文路径分裂成两份。
+- `date` 一律写 `YYYY-MM-DD 12:00:00`，不要只写日期：只写日期时同日多篇的排序由文件遍历决定、不可预测（URL 年月来自**文件夹**，不是 date）
 - 图片一律放 `source/img/`，正文写 `![](/img/a.png)`（不要用外链图床，容易挂）
 
 ## 正文可用标签（主题自带，已验证存在）
@@ -96,7 +97,7 @@ highlight_shrink: true       # 代码块默认折叠
 - **本地 `hexo` 报 `Cannot find module './lib/parse'`**：node_modules 装坏了，跑 `npm install cross-spawn@7.0.6 --no-save` 即可（这是 `cross-spawn` 缺 `lib/parse.js`，不是 Hexo 问题）
 - **时区不是坑（已实测，别再照旧说法改）**：`permalink: :title/`，URL 里的年月来自**文件所在文件夹**，不来自 `date`。用 `TZ=UTC`、`TZ=Asia/Shanghai`、以及删掉 `timezone` 三种方式构建，路径与页面显示日期完全一致。所以**不需要在 CI 里设 `TZ`**，也不需要为了 URL 去改日期。`date` 统一写 `12:00:00` 只是保持排序稳定的约定。
 - **「更新于」靠 mtime，CI 里已还原（重要）**：`_config.yml` 是 `updated_option: mtime`，文章页「更新于」= 文件 mtime。CI 全新 clone 会把所有文件 mtime 变成 checkout 时刻，导致全站「更新于」都显示成构建时间。workflow 里已有 `Restore mtimes from git history` 步骤按每篇最后一次提交时间 `touch` 回来（配套 `fetch-depth: 0`，浅 clone 只能拿到同一个 tip 时间）。**不要删这两处，也不要改回浅 clone**，否则线上「更新于」会全部变成同一天。
-- 仓库同时有 `package-lock.json` 和 `yarn.lock`，CI 走 `npm install`。加依赖用 npm，别用 yarn
+- 仓库同时有 `package-lock.json` 和 `yarn.lock`，CI 走 `npm ci`。加依赖用 npm，别用 yarn
 - 构建产物残留导致页面不更新：先 `npx hexo clean`
 - 改了 `_config.anzhiyu.yml` 里的颜色值必须带双引号（`"#425AEF"`），否则 YAML 解析出错
 - 主题配置里 `CDN.internal_provider: local`，不要再改成外部 CDN
@@ -146,9 +147,21 @@ highlight_shrink: true       # 代码块默认折叠
 
 ## 常用工具
 
+- `python tools/check-frontmatter.py`：校验每篇文章的 frontmatter，**已接入 CI**（在 `npm ci` 之前跑，快失败）。它挡的是「能构建但结果不对」那类错：
+  - `date` 与文件所在 `<年>/<月>` 文件夹不一致（URL 在 11 月、归档却归到 1 月，首页排序沉底——hexo 不报错）
+  - `categories` 不是五类之一（会多出 `/categories/工程实践/` 这种野分类页）
+  - 缺 `description` / `tags` / `cover`，或 `cover` 指向的文件不存在
+  - 重复 slug / 重复 title、把分类名当标签用
+  - `-v` 看警告（date 缺时间、缺 `> ` 摘要块、tags 太多）
 - `python tools/check-links.py`：构建后自查站内死链（扫 `public/**/*.html` 的 `href="/..."` 逐个对落盘文件），有死链返回 1，`-v` 列出引用页。**已接入 CI**，push 后死链会让部署失败；本地发布前跑一次能提前看到问题。
 - `python tools/make-covers.py --preview`：预览封面不覆盖 `source/img`
 - `tools/imgpaths.py`：封面目录推导（哪个脚本都不用改），它看的是「哪篇文章引用了这张图」
+
+### SEO / 订阅产物
+
+- `/sitemap.xml`：`hexo-generator-sitemap` 生成（配置在 `_config.yml` 的 `sitemap:`）。`rel: true` 会把 Sitemap 地址写进 robots.txt。
+- `/robots.txt`：静态文件 `source/robots.txt`（只挡 `/page/` 翻页，别挡文章）。
+- `/atom.xml`：`hexo-generator-feed` 生成，最近 20 篇。`_config.anzhiyu.yml` 的 `inject.head` 里有一行 `<link rel="alternate" type="application/atom+xml">` 供阅读器自动发现，**删了那行订阅器就发现不了 feed**。
 
 ## 改主题配置的坑（都是实际踩过的）
 

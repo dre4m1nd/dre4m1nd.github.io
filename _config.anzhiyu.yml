@@ -1257,6 +1257,8 @@ inject:
   head:
     # 自定义css
     - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
+    # RSS 订阅发现（feed 插件生成 /atom.xml）
+    - <link rel="alternate" type="application/atom+xml" title="dre4m1nd 的笔记" href="/atom.xml">
 
   bottom:
     # 自定义js

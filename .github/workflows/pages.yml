@@ -26,6 +26,10 @@ jobs:
         with:
           node-version: "24"
           cache: "npm" # 只缓存 ~/.npm 下载缓存，key 自动带 package-lock.json 的哈希
+      - name: Check frontmatter
+        # 能构建但结果不对的那类错误（date 与文件夹年月不一致、非法分类、缺封面/描述）
+        # hexo 不报错、check-links 也抓不到，在这里挡住
+        run: python3 tools/check-frontmatter.py
       - name: Install Dependencies
         # 用 npm ci 严格按 package-lock.json 装，避免旧 node_modules 树上做增量安装
         run: npm ci

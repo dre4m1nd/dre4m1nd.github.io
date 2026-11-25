@@ -23,7 +23,8 @@
 
 const topic = args.topic || "未命名主题";
 const slug = args.slug || "new-post";
-const category = args.category || "工程实践";
+// 默认分类必须是五类之一（技术/笔记/架构/概念/实践）。写「工程实践」这类词会生成 /categories/工程实践/ 这种不在 category_map 里的野分类页
+const category = args.category || "技术";
 const tags = (args.tags || []).join(", ");
 const source = args.source || "";
 const repo = args.repo || "D:/notes/blog-hexo";
@@ -66,8 +67,9 @@ const RULES = [
   "    _config.yml 的 category_map（技术→tech、笔记→notes、架构→architecture、概念→concepts、实践→practice）",
   "    _config.anzhiyu.yml 的 home_top.category[].path（必须写映射后的英文路径，写中文就 404；",
   "    主题分类卡只支持 blue/red/green 三色 class，多卡循环复用）",
-  "frontmatter 的 date 写中午 12 点（如 2026-11-04 12:00:00）：GitHub Actions 跑在 UTC，",
-  "  只写日期会被算成前一天。",
+  "frontmatter 的 date 一律写 `YYYY-MM-DD 12:00:00`（如 2026-11-04 12:00:00），不要只写日期：",
+  "  只写日期时同一天多篇的排序由文件遍历决定、不可预测；写死 12:00 至少让同日顺序稳定。",
+  "  （URL 里的年月来自文件夹，不是 date，时区不影响 URL —— 别再写「UTC 会算成前一天」那套。）",
   "不碰 themes/：样式只进 source/css/custom.css，主题配置只进 _config.anzhiyu.yml。",
   "图片跟文章走：封面放 source/img/<年>/<月>/（frontmatter cover 写 /img/<年>/<月>/<slug>.jpg），",
   "  站点级图片（默认封面、banner）在 source/img/common/。",
@@ -204,15 +206,16 @@ const publish = await runs.run("publish", {
     "",
     "然后发布（每一步都要看结果，不能跳过）：",
     "0) python tools/number-headings.py <本篇文章的 .md 路径> —— 自动给 ## / ### 加 1./1.1 序号（幂等，重跑安全）",
-    "1) npx hexo clean && npx hexo generate —— 无报错、文章数正确",
-    "2) python tools/check-links.py —— 有死链必须修掉再继续（非 0 返回码就是有）",
-    "3) 若这篇用了新分类：确认 _config.yml 的 category_map 和 _config.anzhiyu.yml 的",
+    "1) python tools/check-frontmatter.py —— 验 frontmatter（date 与文件夹年月是否一致、分类是否合法、cover 文件是否存在），非 0 返回码就改掉再继续",
+    "2) npx hexo clean && npx hexo generate —— 无报错、文章数正确",
+    "3) python tools/check-links.py —— 有死链必须修掉再继续（非 0 返回码就是有）",
+    "4) 若这篇用了新分类：确认 _config.yml 的 category_map 和 _config.anzhiyu.yml 的",
     "   home_top.category[].path 两处都同步了（少一处 → 首页分类卡片 404）",
-    "4) 本地起 server 目测（有截图能力就截图）：首页卡片封面、文章页标题区、右侧目录应清晰无雾化、封面不变形",
-    "5) git add -A / commit / push origin main",
-    "6) 等 CI：GitHub API 未认证会 403 限流，改看 badge ——",
+    "5) 本地起 server 目测（有截图能力就截图）：首页卡片封面、文章页标题区、右侧目录应清晰无雾化、封面不变形",
+    "6) git add -A / commit / push origin main",
+    "7) 等 CI：GitHub API 未认证会 403 限流，改看 badge ——",
     "   https://github.com/dre4m1nd/dre4m1nd.github.io/actions/workflows/pages.yml/badge.svg 出现 passing",
-    "7) 线上抽查：文章 URL 返回 200；/img/<slug>.jpg 的字节数与本地一致（防 CDN 缓存旧图）",
+    "8) 线上抽查：文章 URL 返回 200；/img/<slug>.jpg 的字节数与本地一致（防 CDN 缓存旧图）",
     "返回：最终 URL + 每条验证的实际结果。",
     "",
     "审查意见：",
