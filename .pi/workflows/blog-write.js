@@ -168,7 +168,7 @@ const cover = await runs.run("cover", {
     "     - 留白 0% 先目测再定：脚本按「比 235 暗的像素外接框」算，暖色台面（桌面/码头/地面）本身偏暗会把外接框顶到边",
     "     - 无文字/字母/水印/乱码，无脏灰/泥泞底色，无 3D 写实",
     "     对症改词：底色不对 → `clean bright background, no full-image blue or purple wash`；",
-    "     构图被裁 → `zoomed out wide shot, entire composition fully visible, nothing cropped`；",
+    "     主体太小 → 去掉 `small subject` 类表述，换 `subject centered and prominent with a balanced margin`；铺满贴边 → 加 `plain light background with a clear band of background color around the subject`；",
     "     画风太实 → `flat vector illustration, no 3d, no photorealistic`；",
     "     冒出文字 → 明确 `no text, no letters, no numbers, no watermark`。",
     "",

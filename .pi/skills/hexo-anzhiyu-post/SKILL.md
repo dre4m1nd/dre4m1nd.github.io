@@ -144,7 +144,7 @@ highlight_shrink: true       # 代码块默认折叠
   - 平均亮度 ≥ 150（画面干净明亮即可，不要求纯白底；低于报「底色偏暗」）
   - 主体突出、四周留可见背景边：不是中心一个小点（提示词写了 huge empty space），也不是铺满贴边（提示词写了 filling the frame）；留白 0% 先目测再定，暖色台面会顶满外接框
   - 无文字/字母/水印，无脏灰/泥泞底色，无 3D 写实
-  - 对症改词：`clean bright background, no full-image blue or purple wash` / `zoomed out wide shot, entire composition fully visible, nothing cropped` / `flat vector illustration, no 3d, no photorealistic` / `no text, no letters, no numbers, no watermark`
+  - 对症改词：底色不对 → `clean bright background, no full-image blue or purple wash` / 主体太小 → 去掉 `small subject` 类表述，换 `subject centered and prominent with a balanced margin` / 铺满贴边 → 加 `plain light background with a clear band of background color around the subject` / 画风太实 → `flat vector illustration, no 3d, no photorealistic` / 冒出文字 → `no text, no letters, no numbers, no watermark`
 
 ## 常用工具
 
