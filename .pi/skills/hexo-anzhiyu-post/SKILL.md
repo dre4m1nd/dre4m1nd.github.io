@@ -137,11 +137,12 @@ highlight_shrink: true       # 代码块默认折叠
 - **封面必须具体、可辨识（硬要求）**：画出实物/场景（机器、装置、工具、棋盘、手、具体道具），让读者一眼看出"在干什么"。**不要抽象图形**（节点+箭头、色块拼贴、散点网络、纯几何图案）。标杆是 `design-patterns-creational` 那张：机器 + 传送带 + 产物。`STYLE` 已经把这句锁进去了，但每条 prompt 的主题描述也要往"具体物件"上写
 - **图内可以带短文字体现主题**：左上角一条短标签（`LABELS` 字典，英文单词或 2~4 个汉字，如 `CREATE`），底部小标题（`TEXTS`）。**所有文字都由脚本本地渲染，模型 prompt 仍写 `no text`**——本地叠字字形一定正确。标签只放 1 条、尽量短（≤ 12 个字符）
 - prompt 模板 `STYLE` 已约定：贴近生活的自然配色（木质、金属、织物、食物等）、扁平矢量、整幅不裁切、无文字无水印 + 具体场景要求，只需在 `PROMPTS` 加每篇的主题描述
+- **构图要主体突出、四周留背景边（2026-11 踩坑）**：prompt 里不要写 "small subject centered with huge empty space / wide margins on all sides" 这类话 —— 模型会照做，把主体缩成画面中心一个小点，四周全白。`STYLE` 已改成 "plain light background with a clear band of background color around the subject / subject centered and prominent with a balanced margin"，条目里也不要再带盖过 `STYLE` 的留白表述。反过来也不要写 "filling the frame"，会铺满贴边。留白指标要目测复核：脚本按「比 235 暗的像素外接框」算，暖色台面（桌面/码头/地面）本身偏暗会把外接框顶到边，报 0% 不一定是真贴边
 - 底部小标题**由脚本本地合成**（`TEXTS` 字典，key 与 `PROMPTS` 一致，例如 `'cover-kmp': 'KMP 算法'`），不交给模型画 —— 混元画中文容易错字，本地叠字字形一定正确，字号/位置/蓝线也和 logo 封面一致。改标题只改 `TEXTS`
-- 跑 `python tools/magpie-covers.py --only <slug>`，脚本自动调用 Magpie image MCP 生成、压到 900x675、落盘到文章的年/月目录并打印亮度/留白（指标在叠小标题**之前**量，不会被标题带偏）。生成模型默认 `openrouter/google/gemini-3.1-flash-image`，可用 `--model` 覆盖；不使用腾讯系模型
+- 跑 `python tools/magpie-covers.py --only <slug>`，脚本自动调用 Magpie image MCP 生成、压到 900x675、落盘到文章的年/月目录并打印亮度/留白（指标在叠小标题**之前**量，不会被标题带偏）。默认模型在 `tools/magpie_mcp.py` 的 `DEFAULT_MODEL`，可用 `--model` 覆盖；不使用腾讯系模型。**通道可用性变化快（2026-11 实测）**：loomy/* 全部 406（账号无生图权限）、openrouter/* 全部 402（需余额 ≥ $1）、workbuddy-ai 与 workbuddy 两条混元通道可用但额度会耗尽（429 Credits exhausted）；报 429/402/406 时换 `--model` 试其它通道，别反复重试同一张
 - 脚本自带硬指标，不合格必须改 prompt 只重跑该张（别整批重跑）：
   - 平均亮度 ≥ 150（画面干净明亮即可，不要求纯白底；低于报「底色偏暗」）
-  - 内容距四边留白 ≥ 3%（否则报「构图贴边」）
+  - 主体突出、四周留可见背景边：不是中心一个小点（提示词写了 huge empty space），也不是铺满贴边（提示词写了 filling the frame）；留白 0% 先目测再定，暖色台面会顶满外接框
   - 无文字/字母/水印，无脏灰/泥泞底色，无 3D 写实
   - 对症改词：`clean bright background, no full-image blue or purple wash` / `zoomed out wide shot, entire composition fully visible, nothing cropped` / `flat vector illustration, no 3d, no photorealistic` / `no text, no letters, no numbers, no watermark`
 

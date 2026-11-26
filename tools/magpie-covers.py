@@ -241,7 +241,7 @@ def main():
                 if mean < 150:
                     warn.append('底色偏暗(亮度%.0f)' % mean)
                 if margin < 0.03:
-                    warn.append('构图贴边(留白%.1f%%)' % (margin * 100))
+                    warn.append('构图贴边?(留白%.1f%%，暖色台面会顶满外接框，需目测确认)' % (margin * 100))
                 print('OK   %-30s %s %3dKB 亮度%.0f 留白%.0f%%%s%s%s' % (
                     dest.replace('\\', '/'), size, kb, mean, margin * 100,
                     ('  [注意] ' + '、'.join(warn) + '，改 prompt 重跑该张') if warn else '',
