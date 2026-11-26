@@ -11,8 +11,8 @@
 # （按「哪篇文章引用了这张封面」自动定位，见 tools/imgpaths.py；文章还没写
 #   frontmatter 时加 --dir <目录>）
 #
-# 生成模型：默认 loomy/doubao-seedream-5-lite（讯飞 Loomy 通道），可用 --model 覆盖；
-# 不使用腾讯系模型（OpenRouter 系列区域受限不可用）。
+# 生成模型：默认 workbuddy-ai/hy-image-3.5（2026-11 实测：loomy/* 全 406、openrouter/* 全 402，
+# workbuddy 两条通道可用），可用 --model 覆盖；不使用腾讯系模型（OpenRouter 系列区域受限不可用）。
 #
 # 用法：
 #   python tools/magpie-covers.py                  # 全部
