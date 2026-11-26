@@ -17,8 +17,9 @@ EXE = r"D:\dev-environment\tool\magpie\magpie-windows-amd64.exe"
 PROTOCOL = "2025-06-18"
 
 # 默认生图模型。2026-11 实测：loomy/* 全部 406（账号无生图权限），openrouter/* 全部 402
-# （需余额 ≥ $1），workbuddy-ai/hy-image-3.5 与 workbuddy/hunyuan-image-alpha 可用。
-DEFAULT_MODEL = "workbuddy-ai/hy-image-3.5"
+# （需余额 ≥ $1）。workbuddy-ai/hy-image-3.5 曾可用，2026-11-26 额度耗尽（429）；
+# workbuddy/hunyuan-image-alpha 当前可用。
+DEFAULT_MODEL = "workbuddy/hunyuan-image-alpha"
 
 class MagpieImage:
     def __init__(self, exe=EXE):
