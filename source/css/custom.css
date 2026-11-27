@@ -26,8 +26,12 @@
   padding: 0.15em 0.4em;
   border-radius: 5px;
   background: var(--anzhiyu-secondbg);
-  color: var(--anzhiyu-lighttext);
+  /* 主题给浅色模式的是 #f2b94b，对 #f7f7f9 只有 1.66:1，读不清；换成深青绿 5.1:1 */
+  color: #0F766E;
   font-size: 0.9em;
+}
+[data-theme="dark"] #article-container code:not([class]) {
+  color: #6EE7B7;
 }
 
 /* ---------- 代码块（深色 pale night）---------- */
@@ -46,7 +50,7 @@
   left: 60px !important;
   font-size: 0.85em;
   font-weight: 600;
-  opacity: 0.6;
+  opacity: 0.8;
   text-transform: none;
 }
 /* 箭头方向：展开态朝上（收回），收起态朝下（展开）；去掉旋转动画，直接换向 */
@@ -575,23 +579,33 @@ body,
   --anzhiyu-lighttext: #34D399;
 }
 
-/* ---------- 代码块：深绿配色（与主题统一） ---------- */
+/* ---------- 代码块：深绿底 + 按语义分色 ---------- */
 #article-container figure.highlight {
   --hl-bg: #0C241C;
   --hl-color: #D7F0E6;
   --hlexpand-bg: linear-gradient(180deg, rgba(12, 36, 28, 0.6), rgba(12, 36, 28, 0.95));
   --hlnumber-bg: #0A1E17;
-  --hlnumber-color: rgba(215, 240, 230, 0.35);
-  --hlscrollbar-bg: rgba(215, 240, 230, 0.18);
+  --hlnumber-color: rgba(215, 240, 230, 0.45);
+  --hlscrollbar-bg: rgba(215, 240, 230, 0.2);
   --hltools-bg: #0A1E17;
   --hltools-color: #A7F3D0;
   background: var(--hl-bg);
   color: var(--hl-color);
 }
-#article-container figure.highlight pre .comment { color: #6E8F80; }
+/* 顶栏和代码之间那道分隔：两者底色只差一点，没线会糊成一块 */
+#article-container figure.highlight .highlight-tools {
+  border-bottom: 1px solid rgba(167, 243, 208, 0.1);
+}
+/* 注释：低饱和灰绿，退到背景里但仍达 AA（6.2:1） */
+#article-container figure.highlight pre .comment,
+#article-container figure.highlight pre .quote { color: #86A79A; }
+/* 关键字：暖琥珀 */
 #article-container figure.highlight pre .keyword,
 #article-container figure.highlight pre .tag,
-#article-container figure.highlight pre .title { color: #F0C987; }
+#article-container figure.highlight pre .selector-tag,
+#article-container figure.highlight pre .doctag,
+#article-container figure.highlight pre .literal { color: #F0C987; }
+/* 字符串：薄荷绿 */
 #article-container figure.highlight pre .string,
 #article-container figure.highlight pre .value,
 #article-container figure.highlight pre .cdata,
@@ -600,26 +614,34 @@ body,
 #article-container figure.highlight pre .special,
 #article-container figure.highlight pre .symbol,
 #article-container figure.highlight pre .inheritance { color: #A7F3D0; }
+/* 数字/参数/预处理：橙，和关键字的琥珀拉开一档 */
 #article-container figure.highlight pre .number,
 #article-container figure.highlight pre .preprocessor,
-#article-container figure.highlight pre .literal,
 #article-container figure.highlight pre .command,
-#article-container figure.highlight pre .params { color: #FBBF24; }
+#article-container figure.highlight pre .params,
+#article-container figure.highlight pre .hexcolor { color: #F49E6E; }
+/* 函数/标题/内置：天蓝，从绿色系里独立出来 */
+#article-container figure.highlight pre .title,
 #article-container figure.highlight pre .function,
-#article-container figure.highlight pre .sub,
-#article-container figure.highlight pre .decorator,
-#article-container figure.highlight pre .built_in,
-#article-container figure.highlight pre .attr { color: #6EE7B7; }
-#article-container figure.highlight pre .variable,
+#article-container figure.highlight pre .subst,
+#article-container figure.highlight pre .built_in { color: #7DD3FC; }
+/* 属性/键名/装饰器：薰衣草 */
+#article-container figure.highlight pre .attr,
 #article-container figure.highlight pre .attribute,
+#article-container figure.highlight pre .property,
+#article-container figure.highlight pre .decorator,
+#article-container figure.highlight pre .meta { color: #C4B5FD; }
+/* 类型/类/常量：粉，和属性区分开 */
+#article-container figure.highlight pre .type,
 #article-container figure.highlight pre .class,
 #article-container figure.highlight pre .constant,
-#article-container figure.highlight pre .doctype,
+#article-container figure.highlight pre .section,
+#article-container figure.highlight pre .doctype { color: #F0A6CA; }
+/* 变量/选择器/正则：翡翠绿（保留原主色） */
+#article-container figure.highlight pre .variable,
 #article-container figure.highlight pre .name,
 #article-container figure.highlight pre .pi,
 #article-container figure.highlight pre .pseudo,
 #article-container figure.highlight pre .regexp { color: #34D399; }
-#article-container figure.highlight pre .meta,
-#article-container figure.highlight pre .hexcolor { color: #A7F3D0; }
-#article-container figure.highlight pre .addition { color: #34D399; }
+#article-container figure.highlight pre .addition { color: #6EE7B7; }
 #article-container figure.highlight pre .deletion { color: #F87171; }
