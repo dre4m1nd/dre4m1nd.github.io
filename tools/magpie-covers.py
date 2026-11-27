@@ -78,6 +78,11 @@ LABELS = {
     'mcp-server': 'SERVER',
     'virtual-threads': 'JAVA',
     'multi-agent-worktree': 'GIT',
+    'spring-aop-proxy': 'AOP',
+    'jvm-gc-g1-zgc': 'GC',
+    'java-locks': 'LOCK',
+    'node-event-loop': 'LOOP',
+    'git-rebase-vs-merge': 'REBASE',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -113,6 +118,11 @@ TEXTS = {
     'mcp-server':     'MCP 服务端',
     'virtual-threads':     '虚拟线程',
     'multi-agent-worktree':     '多 Agent 工作区',
+    'spring-aop-proxy':     'AOP 代理边界',
+    'jvm-gc-g1-zgc':     'GC 停顿对比',
+    'java-locks':     '并发锁实测',
+    'node-event-loop':     '事件循环',
+    'git-rebase-vs-merge':     '分支整合',
 }
 
 PROMPTS = {
@@ -146,6 +156,11 @@ PROMPTS = {
     'mcp-server':    'flat vector illustration on a pure white background, a three-tier wooden tool rack resting on a pale wooden workbench, the rack centered and taking up the middle of the frame, a clear margin of white background around all four sides, nothing touching the frame edges, a hammer resting on the top shelf, a coiled measuring tape on the middle shelf, a small neat stack of paper sticky notes on the bottom shelf, three kinds of capability neatly organized concept, warm wood and paper tones, ' + STYLE,
     'virtual-threads':    'flat vector illustration on a pure white background, a wooden dock centered with many small wooden rowboats tied side by side along it in a neat row, and only two larger wooden boats moored further out beyond the dock, a clear margin of white background around all four sides, nothing touching the frame edges, crowded dock with plenty of room concept, warm wood and cream tones, ' + STYLE,
     'multi-agent-worktree':    'flat vector illustration on a pure white background, two small wooden workbenches placed side by side, each with its own vise and hand tools, an open toolbox sitting between them, the benches centered with a clear margin of white background around all four sides, nothing touching the frame edges, separate workspaces sharing supplies concept, warm oak and brass tones, ' + STYLE,
+    'spring-aop-proxy':    'flat vector illustration on a pure white background, a small wooden hand puppet wearing a simple blue apron standing on a plain wooden stool in front of an empty chair, the puppet centered and taking up the middle of the frame, a clear margin of white background around all four sides, nothing touching the frame edges, a stand-in speaking for someone else concept, warm wood and cloth tones, ' + STYLE,
+    'jvm-gc-g1-zgc':    'flat vector illustration on a pure white background, a small straw broom sweeping crumpled paper scraps across a pale wooden floor toward a low metal dustpan, the broom and dustpan centered with a clear margin of white background around all four sides, nothing touching the frame edges, clearing away scraps with different effort levels concept, warm straw and wood tones, ' + STYLE,
+    'java-locks':    'flat vector illustration on a pure white background, four small wooden doors set in a row along the same wall, each door fitted with a different brass latch and handle, the row of doors centered with a clear margin of white background around all four sides, nothing touching the frame edges, four different gates to the same room concept, warm oak and brass tones, ' + STYLE,
+    'node-event-loop':    'flat vector illustration on a pure white background, a small wooden spinning wheel with cream thread wound around its rim, standing on a plain surface, the spinning wheel centered with a clear margin of white background around all four sides, nothing touching the frame edges, one continuous loop of turns concept, warm wood and cream tones, ' + STYLE,
+    'git-rebase-vs-merge':    'flat vector illustration on a pure white background, a small wooden card holder with a neat row of blank index cards, a hand sliding one fresh card into the middle of the row, the holder centered with a clear margin of white background around all four sides, nothing touching the frame edges, rearranging a stack into a clean order concept, warm paper and oak tones, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
