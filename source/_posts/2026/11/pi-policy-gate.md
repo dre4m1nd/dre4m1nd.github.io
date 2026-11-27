@@ -6,10 +6,7 @@ description: "拆解 pi-policy-gate：四层配置与 trusted floor、cmd: 子�
 categories:
   - 技术
 tags:
-  - 项目拆解
-  - Pi
-  - 安全
-  - TypeScript
+  - pi-policy-gate
 cover: /img/2026/11/pi-policy-gate.jpg
 ---
 

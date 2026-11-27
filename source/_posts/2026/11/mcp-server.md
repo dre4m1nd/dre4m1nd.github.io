@@ -6,8 +6,7 @@ description: "用 @modelcontextprotocol/sdk 1.32.2 从零写一个 MCP server，
 categories:
   - 技术
 tags:
-  - 工程实践
-  - Node.js
+  - MCP
 cover: /img/2026/11/mcp-server.jpg
 ---
 

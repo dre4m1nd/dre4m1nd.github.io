@@ -6,7 +6,6 @@ description: "同一组提交分别用 merge --no-ff 和 rebase 走一遍：merg
 categories:
   - 技术
 tags:
-  - 工程实践
   - Git
 cover: /img/2026/11/git-rebase-vs-merge.jpg
 ---

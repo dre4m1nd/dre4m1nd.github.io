@@ -6,8 +6,7 @@ description: "会话文件的分叉问题解决之后，下一个冲突点是工
 categories:
   - 架构
 tags:
-  - Agent
-  - 架构
+  - git worktree
 cover: /img/2026/11/multi-agent-worktree.jpg
 ---
 

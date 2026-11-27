@@ -6,8 +6,7 @@ description: "在 Node v24.19.0 上实测事件循环：ESM 顶层里 process.ne
 categories:
   - 技术
 tags:
-  - 工程实践
-  - Node.js
+  - 事件循环
 cover: /img/2026/11/node-event-loop.jpg
 ---
 

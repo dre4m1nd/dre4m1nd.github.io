@@ -6,8 +6,7 @@ description: "在 JDK 21 上跑了两组锁的实测：8 线程 1600 万次自�
 categories:
   - 技术
 tags:
-  - 工程实践
-  - Java
+  - Java 锁
 cover: /img/2026/11/java-locks.jpg
 ---
 

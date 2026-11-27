@@ -6,8 +6,7 @@ description: "用同一个分配型负载（200MB 存活集 + 每轮 200MB 短�
 categories:
   - 技术
 tags:
-  - 工程实践
-  - JVM
+  - JVM GC
 cover: /img/2026/11/jvm-gc-g1-zgc.jpg
 ---
 

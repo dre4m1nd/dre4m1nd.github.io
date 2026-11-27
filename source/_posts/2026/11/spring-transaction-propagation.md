@@ -6,8 +6,7 @@ description: "用 Spring Boot 3.5.7 + H2 搭一个最小工程，逐项实测 RE
 categories:
   - 实践
 tags:
-  - 工程实践
-  - Java
+  - Spring 事务
 cover: /img/2026/11/spring-transaction-propagation.jpg
 ---
 

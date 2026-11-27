@@ -6,8 +6,7 @@ description: "会话文件是单写者资源，两个终端同时写同一个会
 categories:
   - 架构
 tags:
-  - Agent
-  - 架构
+  - 会话并发
 cover: /img/2026/11/agent-session-concurrency.jpg
 ---
 

@@ -6,8 +6,7 @@ description: "用 ProxyFactory 手工织入加真实 @EnableAspectJAutoProxy 两
 categories:
   - 技术
 tags:
-  - 工程实践
-  - Java
+  - Spring AOP
 cover: /img/2026/11/spring-aop-proxy.jpg
 ---
 

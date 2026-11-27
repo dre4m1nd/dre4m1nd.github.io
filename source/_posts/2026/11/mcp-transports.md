@@ -6,8 +6,7 @@ description: "MCP 把传输层做成可插拔的：stdio 用于本机子进程�
 categories:
   - 技术
 tags:
-  - 工程实践
-  - Node.js
+  - MCP
 cover: /img/2026/11/mcp-transports.jpg
 ---
 

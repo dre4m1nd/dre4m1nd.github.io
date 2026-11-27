@@ -6,8 +6,7 @@ description: "在 16 核机器上把虚拟线程和平台线程池跑了六组�
 categories:
   - 技术
 tags:
-  - 工程实践
-  - Java
+  - 虚拟线程
 cover: /img/2026/11/virtual-threads.jpg
 ---
 
