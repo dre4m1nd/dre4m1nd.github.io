@@ -83,6 +83,9 @@ LABELS = {
     'java-locks': 'LOCK',
     'node-event-loop': 'LOOP',
     'git-rebase-vs-merge': 'REBASE',
+    'mysql-isolation-levels': 'MYSQL',
+    'mcp-client': 'CLIENT',
+    'agent-tool-idempotency': 'RETRY',
 }
 
 # ── 底部小标题（TEXTS 里的 key = PROMPTS 里的 key）──
@@ -123,6 +126,9 @@ TEXTS = {
     'java-locks':     '并发锁实测',
     'node-event-loop':     '事件循环',
     'git-rebase-vs-merge':     '分支整合',
+    'mysql-isolation-levels':     '事务隔离',
+    'mcp-client':     'MCP 客户端',
+    'agent-tool-idempotency':     '工具幂等',
 }
 
 PROMPTS = {
@@ -161,6 +167,9 @@ PROMPTS = {
     'java-locks':    'flat vector illustration on a pure white background, four small wooden doors set in a row along the same wall, each door fitted with a different brass latch and handle, the row of doors centered with a clear margin of white background around all four sides, nothing touching the frame edges, four different gates to the same room concept, warm oak and brass tones, ' + STYLE,
     'node-event-loop':    'flat vector illustration on a pure white background, a small wooden spinning wheel with cream thread wound around its rim, standing on a plain surface, the spinning wheel centered with a clear margin of white background around all four sides, nothing touching the frame edges, one continuous loop of turns concept, warm wood and cream tones, ' + STYLE,
     'git-rebase-vs-merge':    'flat vector illustration on a pure white background, a small wooden card holder with a neat row of blank index cards, a hand sliding one fresh card into the middle of the row, the holder centered with a clear margin of white background around all four sides, nothing touching the frame edges, rearranging a stack into a clean order concept, warm paper and oak tones, ' + STYLE,
+    'mysql-isolation-levels':    'flat vector illustration on a pure white background, a small wooden shop counter with an open paper ledger and a brass inkpot, two brass padlocks lying beside the ledger one closed and one open, the counter centered with a clear margin of white background around all four sides, nothing touching the frame edges, guarding the same record with different strengths concept, warm oak and brass tones, ' + STYLE,
+    'mcp-client':    'flat vector illustration on a pure white background, a small vintage wooden telephone switchboard with two short cables plugged into its front panel and a brass earpiece hanging beside it, the switchboard centered with a clear margin of white background around all four sides, nothing touching the frame edges, the calling side of a conversation concept, warm oak and brass tones, ' + STYLE,
+    'agent-tool-idempotency':    'flat vector illustration on a pure white background, a small brass cash register on a shop counter with a long paper receipt curling out of its side and a second identical receipt lying beside it, the register centered with a clear margin of white background around all four sides, nothing touching the frame edges, the same charge printed twice concept, warm brass and cream paper tones, ' + STYLE,
 }
 
 CAPTION_FONT = 'C:/Windows/Fonts/msyhbd.ttc'
